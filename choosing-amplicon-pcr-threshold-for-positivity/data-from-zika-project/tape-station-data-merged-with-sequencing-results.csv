@@ -1,0 +1,304 @@
+flowcell,run name,sample name,bam name,unambig bases,median coverage,tapestation primer pool 1,tapestation primer pool 2
+AKVJY,Amp-Seq Pilot,BocaBio-0076S,76S,8228,9239.0,5.28,2
+AKVJY,Amp-Seq Pilot,BocaBio-0115S,115S,10448,11912.0,52.9,52.7
+AKVJY,Amp-Seq Pilot,BocaBio-0180S,180S,10597,10614.0,46.8,70.5
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-001S,FGCU-001S_ampseq-1,85,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-001U,FGCU-001U_ampseq-1,475,0.0,0,NA
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-003U,FGCU-003U_ampseq-1,1348,48609.0,0.3,0.3
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-004S,FGCU-004S_ampseq-1,0,0.0,0.3,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-004U,FGCU-004U_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-006U,FGCU-006U_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-007U,FGCU-007U_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-008U,FGCU-008U_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-010S,FGCU-010S_ampseq-1,85,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-010U,FGCU-010U_ampseq-1,10375,13994.0,47.2,76.4
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-011U,FGCU-011U_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-012U,FGCU-012U_ampseq-1,2160,42637.0,2.3,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-016U,FGCU-016U_ampseq-1,0,0.0,0.3,0.5
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-017U,FGCU-017U_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-027U,FGCU-027U_ampseq-1,1118,63966.0,0.6,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),FGCU-MP-16-1046,FGCU-MP-16-20416_ampseq-1,10433,11639.0,21.5,41.5
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-5790-SR,Fiocruz-5790-SR_ampseq-1,6996,12484.0,5.8,1.2
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-5905-SR,Fiocruz-5905-SR_ampseq-1,7467,27718.0,4.3,1.4
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-6696,Fiocruz-6696_ampseq-1,7479,5853.0,0.5,2.3
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-6703,Fiocruz-6703_ampseq-1,3424,10406.0,1.7,0.3
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-6706,Fiocruz-6706_ampseq-1,0,0.0,0,9
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-6864-U,Fiocruz-6864-U_ampseq-1,10592,22971.0,29.8,20.5
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ62D2PE,Fiocruz-B14_ampseq-1,830,638.0,0.6,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ219D1URI,Fiocruz-B16_ampseq-1,1724,1876.0,0.3,0.1
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ192D1URI,Fiocruz-B30_ampseq-1,868,35775.0,0.1,0.7
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ42D1URI,Fiocruz-B34_ampseq-1,10594,16658.0,12.8,59.7
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ121D1PE,Fiocruz-B39_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ62D1URI,Fiocruz-B41_ampseq-1,0,0.0,3.5,5.1
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ105D1PE,Fiocruz-B42_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ119D1URI,Fiocruz-B44_ampseq-1,920,64726.0,0.4,0.7
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ131D1URI,Fiocruz-B4_ampseq-1,10601,10994.0,NA,159
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ28D1URI,Fiocruz-B7_ampseq-1,10596,20511.0,37.6,33.5
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ116D1PE,Fiocruz-B8_ampseq-1,451,181203.0,0,0.3
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ107D1URI,Fiocruz-DQ107D1URI_ampseq-1,10018,6718.0,27.5,20.6
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ125D1PE,Fiocruz-DQ125D1PE_ampseq-1,883,40.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ197D1URI,Fiocruz-DQ197D1URI_ampseq-1,411,14.0,2.9,0.2
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ47D1PE,Fiocruz-DQ47D1PE_ampseq-1,9937,4875.0,13.3,35.8
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ49D1PE,Fiocruz-DQ49D1PE_ampseq-1,10162,7404.0,10.9,13.3
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ52D1PE,Fiocruz-DQ52D1PE_ampseq-1,0,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ68D1URI,Fiocruz-DQ68D1URI_ampseq-1,98,0.0,0,0
+ATFMU,Make Sequencing Great Again Part I (MSGA),Fiocruz-DQ75D1PE,Fiocruz-DQ75D1PE-2_ampseq-1,2524,26376.0,2.9,0
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-028U,FGCU-028U_ampseq-2,2759,250.0,0,2.1
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-029U,FGCU-029U_ampseq-2,4348,43885.0,0.7,1.3
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-030U,FGCU-030U_ampseq-2,10413,7521.0,0.6,15.9
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-031U,FGCU-031U_ampseq-2,1951,17847.0,0.1,0.7
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-032U,FGCU-032U_ampseq-2,9863,11034.0,10.3,15
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-033U,FGCU-033U_ampseq-2,1312,23145.0,1.3,0
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-037U,FGCU-037U_ampseq-2,1962,42708.0,0.3,0.7
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-038U,FGCU-038U_ampseq-2,8763,18675.0,9.6,7.2
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-039U,FGCU-039U_ampseq-2,10597,19629.0,63.7,49.3
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-040S,FGCU-040S_ampseq-2,680,99895.0,0.7,0
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-MP-7501,FGCU-MP-7501_ampseq-2,10593,17433.0,NA,144
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-MP-7719,FGCU-MP-7719_ampseq-2,10439,20489.0,67.7,76.9
+AT2BN,Make Sequencing Great Again Part II (MSGA),FGCU-MP-7727,FGCU-MP-7727_ampseq-2,10594,7944.0,69.8,87.5
+AT2BN,Make Sequencing Great Again Part II (MSGA),Fiocruz-6864-U,Fiocruz-6864-U_ampseq-2,10360,20441.0,24.8,29.2
+AT2BN,Make Sequencing Great Again Part II (MSGA),Fiocruz-DQ219D1URI,Fiocruz-B16_ampseq-2,1317,41021.0,0.4,0.9
+AT2BN,Make Sequencing Great Again Part II (MSGA),Fiocruz-DQ192D1URI,Fiocruz-B30_ampseq-2,2973,16276.0,0,2.8
+AT2BN,Make Sequencing Great Again Part II (MSGA),Fiocruz-DQ42D1URI,Fiocruz-B34_ampseq-2,10437,8908.0,94.4,10.6
+AT2BN,Make Sequencing Great Again Part II (MSGA),Fiocruz-DQ28D1URI,Fiocruz-B7_ampseq-2,10359,14882.0,39,34.4
+AT2BN,Make Sequencing Great Again Part II (MSGA),Fiocruz-DQ125D1PE,Fiocruz-DQ125D1PE_ampseq-2,98,0.0,0,0
+AT2BN,Make Sequencing Great Again Part II (MSGA),Fiocruz-DQ197D1URI,Fiocruz-DQ197D1URI_ampseq-2,1518,4.0,0.6,0.1
+AT2BN,Make Sequencing Great Again Part II (MSGA),Fiocruz-DQ68D1URI,Fiocruz-DQ68D1URI_ampseq-2,3354,31283.0,1.4,2.5
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-136,UNAH-ME-136_ampseq-2,5856,16590.0,1.1,3.3
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-152,UNAH-ME-152_ampseq-2,10360,9612.0,14.7,20.7
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-167,UNAH-ME-167_ampseq-2,10596,9455.0,16.7,34.1
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-172,UNAH-ME-172_ampseq-2,6431,14726.0,1.9,2.9
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-178,UNAH-ME-178_ampseq-2,10167,16571.0,18.8,24.4
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-38,UNAH-ME-38_ampseq-2,10364,10583.0,61.9,66.8
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-42,UNAH-ME-42_ampseq-2,10070,749.0,28.3,38.6
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-50,UNAH-ME-50_ampseq-2,7862,29190.0,2.4,4.8
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-ME-58,UNAH-ME-58_ampseq-2,10365,20502.0,36.3,38.6
+AT2BN,Make Sequencing Great Again Part II (MSGA),UNAH-SZ-76,UNAH-SZ-76_ampseq-2,5535,3069.0,0.8,0.5
+AW4C2,Big League Part I,BocaBio-0115U,BocaBio-115U_ampseq-3,8848,11562.0,4.9,8.8
+AW4C2,Big League Part I,BocaBio-0127S,BocaBio-127S_ampseq-3,10599,10603.0,65.6,80
+AW4C2,Big League Part I,BocaBio-0180U,BocaBio-180U_ampseq-3,8802,12802.0,4.5,8.1
+AW4C2,Big League Part I,BocaBio-0436P,BocaBio-436S_ampseq-3,9565,10209.0,39.2,36.2
+AW4C2,Big League Part I,BocaBio-0076U,BocaBio-76U_ampseq-3,7454,620.0,1.7,0
+AW4C2,Big League Part I,FGCU-002U,FGCU-002U_ampseq-3,3698,8.0,0,0
+AW4C2,Big League Part I,FGCU-003U,FGCU-003U_ampseq-3,4356,32.0,0.1,0
+AW4C2,Big League Part I,FGCU-005S,FGCU-005S_ampseq-3,450,144916.0,0,0.1
+AW4C2,Big League Part I,FGCU-005U,FGCU-005U_ampseq-3,461,3940.0,0,0
+AW4C2,Big League Part I,FGCU-006S,FGCU-006S_ampseq-3,6844,32.0,0,0
+AW4C2,Big League Part I,FGCU-009U,FGCU-009U_ampseq-3,1654,129.0,0,0
+AW4C2,Big League Part I,FGCU-012U,FGCU-012U_ampseq-3,1651,32.0,0.5,0.1
+AW4C2,Big League Part I,FGCU-013U,FGCU-013U_ampseq-3,2411,66070.0,0.5,0.1
+AW4C2,Big League Part I,FGCU-014U,FGCU-014U_ampseq-3,0,0.0,0,0
+AW4C2,Big League Part I,FGCU-015U,FGCU-015U_ampseq-3,114,0.0,0,0
+AW4C2,Big League Part I,FGCU-018U,FGCU-018U_ampseq-3,57,0.0,0,0
+AW4C2,Big League Part I,FGCU-028U,FGCU-028U_ampseq-3,2375,34181.0,0.6,0.4
+AW4C2,Big League Part I,FGCU-029U,FGCU-029U_ampseq-3,3808,12495.0,0.3,1.8
+AW4C2,Big League Part I,FGCU-030U,FGCU-030U_ampseq-3,9386,15362.0,7.2,10.1
+AW4C2,Big League Part I,FGCU-033U,FGCU-033U_ampseq-3,494,249825.0,0.6,0
+AW4C2,Big League Part I,FGCU-040S,FGCU-040S_ampseq-3,354,3.0,0,0
+AW4C2,Big League Part I,FGCU-MP-05,FGCU-MP-05_ampseq-3,10439,10073.0,18.3,32
+AW4C2,Big League Part I,Fiocruz-6696,Fiocruz-6696_ampseq-3,4758,24.0,0.6,0.4
+AW4C2,Big League Part I,Fiocruz-6703,Fiocruz-6703_ampseq-3,3364,39664.0,0,1
+AW4C2,Big League Part I,Fiocruz-DQ192D1URI,Fiocruz-B30_ampseq-3,2720,14752.0,0.9,0.9
+AW4C2,Big League Part I,Fiocruz-6418,Fiocruz-B38_ampseq-3,5220,21.0,0,0
+AW4C2,Big League Part I,Fiocruz-DQ109D1PE,Fiocruz-DQ109D1PE_ampseq-3,2331,26391.0,0,1.4
+AW4C2,Big League Part I,Fiocruz-DQ12D1PE,Fiocruz-DQ12D1PE_ampseq-3,4909,14499.0,0.9,1.2
+AW4C2,Big League Part I,Fiocruz-DQ14D1PE,Fiocruz-DQ14D1PE_ampseq-3,389,5.0,0,0
+AW4C2,Big League Part I,Fiocruz-DQ197D1URI,Fiocruz-DQ197D1URI_ampseq-3,0,0.0,3.4,0.9
+AW4C2,Big League Part I,Fiocruz-DQ58D1PE,Fiocruz-DQ58D1PE_ampseq-3,9464,11827.0,19.4,35
+AW4C2,Big League Part I,Fiocruz-DQ5D1URI,Fiocruz-DQ5D1URI_ampseq-3,8346,8694.0,3.1,3.7
+AW4C2,Big League Part I,Fiocruz-DQ60D1PE,Fiocruz-DQ60D1PE_ampseq-3,2722,10170.0,0.3,0.8
+AW4C2,Big League Part I,Fiocruz-DQ60D1URI,Fiocruz-DQ60D1URI_ampseq-3,8623,10117.0,7.3,17.3
+AW4C2,Big League Part I,Fiocruz-DQ75D1PE,Fiocruz-DQ75D1PE-2_ampseq-3,366,1392.0,0,0
+AW4C2,Big League Part I,Fiocruz-DQ75D1URI,Fiocruz-DQ75D1URI_ampseq-3,8964,14973.0,7.6,9.3
+AW4C2,Big League Part I,Fiocruz-DQ77D1URI,Fiocruz-DQ77D1URI-1_ampseq-3,1792,240.0,0,0.2
+AW4C2,Big League Part I,UNAH-ME-147,UNAH-ME-147_ampseq-3,9482,7291.0,8.6,12.4
+AW4C2,Big League Part I,UNAH-ME-156,UNAH-ME-156_ampseq-3,9786,9037.0,8.1,6.2
+AW4C2,Big League Part I,UNAH-ME-171,UNAH-ME-171_ampseq-3,9395,7999.0,4.1,6.1
+AW4C2,Big League Part I,UNAH-ME-59,UNAH-ME-59_ampseq-3,9528,13800.0,14.2,17
+ATDB7,Big League Part II,FGCU-001Sa,FGCU-001Sa_ampseq-4,8192,9508.0,3.6,3
+ATDB7,Big League Part II,FGCU-019U,FGCU-019U_ampseq-4,3093,37739.0,1,0.5
+ATDB7,Big League Part II,FGCU-020U,FGCU-020U_ampseq-4,816,355039.0,0.2,0
+ATDB7,Big League Part II,Fiocruz-28209-liquor,Fiocruz-28209-liquor_ampseq-4,456,4.0,0,0
+ATDB7,Big League Part II,Fiocruz-546939-007-001,Fiocruz-546939-007-001_ampseq-4,85,0.0,0,0.1
+ATDB7,Big League Part II,Fiocruz-547184-007-001,Fiocruz-547184-007-001_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-547184-032-001,Fiocruz-547184-032-001_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-547220-007-001,Fiocruz-547220-007-001_ampseq-4,759,13.0,0,0
+ATDB7,Big League Part II,Fiocruz-547224-032-001,Fiocruz-547224-032-001_ampseq-4,91,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-547231-032-001,Fiocruz-547231-032-001_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-6020-SOCO,Fiocruz-6020-SOCO_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-6095-SOCO,Fiocruz-6095-SOCO_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-6284-RNA,Fiocruz-6284-RNA_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-6418,Fiocruz-6418-2_ampseq-4,9935,4010.0,12,10.5
+ATDB7,Big League Part II,Fiocruz-6706,Fiocruz-6706-2_ampseq-4,9101,20579.0,6.1,8.1
+ATDB7,Big League Part II,Fiocruz-6863,Fiocruz-6863-2_ampseq-4,10191,39089.0,15.3,16.5
+ATDB7,Big League Part II,Fiocruz-DQ105D1PE,Fiocruz-DQ105D1PE-2_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ116D1PE,Fiocruz-DQ116D1PE-2_ampseq-4,9846,48261.0,6.2,7.6
+ATDB7,Big League Part II,Fiocruz-DQ119D1URI,Fiocruz-DQ119D1URI-2_ampseq-4,1352,152292.0,0.5,0
+ATDB7,Big League Part II,Fiocruz-DQ121D1PE,Fiocruz-DQ121D1PE-2_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ122D1PE,Fiocruz-DQ122D1PE_ampseq-4,7685,9998.0,6.7,2.5
+ATDB7,Big League Part II,Fiocruz-DQ131D1URI,Fiocruz-DQ131D1URI-2_ampseq-4,10601,26554.0,36.6,35
+ATDB7,Big League Part II,Fiocruz-DQ192D1URI,Fiocruz-DQ192D1URI-2_ampseq-4,259,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ194D1URI,Fiocruz-DQ194D1URI_ampseq-4,580,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ203D1ACD,Fiocruz-DQ203D1ACD_ampseq-4,282,1.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ219D1URI,Fiocruz-DQ219D1URI-2_ampseq-4,0,0.0,0,0.2
+ATDB7,Big League Part II,Fiocruz-DQ220D1PE,Fiocruz-DQ220D1PE_ampseq-4,102,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ246D1URI,Fiocruz-DQ246D1URI_ampseq-4,608,5.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ28D1URI,Fiocruz-DQ28D1URI-2_ampseq-4,90,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ42D1URI,Fiocruz-DQ42D1URI-2_ampseq-4,10573,14711.0,4.9,12.4
+ATDB7,Big League Part II,Fiocruz-DQ62D1PE,Fiocruz-DQ62D1PE_ampseq-4,8953,33338.0,2.6,3.5
+ATDB7,Big League Part II,Fiocruz-DQ62D1URI,Fiocruz-DQ62D1URI-2_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ62D2PE,Fiocruz-DQ62D2PE-2_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ62D2URI,Fiocruz-DQ62D2URI-2_ampseq-4,3365,62057.0,0.3,1.9
+ATDB7,Big League Part II,Fiocruz-DQ75D1PE,Fiocruz-DQ75D1PE-3_ampseq-4,0,0.0,0,0
+ATDB7,Big League Part II,Fiocruz-DQ77D1URI,Fiocruz-DQ77D1URI-2_ampseq-4,453,218056.0,0.2,0
+ATDYY,Big League Part IV,BocaBio-0115S,BocaBio-115S-2_ampseq-6,10357,14714.0,16.4,41.8
+ATDYY,Big League Part IV,BocaBio-0115U,BocaBio-115U-2_ampseq-6,9591,9169.0,4.7,8
+ATDYY,Big League Part IV,BocaBio-0180S,BocaBio-180S-2_ampseq-6,10158,15852.0,32.2,48.1
+ATDYY,Big League Part IV,BocaBio-0180S,BocaBio-180S-3_ampseq-6,10600,7373.0,6.4,8.2
+ATDYY,Big League Part IV,BocaBio-0180U,BocaBio-180U-2_ampseq-6,10237,15662.0,10.6,11.2
+ATDYY,Big League Part IV,BocaBio-0183S,BocaBio-183S_ampseq-6,10051,29211.0,11.9,15.7
+ATDYY,Big League Part IV,BocaBio-0183U,BocaBio-183U_ampseq-6,68,0.0,0,0.1
+ATDYY,Big League Part IV,BocaBio-0184U,BocaBio-184U_ampseq-6,471,181546.0,0.3,0
+ATDYY,Big League Part IV,BocaBio-0433S,BocaBio-433S_ampseq-6,10018,22975.0,11.9,23.1
+ATDYY,Big League Part IV,BocaBio-0445S,BocaBio-445S_ampseq-6,0,0.0,0,0
+ATDYY,Big League Part IV,BocaBio-0448S,BocaBio-448S_ampseq-6,0,0.0,0,0
+ATDYY,Big League Part IV,BocaBio-0054S,BocaBio-54S_ampseq-6,693,26.0,0,0
+ATDYY,Big League Part IV,BocaBio-0054U,BocaBio-54U_ampseq-6,1649,184571.0,0,0.3
+ATDYY,Big League Part IV,BocaBio-0059S,BocaBio-59S_ampseq-6,8516,17305.0,2.7,3.4
+ATDYY,Big League Part IV,BocaBio-0059U,BocaBio-59U_ampseq-6,751,192308.0,0.2,0.5
+ATDYY,Big League Part IV,BocaBio-0071S,BocaBio-71S_ampseq-6,9102,19207.0,4.5,3.4
+ATDYY,Big League Part IV,BocaBio-0076S,BocaBio-76S-2_ampseq-6,9514,18831.0,2.9,2.7
+ATDYY,Big League Part IV,BocaBio-0076U,BocaBio-76U-2_ampseq-6,9754,15549.0,3.6,5.2
+ATDYY,Big League Part IV,BocaBio-0085S,BocaBio-85S_ampseq-6,4002,19968.0,0.5,1.3
+ATDYY,Big League Part IV,BocaBio-0085U,Water-2_ampseq-6,10073,11419.0,8.1,12.3
+ATDYY,Big League Part IV,BocaBio-0091S,BocaBio-91S_ampseq-6,10360,11670.0,17.5,19
+ATDYY,Big League Part IV,FGCU-MP-06,FGCU-MP-06_ampseq-6,10586,14669.0,13.3,15.2
+ATDYY,Big League Part IV,FGCU-MP-07,FGCU-MP-07_ampseq-6,0,0.0,0,0
+ATDYY,Big League Part IV,FGCU-MP-08,FGCU-MP-08_ampseq-6,10360,14283.0,2.4,3.4
+AVF55,Rambunctious Replicates,BocaBio-0059S,BocaBio-0059S_ampseq-10,6931,10780.0,1.5,2
+AVF55,Rambunctious Replicates,BocaBio-0071S,BocaBio-0071S_ampseq-10,6810,10963.0,1.4,2
+AVF55,Rambunctious Replicates,BocaBio-0071U,BocaBio-0071U_ampseq-10,5555,10503.0,1.5,1
+AVF55,Rambunctious Replicates,BocaBio-0076S,BocaBio-0076S-2_ampseq-10,10323,6499.0,27.7,14.8
+AVF55,Rambunctious Replicates,BocaBio-0076U,BocaBio-0076U-2_ampseq-10,8209,3907.0,4,14.1
+AVF55,Rambunctious Replicates,BocaBio-0085U,BocaBio-0085U_ampseq-10,9742,8139.0,10.5,12.3
+AVF55,Rambunctious Replicates,BocaBio-0091S,BocaBio-0091S_ampseq-10,10150,6037.0,6.9,10.2
+AVF55,Rambunctious Replicates,BocaBio-0115S,BocaBio-0115S-2_ampseq-10,10601,9316.0,35.1,47.5
+AVF55,Rambunctious Replicates,BocaBio-0115U,BocaBio-0115U-2_ampseq-10,9904,8481.0,5.8,8.4
+AVF55,Rambunctious Replicates,BocaBio-0180U,BocaBio-0180U_ampseq-10,9612,7756.0,7.1,2.5
+AVF55,Rambunctious Replicates,BocaBio-0183S,BocaBio-0183S_ampseq-10,10446,8758.0,31.4,34.1
+AVF55,Rambunctious Replicates,BocaBio-0433S,BocaBio-0433S_ampseq-10,10352,5855.0,18.1,20.1
+AVF55,Rambunctious Replicates,Fiocruz-6418,Fiocruz-6418_ampseq-10,10205,8953.0,9.3,12.3
+AVF55,Rambunctious Replicates,Fiocruz-6696,Fiocruz-6696_ampseq-10,4619,14156.0,1,0.7
+AVF55,Rambunctious Replicates,Fiocruz-6706,Fiocruz-6706_ampseq-10,10007,9718.0,8.2,9.9
+AVF55,Rambunctious Replicates,Fiocruz-6863,Fiocruz-6863_ampseq-10,10148,12873.0,13.5,14
+AVF55,Rambunctious Replicates,Fiocruz-DQ5D1URI,Fiocruz-DQ5D1URI_ampseq-10,5588,19519.0,2.3,2.5
+AVF55,Rambunctious Replicates,Fiocruz-DQ49D1PE,Fiocruz-DQ49D1PE_ampseq-10,9244,5472.0,7.8,6.2
+AVF55,Rambunctious Replicates,Fiocruz-DQ58D1PE,Fiocruz-DQ58D1PE_ampseq-10,10208,8230.0,18.5,26.8
+AVF55,Rambunctious Replicates,Fiocruz-DQ60D1URI,Fiocruz-DQ60D1URI_ampseq-10,9949,11093.0,13.5,15.3
+AVF55,Rambunctious Replicates,Fiocruz-DQ62D1PE,Fiocruz-DQ62D1PE_ampseq-10,6857,11465.0,1.4,1.4
+AVF55,Rambunctious Replicates,Fiocruz-DQ75D1URI,Fiocruz-DQ75D1URI_ampseq-10,10148,12171.0,10.5,10
+AVF55,Rambunctious Replicates,Fiocruz-DQ107D1URI,Fiocruz-DQ107D1URI_ampseq-10,9612,9644.0,7.3,6.3
+AVF55,Rambunctious Replicates,Fiocruz-DQ116D1PE,Fiocruz-DQ116D1PE_ampseq-10,2664,29.0,0.3,0
+AVF55,Rambunctious Replicates,Fiocruz-DQ122D1PE,Fiocruz-DQ122D1PE_ampseq-10,9001,11919.0,3.9,5.3
+AVF55,Rambunctious Replicates,FGCU-021U,FGCU-021U_ampseq-10,10300,8442.0,14.2,13.7
+AVF55,Rambunctious Replicates,UWI-JM-2,UWI-JM-2_ampseq-10,1816,13.0,0.2,0
+AVF55,Rambunctious Replicates,UWI-JM-3A,UWI-JM-3A_ampseq-10,465,82285.0,0.4,0
+AVF55,Rambunctious Replicates,UWI-JM-3B,UWI-JM-3B_ampseq-10,85,0.0,0,0
+AVF55,Rambunctious Replicates,UWI-JM-4,UWI-JM-4_ampseq-10,0,0.0,0,0.2
+AVF55,Rambunctious Replicates,UWI-JM-5,UWI-JM-5_ampseq-10,0,0.0,0,0
+AVF55,Rambunctious Replicates,UWI-JM-6,UWI-JM-6_ampseq-10,10357,6314.0,24.6,21.6
+AVF55,Rambunctious Replicates,UWI-JM-7A,UWI-JM-7A_ampseq-10,0,0.0,0,0
+AVF55,Rambunctious Replicates,UWI-JM-7B,UWI-JM-7B_ampseq-10,167,0.0,0,0
+AVF55,Rambunctious Replicates,UWI-JM-8,UWI-JM-8_ampseq-10,0,0.0,0,0
+AVF55,Rambunctious Replicates,UNAH-ME-59,UNAH-ME-59_ampseq-10,10354,10483.0,13.7,12.9
+AVF55,Rambunctious Replicates,UNAH-ME-147,UNAH-ME-147_ampseq-10,9629,10571.0,9.4,13.5
+AVF55,Rambunctious Replicates,UNAH-ME-152,UNAH-ME-152_ampseq-10,10198,9465.0,12.7,13.8
+AVF55,Rambunctious Replicates,UNAH-ME-156,UNAH-ME-156_ampseq-10,9487,8389.0,5.1,5.4
+AVF55,Rambunctious Replicates,UNAH-ME-171,UNAH-ME-171_ampseq-10,10341,11295.0,5.7,8.4
+AVF55,Rambunctious Replicates,UNAH-ME-178,UNAH-ME-178_ampseq-10,10001,11939.0,8.3,8.4
+AYB25,Sandy,MaDPH-WGS16-001,MaDPH-WGS16-001_ampseq-11,71,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-002,MaDPH-WGS16-002_ampseq-11,0,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-003,MaDPH-WGS16-003_ampseq-11,0,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-004,MaDPH-WGS16-004_ampseq-11,10439,10180.0,30.2,24.6
+AYB25,Sandy,MaDPH-WGS16-005,MaDPH-WGS16-005_ampseq-11,7293,14779.0,21,13.5
+AYB25,Sandy,MaDPH-WGS16-006,MaDPH-WGS16-006_ampseq-11,219,0.0,0,1.3
+AYB25,Sandy,MaDPH-WGS16-007,MaDPH-WGS16-007_ampseq-11,10151,10667.0,16.6,19.7
+AYB25,Sandy,MaDPH-WGS16-008,MaDPH-WGS16-008_ampseq-11,887,89270.0,0.3,0.2
+AYB25,Sandy,MaDPH-WGS16-009,MaDPH-WGS16-009_ampseq-11,2856,25273.0,0.4,0.9
+AYB25,Sandy,MaDPH-WGS16-010,MaDPH-WGS16-010_ampseq-11,617,3.0,0,0
+AYB25,Sandy,MaDPH-WGS16-011,MaDPH-WGS16-011_ampseq-11,10379,8812.0,9.7,7.9
+AYB25,Sandy,MaDPH-WGS16-012,MaDPH-WGS16-012_ampseq-11,0,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-013,MaDPH-WGS16-013_ampseq-11,7175,26081.0,2.7,0.6
+AYB25,Sandy,MaDPH-WGS16-014,MaDPH-WGS16-014_ampseq-11,9698,13826.0,11.4,17.4
+AYB25,Sandy,MaDPH-WGS16-015,MaDPH-WGS16-015_ampseq-11,0,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-016,MaDPH-WGS16-016_ampseq-11,9816,119066.0,3.1,6.2
+AYB25,Sandy,MaDPH-WGS16-017,MaDPH-WGS16-017_ampseq-11,4354,41.0,0.2,0.7
+AYB25,Sandy,MaDPH-WGS16-018,MaDPH-WGS16-018_ampseq-11,492,173498.0,0,0.4
+AYB25,Sandy,MaDPH-WGS16-019,MaDPH-WGS16-019_ampseq-11,5145,186.0,0.2,0.6
+AYB25,Sandy,MaDPH-WGS16-020,MaDPH-WGS16-020_ampseq-11,3037,37277.0,0.3,0.3
+AYB25,Sandy,MaDPH-WGS16-021,MaDPH-WGS16-021_ampseq-11,61,0.0,0,0.6
+AYB25,Sandy,MaDPH-WGS16-022,MaDPH-WGS16-022_ampseq-11,3961,8746.0,0.5,0
+AYB25,Sandy,MaDPH-WGS16-023,MaDPH-WGS16-023_ampseq-11,128,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-024,MaDPH-WGS16-024_ampseq-11,10564,5326.0,25.2,48.3
+AYB25,Sandy,MaDPH-WGS16-025,MaDPH-WGS16-025_ampseq-11,9371,6563.0,3.7,4.8
+AYB25,Sandy,MaDPH-WGS16-026,MaDPH-WGS16-026_ampseq-11,0,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-027,MaDPH-WGS16-027_ampseq-11,138,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-028,MaDPH-WGS16-028_ampseq-11,0,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-029,MaDPH-WGS16-029_ampseq-11,6082,35322.0,1.2,1.6
+AYB25,Sandy,MaDPH-WGS16-030,MaDPH-WGS16-030_ampseq-11,91,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-031,MaDPH-WGS16-031_ampseq-11,2641,15969.0,0.8,0
+AYB25,Sandy,MaDPH-WGS16-032,MaDPH-WGS16-032_ampseq-11,0,0.0,0.1,0.5
+AYB25,Sandy,MaDPH-WGS16-033,MaDPH-WGS16-033_ampseq-11,414,117085.0,0.1,0.1
+AYB25,Sandy,MaDPH-WGS16-034,MaDPH-WGS16-034_ampseq-11,9906,7575.0,3.4,5
+AYB25,Sandy,MaDPH-WGS16-035,MaDPH-WGS16-035_ampseq-11,0,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-036,MaDPH-WGS16-036_ampseq-11,5813,7786.0,1.4,0.5
+AYB25,Sandy,MaDPH-WGS16-037,MaDPH-WGS16-037_ampseq-11,76,0.0,0,0
+AYB25,Sandy,MaDPH-WGS16-038,MaDPH-WGS16-038_ampseq-11,4815,4351.0,0.9,0.3
+AYB25,Sandy,MaDPH-WGS16-039,MaDPH-WGS16-039_ampseq-11,8601,10806.0,1.4,1.8
+AYB25,Sandy,MaDPH-WGS16-040,MaDPH-WGS16-040_ampseq-11,8309,16158.0,1,1.2
+AYB25,Sandy,MaDPH-WGS16-041,MaDPH-WGS16-041_ampseq-11,5379,23845.0,0.8,1.2
+AYB20,Amazon,UIS-1155-A,UIS-1155-A_ampseq-12,1793,61425.0,0.2,0
+AYB20,Amazon,UIS-1194-A,UIS-1194-A_ampseq-12,2029,24102.0,0.7,0
+AYB20,Amazon,UIS-1638-A,UIS-1638-A_ampseq-12,446,408041.0,0,0.3
+AYB20,Amazon,UIS-1810-A,UIS-1810-A_ampseq-12,5365,37944.0,1.6,0.7
+AYB20,Amazon,UIS-1856-A,UIS-1856-A_ampseq-12,10351,19254.0,21.8,21.1
+AYB20,Amazon,UIS-1857-A,UIS-1857-A_ampseq-12,930,21943.0,0.1,0.3
+AYB20,Amazon,UIS-1898-A,UIS-1898-A_ampseq-12,0,0.0,0.1,0.1
+AYB20,Amazon,UIS-1938-A,UIS-1938-A_ampseq-12,1802,105026.0,0,0.9
+AYB20,Amazon,UIS-2293-A,UIS-2293-A_ampseq-12,5219,34976.0,1.3,1
+AYB20,Amazon,UIS-2514-A,UIS-2514-A_ampseq-12,0,0.0,0,0
+AYB20,Amazon,UIS-2636-A,UIS-2636-A_ampseq-12,0,0.0,0,0
+AYB20,Amazon,UIS-2686-A,UIS-2686-A_ampseq-12,0,0.0,0.1,0.1
+AYB20,Amazon,UIS-2724-A,UIS-2724-A_ampseq-12,10594,24972.0,15.7,15.2
+AYB20,Amazon,UIS-2836-A,UIS-2836-A_ampseq-12,0,0.0,0.1,0
+AYB20,Amazon,UIS-3117-A,UIS-3117-A_ampseq-12,86,0.0,0,0
+AYB20,Amazon,UIS-3311-A,UIS-3311-A_ampseq-12,59,0.0,0,0
+AYB20,Amazon,UIS-3315-A,UIS-3315-A_ampseq-12,0,0.0,0,0
+AYB20,Amazon,UIS-3316-A,UIS-3316-A_ampseq-12,0,0.0,0,0
+AYB20,Amazon,UIS-3351-A,UIS-3351-A_ampseq-12,468,11680.0,0,0
+AYB20,Amazon,UIS-3407-A,UIS-3407-A_ampseq-12,0,0.0,0.1,0
+AYB20,Amazon,BocaBio-0180S,BocaBio-0180S_ampseq-12,10599,14588.0,67.5,54.2
+AVDJF,Big League Part III Reworked,BocaBio-0208S,BocaBio-208S_ampseq-5rework,10598,14444.0,60.8,62.4
+AVDJF,Big League Part III Reworked,BocaBio-0216S,BocaBio-216S_ampseq-5rework,10577,11062.0,52.8,3.9
+AVDJF,Big League Part III Reworked,BocaBio-0269S,BocaBio-269S_ampseq-5rework,10611,16735.0,35.8,44.3
+AVDJF,Big League Part III Reworked,BocaBio-0369S,BocaBio-369S_ampseq-5rework,0,0.0,0.1,0
+AVDJF,Big League Part III Reworked,BocaBio-0428P,BocaBio-428P_ampseq-5rework,4607,39942.0,1.4,2
+AVDJF,Big League Part III Reworked,BocaBio-0439S,BocaBio-439S_ampseq-5rework,2469,39.0,0,0
+AVDJF,Big League Part III Reworked,FGCU-021U,FGCU-021U_ampseq-5rework,10257,26612.0,8,10.2
+AVDJF,Big League Part III Reworked,FGCU-022U,FGCU-022U_ampseq-5rework,9222,22759.0,2,6.4
+AVDJF,Big League Part III Reworked,FGCU-023B,FGCU-023B_ampseq-5rework,819,492921.0,0,0.6
+AVDJF,Big League Part III Reworked,FGCU-023U,FGCU-023U_ampseq-5rework,0,0.0,0,0
+AVDJF,Big League Part III Reworked,FGCU-025U,FGCU-025U_ampseq-5rework,0,0.0,0,0
+AVDJF,Big League Part III Reworked,FGCU-026U,FGCU-026U_ampseq-5rework,0,0.0,0,0
+AVDJF,Big League Part III Reworked,FGCU-028S,FGCU-028S_ampseq-5rework,8360,22398.0,3.6,6.7
+AVDJF,Big League Part III Reworked,FGCU-034S,FGCU-034S_ampseq-5rework,1668,76347.0,0,1.1
+AVDJF,Big League Part III Reworked,FGCU-034U,FGCU-034U_ampseq-5rework,428,277874.0,0,0.6
+AVDJF,Big League Part III Reworked,FGCU-035S,FGCU-035S_ampseq-5rework,2069,63519.0,0.7,0.8
+AVDJF,Big League Part III Reworked,FGCU-035U,FGCU-035U_ampseq-5rework,2846,32425.0,0.9,1
+AVDJF,Big League Part III Reworked,FGCU-036S,FGCU-036S_ampseq-5rework,7645,13089.0,5.1,4.5
+AVDJF,Big League Part III Reworked,UNAH-ME-131,UNAH-ME-131_ampseq-5rework,9498,11495.0,8.7,13.4
+AVDJF,Big League Part III Reworked,UNAH-ME-137,UNAH-ME-137_ampseq-5rework,4470,13316.0,1,1.1
+AVDJF,Big League Part III Reworked,UNAH-ME-149,UNAH-ME-149_ampseq-5rework,4949,164.0,2.5,2.8
+AVDJF,Big League Part III Reworked,UNAH-ME-180,UNAH-ME-180_ampseq-5rework,8531,7983.0,6.2,4.9
+AVDJF,Big League Part III Reworked,UNAH-ME-33,UNAH-ME-33_ampseq-5rework,5648,14075.0,2.7,1
+AVDJF,Big League Part III Reworked,UNAH-SZ-28,UNAH-ME-SZ-28_ampseq-5rework,0,0.0,0,0
