@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+##########################################################
+## iav-subtype-id/picking-guides-from-independent-runs/ ##
+/iav-subtype-id/picking-guides-from-independent-runs/data/iav-seqs/
+/iav-subtype-id/picking-guides-from-independent-runs/tmp/
+##########################################################
+
