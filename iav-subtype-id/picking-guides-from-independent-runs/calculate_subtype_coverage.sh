@@ -32,7 +32,14 @@ for subtype in "${SUBTYPES[@]}"; do
     # subtype
     # The parameters require a total of 21 bases to match for an alignment,
     # with no tolerance for gaps
-    bwa mem -a -M -k 10 -c 1000000 -A 1 -B 0 -O 1000000 -E 1000000 -L 1000000 -T 21 data/iav-seqs/2k8_${subtype}Nstar.fasta $tmpdir/guides.fastq > $tmpdir/guides-to-${subtype}.all.sam
+    # The options '-k 8 -r 0.0001 -c 1000000 -s 1000000 -y 1000000' are needed for
+    # bwa to find all alignments when the reference genomes (in data/iav-types/*.fasta) are highly
+    # similar; e.g., without these, it will toss MEMs that occur too many times in the
+    # genomes (which might be necessary as seeds), will filter chains that would be
+    # necessary to keep, etc. The option '-y' (for third reseeding) slows this down
+    # considerably, but its value needs to be high to find/keep seeds that occur often
+    # in the (highly similar) target genomes.
+    bwa mem -a -k 8 -r 0.0001 -c 1000000 -s 1000000 -y 1000000 -M -A 1 -B 0 -O 1000000 -E 1000000 -L 1000000 -T 21 data/iav-seqs/2k8_${subtype}Nstar.fasta $tmpdir/guides.fastq > $tmpdir/guides-to-${subtype}.all.sam
 
     # Only keep mapped guides
     samtools view -F 4 $tmpdir/guides-to-${subtype}.all.sam > $tmpdir/guides-to-${subtype}.sam
