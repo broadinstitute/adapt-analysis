@@ -106,3 +106,7 @@ ENV/
 /iav-subtype-id/picking-guides-from-independent-runs/tmp/
 ##########################################################
 
+##################################
+## iav-subtype-id/diff-id-runs/ ##
+/iav-subtype-id/diff-id-runs/out/
+###################################
