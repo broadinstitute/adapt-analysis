@@ -1,12 +1,33 @@
 #!/bin/bash
 
-SUBTYPES=( "H1" "H2" "H3" "H4" "H5" "H6" "H7" "H8" "H9" "H10" "H11" "H12" "H13" "H14" "H15" "H16" )
-tmpdir="./tmp"
-outdir="./out"
+# Args:
+#  1: subtype (H or N)
+#  2: input guides (fasta)
+#  3: path to directory containing fasta files of sequences against which to calculate
+#     coverage (e.g., if subtype is H, this directory should contain the files
+#     2k8_[SUBTYPE]Nstar.fasta where [SUBTYPE] is H1, H2, etc.)
+#  4: path to tmp directory
+#  5: path to output directory
+
+H_SUBTYPES=( "H1" "H2" "H3" "H4" "H5" "H6" "H7" "H8" "H9" "H10" "H11" "H12" "H13" "H14" "H15" "H16" )
+N_SUBTYPES=( "N1" "N2" "N3" "N4" "N5" "N6" "N7" "N8" "N9" )
+if [[ $1 == "H" ]]; then
+    SUBTYPES=("${H_SUBTYPES[@]}")
+elif [[ $1 == "N" ]]; then
+    SUBTYPES=("${N_SUBTYPES[@]}")
+else
+    echo "Unknown subtype $1"
+    exit 1
+fi
+
+guides=$2
+seqsdir=$3
+tmpdir=$4
+outdir=$5
 
 # Make a fastq of the guide sequences
 echo -n "" > $tmpdir/guides.fastq
-for line in $(cat data/2k8_H_uguides.fasta); do
+for line in $(cat $guides); do
     if [[ $line == \>* ]]; then
         # Line is a sequence header
         header=$(echo "$line" | sed 's/>/@/')
@@ -23,7 +44,7 @@ for line in $(cat data/2k8_H_uguides.fasta); do
 done
 
 # Put all guide names into a file
-grep '>' data/2k8_H_uguides.fasta | sed 's/>//' > $tmpdir/guide-names.txt
+grep '>' $guides | sed 's/>//' > $tmpdir/guide-names.txt
 
 # Find the coverage that the guides give across each subtype
 # individually
@@ -33,25 +54,33 @@ for subtype in "${SUBTYPES[@]}"; do
     # The parameters require a total of 21 bases to match for an alignment,
     # with no tolerance for gaps
     # The options '-k 8 -r 0.0001 -c 1000000 -s 1000000 -y 1000000' are needed for
-    # bwa to find all alignments when the reference genomes (in data/iav-types/*.fasta) are highly
+    # bwa to find all alignments when the reference genomes (in $seqsdir/*.fasta) are highly
     # similar; e.g., without these, it will toss MEMs that occur too many times in the
     # genomes (which might be necessary as seeds), will filter chains that would be
     # necessary to keep, etc. The option '-y' (for third reseeding) slows this down
     # considerably, but its value needs to be high to find/keep seeds that occur often
     # in the (highly similar) target genomes.
-    bwa mem -a -k 8 -r 0.0001 -c 1000000 -s 1000000 -y 1000000 -M -A 1 -B 0 -O 1000000 -E 1000000 -L 1000000 -T 21 data/iav-seqs/2k8_${subtype}Nstar.fasta $tmpdir/guides.fastq > $tmpdir/guides-to-${subtype}.all.sam
+    if [[ $1 == "H" ]]; then
+        reffasta="$seqsdir/2k8_${subtype}Nstar.fasta"
+    elif [[ $1 == "N" ]]; then
+        reffasta="$seqsdir/2k8_Hstar${subtype}.fasta"
+    else
+        echo "Unknown subtype $1"
+        exit 1
+    fi
+    bwa mem -a -k 8 -r 0.0001 -c 1000000 -s 1000000 -y 1000000 -M -A 1 -B 0 -O 1000000 -E 1000000 -L 1000000 -T 21 $reffasta $tmpdir/guides.fastq > $tmpdir/guides-to-${subtype}.all.sam
 
     # Only keep mapped guides
     samtools view -F 4 $tmpdir/guides-to-${subtype}.all.sam > $tmpdir/guides-to-${subtype}.sam
     rm $tmpdir/guides-to-${subtype}.all.sam
 
-    num_target_seqs=$(grep '>' data/iav-seqs/2k8_${subtype}Nstar.fasta | wc -l)
+    num_target_seqs=$(grep '>' $reffasta | wc -l)
 
     # Summarize results for different thresholds on the number of
     # total matching bases in the alignment (here: alignment score, or AS)
     # Since '-T 21' was passed to bwa above, using as=21 should use all output alignments
     for as in 21 23 25 27; do
-        python summarize_guide_mapping.py $tmpdir/guides-to-${subtype}.sam $tmpdir/guide-names.txt $num_target_seqs $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide-set.tsv.tmp --aln-score-filter $as
+        python $(dirname "$0")/summarize_guide_mapping.py $tmpdir/guides-to-${subtype}.sam $tmpdir/guide-names.txt $num_target_seqs $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide-set.tsv.tmp --aln-score-filter $as
 
         # Add a column to each output TSV (in the middle) giving the subtype
         awk -v subtype="$subtype" '{print $1"\t"subtype"\t"$2}' $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp > $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv
