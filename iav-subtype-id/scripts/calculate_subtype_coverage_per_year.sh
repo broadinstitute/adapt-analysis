@@ -49,14 +49,18 @@ for subtype in "${SUBTYPES[@]}"; do
         # Find all accessions from year
         cat $tmpdir/${subtype}.acc-and-year.txt | awk -v y="$year" '$2==y {print $1}' | sort > $tmpdir/${subtype}.${year}.acc.txt
 
+        # Pull out alignments with score AS >= 27
+        cat $tmpdir/guides-to-${subtype}.sam | awk '{split($14, subfield, ":"); if(subfield[3]>=27) print $0}' > $tmpdir/guides-to-${subtype}.as27.sam
+
         numseqs=$(wc -l $tmpdir/${subtype}.${year}.acc.txt | awk '{print $1}')
-        numcovered=$(comm -12 $tmpdir/${subtype}.${year}.acc.txt <(cat $tmpdir/guides-to-${subtype}.sam | awk '{print $3}' | sort) | wc -l)
+        numcovered=$(comm -12 $tmpdir/${subtype}.${year}.acc.txt <(cat $tmpdir/guides-to-${subtype}.as27.sam | awk '{print $3}' | sort) | wc -l)
         frac=$(echo "scale=4; $numcovered/$numseqs" | bc)
 
         echo -e "$year\t$numseqs\t$numcovered\t$frac" >> $outdir/covg-by-year.as27.${subtype}.tsv
         rm $tmpdir/${subtype}.${year}.acc.txt
     done < <(cat $tmpdir/${subtype}.acc-and-year.txt | awk '{print $2}' | sed '/^$/d' | sort -n | uniq)
 
+    rm $tmpdir/guides-to-${subtype}.as27.sam
     rm $tmpdir/${subtype}.year.txt
     rm $tmpdir/${subtype}.acc.txt
 done
