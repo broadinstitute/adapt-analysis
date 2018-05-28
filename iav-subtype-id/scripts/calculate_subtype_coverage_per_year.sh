@@ -36,8 +36,9 @@ for subtype in "${SUBTYPES[@]}"; do
     fi
 
     # Take year to match the regular expression '/[year] ' where [year] is
-    # 4 digits
-    grep '>' $seqs | grep -Po '/\d{4} ' | sed 's/\///' > $tmpdir/${subtype}.year.txt
+    # 4 digits; do a grep on each line (rather than on the whole file) to
+    # print blank lines when there are no matches
+    while read l; do echo "$l" | grep -Po '/\d{4} ' || printf '\n'; done < <(grep '>' $seqs) | sed 's/\///' > $tmpdir/${subtype}.year.txt
 
     # Paste accessions with year
     grep '>' $seqs | awk '{print $1}' | sed 's/>//' > $tmpdir/${subtype}.acc.txt
