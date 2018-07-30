@@ -108,7 +108,7 @@ ENV/
 
 ##################################
 ## iav-subtype-id/diff-id-runs/ ##
-/iav-subtype-id/diff-id-runs/out/
+/iav-subtype-id/diff-id-runs/trial-guide-designs/out/
 /iav-subtype-id/diff-id-runs/verify/N-subtype-id/data/iav-seqs/
 /iav-subtype-id/diff-id-runs/verify/N-subtype-id/tmp/
 /iav-subtype-id/diff-id-runs/verify/H-subtype-id/data/iav-seqs/
