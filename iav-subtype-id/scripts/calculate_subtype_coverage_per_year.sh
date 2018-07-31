@@ -44,30 +44,54 @@ for subtype in "${SUBTYPES[@]}"; do
     # Pull out accessions from this subtype
     grep '>' $seqs | awk '{print $1}' | sed 's/>//' | sort > $tmpdir/${subtype}.acc.txt
 
-    # Go through each unique year
-    echo -e "year\tnum.seqs\tnum.covered\tfrac.covered" > $outdir/covg-by-year.as27.${subtype}.tsv
-    while read year; do
-        # Find all accessions from year
-        cat $yearstsv | awk -v y="$year" '$2==y {print $1}' | sort > $tmpdir/${year}.acc.txt
+    # Make an array of all guide sets for which to write a table (plus 'all' to write one
+    # that combines all guide sets)
+    readarray -t guide_sets_to_process < <(cat $tmpdir/guide-names.txt | awk -F'-' '{print $1"-"$2}' | sort | uniq)
+    guide_sets_to_process+=("ALL")
 
-        # Find only those accessions/years from this subtype
-        join -t $'\t' -1 1 -2 1 <(sort $tmpdir/${subtype}.acc.txt) <(sort $tmpdir/${year}.acc.txt) > $tmpdir/${subtype}.${year}.acc.txt
-
-        numseqs=$(wc -l $tmpdir/${subtype}.${year}.acc.txt | awk '{print $1}')
-        numcovered=$(comm -12 $tmpdir/${subtype}.${year}.acc.txt <(cat $tmpdir/guides-to-${subtype}.as27.sam | awk '{print $3}' | sort) | wc -l)
-        if [ "$numseqs" -eq "0" ]; then
-            # There are no sequences for this year in this subtype; none
-            # are covered
-            frac="0"
+    for guide_set in "${guide_sets_to_process[@]}"; do
+        if [ "$guide_set" == "ALL" ]; then
+            inguides="$tmpdir/guides-to-${subtype}.as27.sam"
+            outtsv="$outdir/covg-by-year.as27.${subtype}.tsv"
         else
-            frac=$(echo "scale=4; $numcovered/$numseqs" | bc)
+            # Filter the SAM for only guides from this guide set
+            inguides="$tmpdir/guides-to-${subtype}.as27.${guide_set}.sam"
+            pattern="^${guide_set}-"
+            awk -v pattern="$pattern" '$1 ~ pattern' $tmpdir/guides-to-${subtype}.as27.sam > $inguides
+
+            outtsv="$outdir/covg-by-year.as27.${subtype}.${guide_set}.tsv"
         fi
+            
 
-        echo -e "$year\t$numseqs\t$numcovered\t$frac" >> $outdir/covg-by-year.as27.${subtype}.tsv
+        # Go through each unique year
+        echo -e "year\tnum.seqs\tnum.covered\tfrac.covered" > $outtsv
+        while read year; do
+            # Find all accessions from year
+            cat $yearstsv | awk -v y="$year" '$2==y {print $1}' | sort > $tmpdir/${year}.acc.txt
 
-        rm $tmpdir/${subtype}.${year}.acc.txt
-        rm $tmpdir/${year}.acc.txt
-    done < <(cat $yearstsv | awk '{print $2}' | sed '/^$/d' | sort -n | uniq)
+            # Find only those accessions/years from this subtype
+            join -t $'\t' -1 1 -2 1 <(sort $tmpdir/${subtype}.acc.txt) <(sort $tmpdir/${year}.acc.txt) > $tmpdir/${subtype}.${year}.acc.txt
+
+            numseqs=$(wc -l $tmpdir/${subtype}.${year}.acc.txt | awk '{print $1}')
+            numcovered=$(comm -12 $tmpdir/${subtype}.${year}.acc.txt <(cat $inguides | awk '{print $3}' | sort) | wc -l)
+            if [ "$numseqs" -eq "0" ]; then
+                # There are no sequences for this year in this subtype; none
+                # are covered
+                frac="0"
+            else
+                frac=$(echo "scale=4; $numcovered/$numseqs" | bc)
+            fi
+
+            echo -e "$year\t$numseqs\t$numcovered\t$frac" >> $outtsv
+
+            rm $tmpdir/${subtype}.${year}.acc.txt
+            rm $tmpdir/${year}.acc.txt
+        done < <(cat $yearstsv | awk '{print $2}' | sed '/^$/d' | sort -n | uniq)
+
+        if [ "$guide_set" != "ALL" ]; then
+            rm $inguides
+        fi
+    done
 
     rm $tmpdir/guides-to-${subtype}.as27.sam
     rm $tmpdir/${subtype}.acc.txt
