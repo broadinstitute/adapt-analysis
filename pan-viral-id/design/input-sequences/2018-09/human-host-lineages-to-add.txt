@@ -1,0 +1,15 @@
+Adenoviridae	Mastadenovirus	Human mastadenovirus E
+Adenoviridae	Mastadenovirus	Human mastadenovirus F
+Adenoviridae	Mastadenovirus	Human mastadenovirus G
+Coronaviridae	Betacoronavirus	Middle East respiratory syndrome-related coronavirus
+Herpesviridae	Roseolovirus	Human betaherpesvirus 6A
+Herpesviridae	Roseolovirus	Human betaherpesvirus 6B
+Picornaviridae	Parechovirus	Parechovirus A
+Picornaviridae	Parechovirus	Parechovirus B
+Poxviridae	Orthopoxvirus	Cowpox virus
+Poxviridae	Orthopoxvirus	Monkeypox virus
+Togaviridae	Alphavirus	Eastern equine encephalitis virus
+Togaviridae	Alphavirus	Semliki Forest virus
+Togaviridae	Alphavirus	Sindbis virus
+Togaviridae	Alphavirus	Venezuelan equine encephalitis virus
+Togaviridae	Alphavirus	Western equine encephalitis virus
