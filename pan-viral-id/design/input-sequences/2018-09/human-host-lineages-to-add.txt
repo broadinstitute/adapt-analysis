@@ -1,15 +1,67 @@
 Adenoviridae	Mastadenovirus	Human mastadenovirus E
 Adenoviridae	Mastadenovirus	Human mastadenovirus F
 Adenoviridae	Mastadenovirus	Human mastadenovirus G
+Astroviridae	Mamastrovirus	Mamastrovirus 6
+Astroviridae	Mamastrovirus	Mamastrovirus 9
+Bornaviridae	Bornavirus	Mammalian 1 bornavirus
+Bornaviridae	Bornavirus	Mammalian 2 bornavirus
 Coronaviridae	Betacoronavirus	Middle East respiratory syndrome-related coronavirus
+Flaviviridae	Flavivirus	Cacipacore virus
+Flaviviridae	Flavivirus	Kyasanur forest disease virus
+Flaviviridae	Pegivirus	Pegivirus A
+Flaviviridae	Pestivirus	Bovine viral diarrhea virus 1
+Hantaviridae	Orthohantavirus	Bayou orthohantavirus
 Herpesviridae	Roseolovirus	Human betaherpesvirus 6A
 Herpesviridae	Roseolovirus	Human betaherpesvirus 6B
+Paramyxoviridae	Avulavirus	Avian avulavirus 1
+Peribunyaviridae	Orthobunyavirus	Catu orthobunyavirus
+Peribunyaviridae	Orthobunyavirus	Guama orthobunyavirus
+Peribunyaviridae	Orthobunyavirus	Kairi orthobunyavirus
+Peribunyaviridae	Orthobunyavirus	Wyeomyia orthobunyavirus
+Phenuviridae	Phlebovirus	Punta Toro phlebovirus
+Picornaviridae	Aphthovirus	Equine rhinitis A virus
+Picornaviridae	Aphthovirus	Foot-and-mouth disease virus
+Picornaviridae	Cardiovirus	Cardiovirus B
+Picornaviridae	Cosavirus	Cosavirus B
+Picornaviridae	Cosavirus	Cosavirus D
+Picornaviridae	Cosavirus	Cosavirus E
+Picornaviridae	Cosavirus	Cosavirus F
+Picornaviridae	Enterovirus	Enterovirus E
+Picornaviridae	Enterovirus	Rhinovirus C
+Picornaviridae	Erbovirus	Erbovirus A
 Picornaviridae	Parechovirus	Parechovirus A
 Picornaviridae	Parechovirus	Parechovirus B
+Pneumoviridae	Metapneumovirus	Avian metapneumovirus
+Pneumoviridae	Metapneumovirus	Human metapneumovirus
 Poxviridae	Orthopoxvirus	Cowpox virus
 Poxviridae	Orthopoxvirus	Monkeypox virus
+Reoviridae	Orbivirus	Corriparta virus
+Reoviridae	Orbivirus	Lebombo virus
+Reoviridae	Orbivirus	Orungo virus
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus
+Retroviridae	Deltaretrovirus	Primate T-lymphotropic virus 2
+Retroviridae	Deltaretrovirus	Primate T-lymphotropic virus 3
+Retroviridae	Lentivirus	Simian immunodeficiency virus
+Retroviridae	Spumavirus	African green monkey simian foamy virus
+Rhabdoviridae	Tibrovirus	Ekpoma 1 tibrovirus
+Rhabdoviridae	Tibrovirus	Ekpoma 2 tibrovirus
+Rhabdoviridae	Vesiculovirus	Alagoas vesiculovirus
+Rhabdoviridae	Vesiculovirus	Cocal vesiculovirus
+Rhabdoviridae	Vesiculovirus	New Jersey vesiculovirus
+Rhabdoviridae	Vesiculovirus	Piry vesiculovirus
 Togaviridae	Alphavirus	Eastern equine encephalitis virus
+Togaviridae	Alphavirus	Everglades virus
+Togaviridae	Alphavirus	Getah virus
+Togaviridae	Alphavirus	Highlands J virus
+Togaviridae	Alphavirus	Mosso das Pedras virus
+Togaviridae	Alphavirus	Mucambo virus
+Togaviridae	Alphavirus	Ndumu virus
+Togaviridae	Alphavirus	Pixuna virus
+Togaviridae	Alphavirus	Rio Negro virus
 Togaviridae	Alphavirus	Semliki Forest virus
 Togaviridae	Alphavirus	Sindbis virus
+Togaviridae	Alphavirus	Tonate virus
 Togaviridae	Alphavirus	Venezuelan equine encephalitis virus
 Togaviridae	Alphavirus	Western equine encephalitis virus
+Togaviridae	Alphavirus	Whataroa virus
