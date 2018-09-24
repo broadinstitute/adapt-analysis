@@ -5,6 +5,7 @@ for these species.
 import argparse
 import datetime
 from collections import defaultdict
+import os
 import re
 import statistics
 import time
@@ -332,6 +333,46 @@ def make_species_list(args):
             f.write('\t'.join(str(x) for x in cols) + '\n')
 
 
+def make_fasta_files(args):
+    # Read/parse accession list
+    sequences = read_genome_accession_list(args.accession_list)
+    sequences = filter_sequences_with_nonhuman_host(sequences, args)
+    sequences = uniqueify_genome_accession_list(sequences)
+
+    # Group sequences by their group field
+    by_group = defaultdict(set)
+    for s in sequences:
+        by_group[s.group].add(s)
+
+    # Download a set of fasta files for each group of sequences
+    for group in sorted(by_group.keys()):
+        lineage, segment = group
+        if segment is None or segment == '':
+            segment = 'NA'
+        family, genus, species = lineage
+
+        # Construct a filename for the sequences of this group, and
+        # verify it does not exist
+        r = ((' ', '_'), ('/', '!'))
+        for find, replace in r:
+            family = family.replace(find, replace)
+            genus = genus.replace(find, replace)
+            species = species.replace(find, replace)
+            segment = segment.replace(find, replace)
+        fn = family + '---' + genus + '---' + species + '---' + segment + '.fasta'
+        path = os.path.join(args.output, fn)
+        if os.path.exists(path):
+            raise Exception("fasta file '%s' already exists" % path)
+
+        # Download the sequences for this group
+        group_sequences = by_group[group]
+        dl = download_raw_from_genbank(group_sequences, results_type='fasta')
+
+        # Write the fasta
+        with open(path, 'w') as f:
+            f.write(dl)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
@@ -348,6 +389,19 @@ if __name__ == "__main__":
               "human as a host; each row gives a lineage, tab-separated "
               "by family/genus/species"))
     parser_msl.set_defaults(func=make_species_list)
+
+    # 'make-fasta-files' command
+    parser_mff = subparsers.add_parser('make-fasta-files',
+        help="Make fasta files of sequences, grouped by lineage and segment")
+    parser_mff.add_argument('accession_list',
+        help="Viral accession list")
+    parser_mff.add_argument('--human-host-lineages-to-add',
+        help=("File listing lineages to explicitly include as having "
+              "human as a host; each row gives a lineage, tab-separated "
+              "by family/genus/species"))
+    parser_mff.add_argument('-o', '--output', required=True,
+        help="Output directory in which to place fasta files")
+    parser_mff.set_defaults(func=make_fasta_files)
 
     args = parser.parse_args()  
     args.func(args)
