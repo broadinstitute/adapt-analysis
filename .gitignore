@@ -122,4 +122,5 @@ ENV/
 ###########################################
 ## /pan-viral-id/design/input-sequences/ ##
 /pan-viral-id/design/input-sequences/**/fasta-files
+/pan-viral-id/design/input-sequences/**/fasta-files.tar.gz
 ###########################################
