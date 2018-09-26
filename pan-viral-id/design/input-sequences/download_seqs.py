@@ -90,6 +90,45 @@ def read_genome_accession_list(fn):
     return sequences
 
 
+def read_influenza_seqs(fn):
+    required_cols = ['accession', 'host', 'segment', 'name']
+    possible_segments = [str(i) for i in range(1, 9)]
+
+    sequences = []
+    with open(fn) as f:
+        header_idx = {}
+        for i, line in enumerate(f):
+            ls = line.rstrip().split('\t')
+            if i == 0:
+                # Read header, and check that it contains the required
+                # columns
+                header_idx = {ls[j]: j for j in range(len(ls))}
+                for c in required_cols:
+                    assert c in header_idx
+                continue
+
+            # Parse row
+            neighbor = ls[header_idx['accession']]
+            host = ls[header_idx['host']]
+            segment = ls[header_idx['segment']].split(' ')[0]
+            assert segment in possible_segments
+            segment = 'segment ' + segment
+            name = ls[header_idx['name']]
+            if name.startswith('Influenza A virus'):
+                lineage = 'Orthomyxoviridae,Alphainfluenzavirus,Influenza A virus'
+            elif name.startswith('Influenza B virus'):
+                lineage = 'Orthomyxoviridae,Betainfluenzavirus,Influenza B virus'
+            elif name.startswith('Influenza C virus'):
+                lineage = 'Orthomyxoviridae,Gammainfluenzavirus,Influenza C virus'
+            else:
+                raise Exception("Unknown lineage for '%s'" % name)
+
+            sequences += [SequenceFromAccessionList('NA', neighbor, host,
+                lineage, name, segment)]
+
+    return sequences
+
+
 def uniqueify_genome_accession_list(sequences):
     # Some sequences have the same name (neighbor) but different representatives
     # (i.e., different reference sequences) and therefore appear more than once
@@ -273,6 +312,8 @@ def bin_sequence_years(sequences, metadata, max_years_ago=500,
 def make_species_list(args):
     # Read/parse accession list
     sequences = read_genome_accession_list(args.accession_list)
+    if args.influenza_seqs:
+        sequences += read_influenza_seqs(args.influenza_seqs)
     sequences = filter_sequences_with_nonhuman_host(sequences, args)
     sequences = uniqueify_genome_accession_list(sequences)
 
@@ -341,6 +382,8 @@ def make_species_list(args):
 def make_fasta_files(args):
     # Read/parse accession list
     sequences = read_genome_accession_list(args.accession_list)
+    if args.influenza_seqs:
+        sequences += read_influenza_seqs(args.influenza_seqs)
     sequences = filter_sequences_with_nonhuman_host(sequences, args)
     sequences = uniqueify_genome_accession_list(sequences)
 
@@ -393,6 +436,10 @@ if __name__ == "__main__":
         help=("File listing lineages to explicitly include as having "
               "human as a host; each row gives a lineage, tab-separated "
               "by family/genus/species"))
+    parser_msl.add_argument('--influenza-seqs',
+        help=("TSV file giving Influenza virus accessions to use; these "
+              "may come from the NCBI Influenza Virus Database rather than "
+              "the viral genome accession list. First row must be header"))
     parser_msl.set_defaults(func=make_species_list)
 
     # 'make-fasta-files' command
@@ -404,6 +451,10 @@ if __name__ == "__main__":
         help=("File listing lineages to explicitly include as having "
               "human as a host; each row gives a lineage, tab-separated "
               "by family/genus/species"))
+    parser_mff.add_argument('--influenza-seqs',
+        help=("TSV file giving Influenza virus accessions to use; these "
+              "may come from the NCBI Influenza Virus Database rather than "
+              "the viral genome accession list. First row must be header"))
     parser_mff.add_argument('-o', '--output', required=True,
         help="Output directory in which to place fasta files")
     parser_mff.set_defaults(func=make_fasta_files)
