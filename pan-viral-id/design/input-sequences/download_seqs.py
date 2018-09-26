@@ -162,6 +162,24 @@ def _download_raw_from_genbank(sequences,
                                 query_key=reader['QueryKey'])
         raw_results += results.read()
 
+    # Check that all accessions are present in the result (sometimes the
+    # result is missing one, which leads to issues later on); if one
+    # is missing, raise an Exception so this is re-tried
+    if results_type == 'fasta':
+        accession_pattern = re.compile('^>(\S+)(?: |$)', re.MULTILINE)
+        accessions_found = set(accession_pattern.findall(raw_results))
+        # Remove version from accession
+        accessions_found = set(a.split('.')[0] for a in accessions_found)
+        for a in accessions:
+            if a not in accessions_found:
+                raise Exception("Accession '%s' is not in results" % a)
+    elif results_type == 'gb':
+        accession_pattern = re.compile('^ACCESSION\s+(\w+)(?: |$)', re.MULTILINE)
+        accessions_found = set(accession_pattern.findall(raw_results))
+        for a in accessions:
+            if a not in accessions_found:
+                raise Exception("Accession '%s' is not in results" % a)
+
     return raw_results
 
 
@@ -221,19 +239,6 @@ def parse_metadata_from_gb_results(gb_results):
 
         metadata[accession] = result_metadata
     return metadata
-
-
-def extract_accession_from_header(header):
-    acc_match = re.search(
-        '\|(?:gb|emb|dbj|ref)\|(.+?)\||gb:(.+?)\|', header)
-    if acc_match is None:
-        raise Exception("In '%s', could not determine accession" %
-                        header)
-
-    if acc_match.group(1):
-        return acc_match.group(1)
-    else:
-        return acc_match.group(2)
 
 
 present_year = datetime.datetime.now().year
