@@ -43,9 +43,6 @@ for line in $(cat $guides); do
     fi
 done
 
-# Put all guide names into a file
-grep '>' $guides | sed 's/>//' > $tmpdir/guide-names.txt
-
 # Find the coverage that the guides give across each subtype
 # individually
 for subtype in "${SUBTYPES[@]}"; do
@@ -68,7 +65,7 @@ for subtype in "${SUBTYPES[@]}"; do
         echo "Unknown subtype $1"
         exit 1
     fi
-    bwa mem -a -k 8 -r 0.0001 -c 1000000 -s 1000000 -y 1000000 -M -A 1 -B 0 -O 1000000 -E 1000000 -L 1000000 -T 21 $reffasta $tmpdir/guides.fastq > $tmpdir/guides-to-${subtype}.all.sam
+    bwa mem -a -k 7 -r 0.0001 -c 1000000 -s 1000000 -y 1000000 -M -A 1 -B 0 -O 1000000 -E 1000000 -L 1000000 -T 1 $reffasta $tmpdir/guides.fastq > $tmpdir/guides-to-${subtype}.all.sam
 
     # Only keep mapped guides
     samtools view -F 4 $tmpdir/guides-to-${subtype}.all.sam > $tmpdir/guides-to-${subtype}.sam
@@ -80,7 +77,7 @@ for subtype in "${SUBTYPES[@]}"; do
     # total matching bases in the alignment (here: alignment score, or AS)
     # Since '-T 21' was passed to bwa above, using as=21 should use all output alignments
     for as in 21 23 25 27; do
-        python $(dirname "$0")/summarize_guide_mapping.py $tmpdir/guides-to-${subtype}.sam $tmpdir/guide-names.txt $num_target_seqs $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide-set.tsv.tmp --aln-score-filter $as
+        python $(dirname "$0")/summarize_guide_mapping.py $tmpdir/guides-to-${subtype}.sam $guides $num_target_seqs $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide-set.tsv.tmp --aln-score-filter $as --recompute-score-for-filter
 
         # Add a column to each output TSV (in the middle) giving the subtype
         awk -v subtype="$subtype" '{print $1"\t"subtype"\t"$2}' $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp > $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv
