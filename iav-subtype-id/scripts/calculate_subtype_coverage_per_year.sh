@@ -39,7 +39,7 @@ for subtype in "${SUBTYPES[@]}"; do
     fi
 
     # Pull out alignments with score AS >= 27
-    cat $tmpdir/guides-to-${subtype}.sam | awk '{split($14, subfield, ":"); if(subfield[3]>=27) print $0}' > $tmpdir/guides-to-${subtype}.as27.sam
+    cat $tmpdir/guides-to-${subtype}.sam | awk '{split($14, subfield, ":"); if(subfield[3]>=27) print $0}' > $tmpdir/guides-to-${subtype}.orig-score.as27.sam
 
     # Pull out accessions from this subtype
     grep '>' $seqs | awk '{print $1}' | sed 's/>//' | sort > $tmpdir/${subtype}.acc.txt
@@ -51,15 +51,15 @@ for subtype in "${SUBTYPES[@]}"; do
 
     for guide_set in "${guide_sets_to_process[@]}"; do
         if [ "$guide_set" == "ALL" ]; then
-            inguides="$tmpdir/guides-to-${subtype}.as27.sam"
-            outtsv="$outdir/covg-by-year.as27.${subtype}.tsv"
+            inguides="$tmpdir/guides-to-${subtype}.orig-score.as27.sam"
+            outtsv="$outdir/covg-by-year.orig-score.as27.${subtype}.tsv"
         else
             # Filter the SAM for only guides from this guide set
-            inguides="$tmpdir/guides-to-${subtype}.as27.${guide_set}.sam"
+            inguides="$tmpdir/guides-to-${subtype}.orig-score.as27.${guide_set}.sam"
             pattern="^${guide_set}-"
-            awk -v pattern="$pattern" '$1 ~ pattern' $tmpdir/guides-to-${subtype}.as27.sam > $inguides
+            awk -v pattern="$pattern" '$1 ~ pattern' $tmpdir/guides-to-${subtype}.orig-score.as27.sam > $inguides
 
-            outtsv="$outdir/covg-by-year.as27.${subtype}.${guide_set}.tsv"
+            outtsv="$outdir/covg-by-year.orig-score.as27.${subtype}.${guide_set}.tsv"
         fi
             
 
@@ -93,6 +93,6 @@ for subtype in "${SUBTYPES[@]}"; do
         fi
     done
 
-    rm $tmpdir/guides-to-${subtype}.as27.sam
+    rm $tmpdir/guides-to-${subtype}.orig-score.as27.sam
     rm $tmpdir/${subtype}.acc.txt
 done

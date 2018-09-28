@@ -43,6 +43,10 @@ for line in $(cat $guides); do
     fi
 done
 
+# Write a file of guide names (not used by this script, but is
+# used by the per_year cript)
+grep '>' $guides | sed 's/>//' > $tmpdir/guide-names.txt
+
 # Find the coverage that the guides give across each subtype
 # individually
 for subtype in "${SUBTYPES[@]}"; do
@@ -75,44 +79,51 @@ for subtype in "${SUBTYPES[@]}"; do
 
     # Summarize results for different thresholds on the number of
     # total matching bases in the alignment (here: alignment score, or AS)
-    # Since '-T 21' was passed to bwa above, using as=21 should use all output alignments
     for as in 21 23 25 27; do
-        python $(dirname "$0")/summarize_guide_mapping.py $tmpdir/guides-to-${subtype}.sam $guides $num_target_seqs $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide-set.tsv.tmp --aln-score-filter $as --recompute-score-for-filter
+        # Summarize guide mapping using bwa's alignment scores
+        python $(dirname "$0")/summarize_guide_mapping.py $tmpdir/guides-to-${subtype}.sam $guides $num_target_seqs $tmpdir/guides-to-${subtype}.summary.orig-score.as${as}.per-guide.tsv.tmp $tmpdir/guides-to-${subtype}.summary.orig-score.as${as}.per-guide-set.tsv.tmp --aln-score-filter $as
+
+        # Summarize guide mapping using recompute alignment scores
+        python $(dirname "$0")/summarize_guide_mapping.py $tmpdir/guides-to-${subtype}.sam $guides $num_target_seqs $tmpdir/guides-to-${subtype}.summary.recomputed-score.as${as}.per-guide.tsv.tmp $tmpdir/guides-to-${subtype}.summary.recomputed-score.as${as}.per-guide-set.tsv.tmp --aln-score-filter $as --recompute-score-for-filter
 
         # Add a column to each output TSV (in the middle) giving the subtype
-        awk -v subtype="$subtype" '{print $1"\t"subtype"\t"$2}' $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp > $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv
-        rm $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide.tsv.tmp
-        awk -v subtype="$subtype" '{print $1"\t"subtype"\t"$2}' $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide-set.tsv.tmp > $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide-set.tsv
-        rm $tmpdir/guides-to-${subtype}.summary.as${as}.per-guide-set.tsv.tmp
+        for scoretype in "orig-score" "recomputed-score"; do
+            awk -v subtype="$subtype" '{print $1"\t"subtype"\t"$2}' $tmpdir/guides-to-${subtype}.summary.${scoretype}.as${as}.per-guide.tsv.tmp > $tmpdir/guides-to-${subtype}.summary.${scoretype}.as${as}.per-guide.tsv
+            rm $tmpdir/guides-to-${subtype}.summary.${scoretype}.as${as}.per-guide.tsv.tmp
+            awk -v subtype="$subtype" '{print $1"\t"subtype"\t"$2}' $tmpdir/guides-to-${subtype}.summary.${scoretype}.as${as}.per-guide-set.tsv.tmp > $tmpdir/guides-to-${subtype}.summary.${scoretype}.as${as}.per-guide-set.tsv
+            rm $tmpdir/guides-to-${subtype}.summary.${scoretype}.as${as}.per-guide-set.tsv.tmp
+        done
     done
 done
 
 # Combine the output TSVs across subtypes into one large table
-for as in 21 23 25 27; do
-    # Combine fractions per-guide and per-guide-set
-    for k in per-guide per-guide-set; do
-        # Make file header
-        outfn="$outdir/covg.as${as}.${k}.tsv"
-        echo -n "name" > $outfn
-        for subtype in "${SUBTYPES[@]}"; do
-            echo -ne "\t$subtype" >> $outfn
-        done
-        echo "" >> $outfn
-
-        cat $tmpdir/guides-to-*.summary.as${as}.${k}.tsv > $tmpdir/guides-to-ALL.summary.as${as}.${k}.tsv
-        for name in $(cat $tmpdir/guides-to-ALL.summary.as${as}.${k}.tsv | awk '{print $1}' | sort | uniq); do
-            # Make a separate file with just this guide or guide set (the one with name)
-            awk -v name="$name" '$1==name {print $0}' $tmpdir/guides-to-ALL.summary.as${as}.${k}.tsv > $tmpdir/guides-to-ALL.summary.as${as}.${k}.name-${name}.tsv
-
-            # Write a row for this guide or guide set (with each column being a subtype)
-            echo -n "$name" >> $outfn
+for scoretype in "orig-score" "recomputed-score"; do
+    for as in 21 23 25 27; do
+        # Combine fractions per-guide and per-guide-set
+        for k in per-guide per-guide-set; do
+            # Make file header
+            outfn="$outdir/covg.${scoretype}.as${as}.${k}.tsv"
+            echo -n "name" > $outfn
             for subtype in "${SUBTYPES[@]}"; do
-                frac=$(awk -v subtype="$subtype" '$2==subtype {print $3}' $tmpdir/guides-to-ALL.summary.as${as}.${k}.name-${name}.tsv)
-                echo -ne "\t$frac" >> $outfn
+                echo -ne "\t$subtype" >> $outfn
             done
             echo "" >> $outfn
-            
-            rm $tmpdir/guides-to-ALL.summary.as${as}.${k}.name-${name}.tsv
+
+            cat $tmpdir/guides-to-*.summary.${scoretype}.as${as}.${k}.tsv > $tmpdir/guides-to-ALL.summary.${scoretype}.as${as}.${k}.tsv
+            for name in $(cat $tmpdir/guides-to-ALL.summary.${scoretype}.as${as}.${k}.tsv | awk '{print $1}' | sort | uniq); do
+                # Make a separate file with just this guide or guide set (the one with name)
+                awk -v name="$name" '$1==name {print $0}' $tmpdir/guides-to-ALL.summary.${scoretype}.as${as}.${k}.tsv > $tmpdir/guides-to-ALL.summary.${scoretype}.as${as}.${k}.name-${name}.tsv
+
+                # Write a row for this guide or guide set (with each column being a subtype)
+                echo -n "$name" >> $outfn
+                for subtype in "${SUBTYPES[@]}"; do
+                    frac=$(awk -v subtype="$subtype" '$2==subtype {print $3}' $tmpdir/guides-to-ALL.summary.${scoretype}.as${as}.${k}.name-${name}.tsv)
+                    echo -ne "\t$frac" >> $outfn
+                done
+                echo "" >> $outfn
+
+                rm $tmpdir/guides-to-ALL.summary.${scoretype}.as${as}.${k}.name-${name}.tsv
+            done
         done
     done
 done
