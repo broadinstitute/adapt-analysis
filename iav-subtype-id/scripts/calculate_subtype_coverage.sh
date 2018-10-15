@@ -69,7 +69,7 @@ for subtype in "${SUBTYPES[@]}"; do
         echo "Unknown subtype $1"
         exit 1
     fi
-    bwa mem -a -k 7 -r 0.0001 -c 1000000 -s 1000000 -y 1000000 -M -A 1 -B 0 -O 1000000 -E 1000000 -L 1000000 -T 1 $reffasta $tmpdir/guides.fastq > $tmpdir/guides-to-${subtype}.all.sam
+    bwa mem -a -k 6 -r 0.000001 -c 100000000 -s 100000000 -y 100000000 -M -A 1 -B 0 -O 1000000 -E 1000000 -L 1000000 -T 1 $reffasta $tmpdir/guides.fastq > $tmpdir/guides-to-${subtype}.all.sam
 
     # Only keep mapped guides
     samtools view -F 4 $tmpdir/guides-to-${subtype}.all.sam > $tmpdir/guides-to-${subtype}.sam
