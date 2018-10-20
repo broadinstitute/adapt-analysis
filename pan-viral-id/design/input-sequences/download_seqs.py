@@ -5,9 +5,11 @@ for these species.
 import argparse
 import datetime
 from collections import defaultdict
+from collections import OrderedDict
 import os
 import re
 import statistics
+import textwrap
 import time
 
 from Bio import Entrez
@@ -127,6 +129,14 @@ def read_influenza_seqs(fn):
                 lineage, name, segment)]
 
     return sequences
+
+
+def read_accessions_to_reverse_complement(fn):
+    acc_to_rc = set()
+    with open(fn) as f:
+        for line in f:
+            acc_to_rc.add(line.rstrip())
+    return acc_to_rc
 
 
 def uniqueify_genome_accession_list(sequences):
@@ -309,6 +319,78 @@ def bin_sequence_years(sequences, metadata, max_years_ago=500,
     return bin_frac
 
 
+def reverse_complement_sequences(acc_to_rc, fasta):
+    # acc_to_rc is a collection of accessions whose sequence should
+    # be reverse complemented; fasta is a string representing a
+    # fasta file
+    # This returns fasta, with the sequences in acc_to_rc reverse
+    # complemented
+
+    rc_map = {'A': 'T',
+              'C': 'G',
+              'G': 'C',
+              'T': 'A',
+              'U': 'A',
+              'R': 'Y',
+              'Y': 'R',
+              'S': 'S',
+              'W': 'W',
+              'K': 'M',
+              'M': 'K',
+              'B': 'V',
+              'D': 'H',
+              'H': 'D',
+              'V': 'B',
+              'N': 'N',
+              '-': '-'}
+    def rc(s):
+        return ''.join(rc_map.get(b, b) for b in s[::-1])
+
+    # Read a dict of the sequences in fasta
+    seqs = OrderedDict()
+    curr_seq_name = ""
+    for line in fasta.split('\n'):
+        line = line.rstrip()
+        if len(line) == 0:
+            continue
+        if curr_seq_name == "":
+            # Must encounter a new sequence
+            assert line.startswith('>')
+        if len(line) == 0:
+            # Reset the sequence being read on an empty line
+            curr_seq_name = ""
+        elif line.startswith('>'):
+            curr_seq_name = line[1:]
+            seqs[curr_seq_name] = ''
+        else:
+            # Append the sequence
+            seqs[curr_seq_name] += line.upper()
+
+    # Find all sequences whose accession matches one in acc_to_rc,
+    # and replace these with their reverse complement; also change
+    # the sequence name to reflect this
+    accession_pattern = re.compile('^(\S+)(?: |$)')
+    seqs_rewritten = OrderedDict()
+    for seq_name, seq in seqs.items():
+        acc = accession_pattern.match(seq_name).group(1)
+        if acc in acc_to_rc:
+            seq_name = seq_name + ' [reverse-complement]'
+            seq = rc(seq)
+        seqs_rewritten[seq_name] = seq
+    
+    # Re-create the fasta string with the new sequences
+    chars_per_line = 70
+    fasta_rewritten = ''
+    for seq_name, seq in seqs_rewritten.items():
+        fasta_rewritten += '>' + seq_name + '\n'
+        seq_wrapped = textwrap.wrap(seq, chars_per_line)
+        for seq_line in seq_wrapped:
+            fasta_rewritten += seq_line + '\n'
+        fasta_rewritten += '\n' 
+
+    return fasta_rewritten
+
+
 def make_species_list(args):
     # Read/parse accession list
     sequences = read_genome_accession_list(args.accession_list)
@@ -387,6 +469,13 @@ def make_fasta_files(args):
     sequences = filter_sequences_with_nonhuman_host(sequences, args)
     sequences = uniqueify_genome_accession_list(sequences)
 
+    # Read list of sequences to take the reverse complement of
+    if args.reverse_complement_accessions:
+        acc_to_rc = read_accessions_to_reverse_complement(
+            args.reverse_complement_accessions)
+    else:
+        acc_to_rc = None
+
     # Group sequences by their group field
     by_group = defaultdict(set)
     for s in sequences:
@@ -415,6 +504,10 @@ def make_fasta_files(args):
         # Download the sequences for this group
         group_sequences = by_group[group]
         dl = download_raw_from_genbank(group_sequences, results_type='fasta')
+
+        # Take the reverse complement of specified sequences
+        if acc_to_rc is not None:
+            dl = reverse_complement_sequences(acc_to_rc, dl)
 
         # Write the fasta
         with open(path, 'w') as f:
@@ -455,6 +548,11 @@ if __name__ == "__main__":
         help=("TSV file giving Influenza virus accessions to use; these "
               "may come from the NCBI Influenza Virus Database rather than "
               "the viral genome accession list. First row must be header"))
+    parser_mff.add_argument('--reverse-complement-accessions',
+        help=("File listing accessions (one per row) corresponding to "
+              "sequences for which the reverse complement should be taken; "
+              "the reverse complement of these sequences will be written "
+              "instead"))
     parser_mff.add_argument('-o', '--output', required=True,
         help="Output directory in which to place fasta files")
     parser_mff.set_defaults(func=make_fasta_files)
