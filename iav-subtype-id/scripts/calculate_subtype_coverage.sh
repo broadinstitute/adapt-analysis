@@ -38,8 +38,10 @@ for line in $(cat $guides); do
         echo "+" >> $tmpdir/guides.fastq
 
         # Print artificial quality score (~ times the
-        # guide length, 28)
-        echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~" >> $tmpdir/guides.fastq
+        # sequence length)
+        numc=$(echo -n "$line" | wc -c)
+        quality=$(printf "%${numc}s" | sed 's/ /~/g')
+        echo "$quality" >> $tmpdir/guides.fastq
     fi
 done
 
