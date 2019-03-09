@@ -84,7 +84,15 @@ class Design:
         # Sort rows by cost (first in the tuple); in case of ties, sort
         # by target start and target end positions (second and third in
         # the tuple)
+        # Pull out the best N targets
         rows = sorted(rows)
+        if num_targets != None:
+            if len(rows) < num_targets:
+                raise Exception(("The number of rows in a design (%d) is fewer "
+                    "than the number of targets to read (%d)") %
+                    (len(rows), num_targets))
+            rows = rows[:num_targets]
+
         targets = []
         for row in rows:
             _, _, _, cols = row
@@ -98,12 +106,14 @@ class Design:
         return Design(targets)
 
 
-def read_designs(design_tsvs):
+def read_designs(design_tsvs, num_targets=None):
     """Read a collection of designs.
 
     Args:
         design_tsvs: paths to one or more TSV files containing designs;
             can contain * or ** as wildcards
+        num_targets: only construct a Design from the top num_targets
+            targets, as ordered by cost (if None, use all)
 
     Returns:
         collection of Design objects
@@ -113,7 +123,7 @@ def read_designs(design_tsvs):
         # Use glob to expand wildcards
         files = glob.glob(design_tsv)
         for fn in files:
-            designs += [Design.from_file(fn)]
+            designs += [Design.from_file(fn, num_targets=num_targets)]
     return designs
 
 
@@ -144,7 +154,7 @@ def compute_entropy(designs):
 
 
 def run_dispersion(args):
-    designs = read_designs(args.design_tsvs)
+    designs = read_designs(args.design_tsvs, num_targets=args.num_targets)
 
     entropy = compute_entropy(designs)
 
@@ -154,11 +164,18 @@ def run_dispersion(args):
 def parse_args():
     parser = argparse.ArgumentParser()
 
+    common_parser = argparse.ArgumentParser(add_help=False)
+    common_parser.add_argument('--num-targets',
+            type=int,
+            default=10,
+            help=("Only read the top NUM_TARGETS targets (according to cost)"))
+
     subparsers = parser.add_subparsers(
             title='commands',
             dest='command')
 
     parser_dispersion = subparsers.add_parser('dispersion',
+            parents=[common_parser],
             help=("Compute dispersion of a collection of designs."))
     parser_dispersion.add_argument('design_tsvs',
             nargs='+',
