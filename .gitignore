@@ -9,6 +9,7 @@ __pycache__/
 # swp files
 *.R.swp
 *.py.swp
+*.sh.swp
 
 # Distribution / packaging
 .Python
@@ -124,3 +125,8 @@ ENV/
 /pan-viral-id/design/input-sequences/**/fasta-files
 /pan-viral-id/design/input-sequences/**/fasta-files.*.tar.gz
 ###########################################
+
+#######################
+## /design-analyses/ ##
+/design-analyses/dispersion/tax-*/designs/*
+#######################
