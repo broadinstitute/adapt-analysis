@@ -50,7 +50,20 @@ class Design:
 
     def __hash__(self):
         return hash(self.targets)
-    
+
+    def jaccard_similarity(self, other):
+        """Compute Jaccard similarity between this design and another.
+
+        Args:
+            other: Design object
+
+        Returns:
+            Jaccard similarity, by comparing targets, between self and other
+        """
+        intersection = self.targets & other.targets
+        union = self.targets | other.targets
+        return float(len(intersection)) / float(len(union))
+
     @staticmethod
     def from_file(fn, num_targets=None):
         """Read a collection of targets from a file.
@@ -140,7 +153,6 @@ def compute_entropy(designs):
     design_count = defaultdict(int)
     for design in designs:
         design_count[design] += 1
-    print(design_count)
 
     # Compute entropy by summing over the fraction (probability) of
     # each unique design
@@ -153,12 +165,35 @@ def compute_entropy(designs):
     return entropy
 
 
+def compute_average_pairwise_jaccard_similarity(designs):
+    """Compute average pairwise Jaccard similarity of designs.
+
+    Args:
+        designs: collection of Design objects
+
+    Returns:
+        average pairwise Jaccard similarity
+    """
+    if len(designs) == 1:
+        return 1.0
+
+    total_similarity = 0
+    n = 0
+    for i in range(len(designs)):
+        for j in range(i, len(designs)):
+            total_similarity += designs[i].jaccard_similarity(designs[j])
+            n += 1
+    return float(total_similarity) / n
+
+
 def run_dispersion(args):
     designs = read_designs(args.design_tsvs, num_targets=args.num_targets)
 
     entropy = compute_entropy(designs)
+    jaccard_similarity = compute_average_pairwise_jaccard_similarity(designs)
 
     print("Entropy:", entropy)
+    print("Average pairwise Jaccard similarity:", jaccard_similarity)
 
 
 def parse_args():
