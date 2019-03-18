@@ -180,7 +180,7 @@ def compute_average_pairwise_jaccard_similarity(designs):
     total_similarity = 0
     n = 0
     for i in range(len(designs)):
-        for j in range(i, len(designs)):
+        for j in range(i+1, len(designs)):
             total_similarity += designs[i].jaccard_similarity(designs[j])
             n += 1
     return float(total_similarity) / n
