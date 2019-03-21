@@ -25,11 +25,13 @@ def ncbi_neighbors_url(taxid):
     return url
 
 
-def fetch_neighbors_acc(taxid):
+def fetch_neighbors_acc(taxid, segment_to_keep=None):
     """Fetch sequence accessions from NCBI.
 
     Args:
         taxid: taxonomic ID to download neighbors for
+        segment_to_keep: only keep sequences labeled with this segment (or
+            None if unsegmented)
 
     Returns:
         collection of accessions
@@ -47,6 +49,10 @@ def fetch_neighbors_acc(taxid):
             line_rstrip_s = line_rstrip.split('\t')
             if len(line_rstrip_s) > 1:
                 acc = line_rstrip_s[1]
+                segment = line_rstrip_s[5].replace('segment', '').strip()
+                if segment_to_keep is not None and segment_to_keep != segment:
+                    # Wrong segment
+                    continue
                 accs += [acc]
     return accs
 

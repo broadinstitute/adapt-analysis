@@ -36,7 +36,8 @@ def fetch_collection_dates(accessions, batch_size=100, reqs_per_sec=2):
 
 def main(args):
     # Fetch accessions for tax_id
-    accessions = ncbi.fetch_neighbors_acc(args.tax_id)
+    segment = None if args.segment == 'None' else args.segment
+    accessions = ncbi.fetch_neighbors_acc(args.tax_id, segment)
 
     # Fetch collection dates
     collection_dates = fetch_collection_dates(accessions)
@@ -70,6 +71,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument('tax_id', type=int)
+    parser.add_argument('segment')
 
     args = parser.parse_args()
     main(args)
