@@ -147,7 +147,7 @@ def compute_entropy(designs):
         designs: collection of Design objects
 
     Returns:
-        Shannon entroy
+        Shannon entropy
     """
     # Count the unique designs
     design_count = defaultdict(int)
@@ -160,19 +160,87 @@ def compute_entropy(designs):
     entropy = 0.0
     for design, count in design_count.items():
         frac = float(count) / num_designs
-        entropy += -1.0 * frac * math.log(frac)
+        entropy += -1.0 * frac * math.log2(frac)
 
     return entropy
 
 
-def compute_average_pairwise_jaccard_similarity(designs):
-    """Compute average pairwise Jaccard similarity of designs.
+def compute_jensen_shannon_divergence(designs1, designs2):
+    """Compute Jensen-Shannon divergence between two collections of designs.
+
+    One option is to compute KL divergence between P(x) and Q(x) where P(x)
+    represents a probability distribution over the designs in designs1,
+    and likewise for Q(x) for designs2. However, this would be difficult here
+    (without smoothing the distributions) because the probability distributions
+    contain many zeros: there are values x (designs) where Q(x) = 0 but
+    P(x) != 0. Due to these values, the KL divergence is undefined.
+
+    Jensen-Shannon divergence is appealing because it does not have the
+    above problem, it is symmetric (KL divergence is asymmetric), and simply
+    taking the square root turns it into a distance metric. Also, if we
+    use base 2 for the logarithm, its value is in [0,1].
+
+    We can compute the Jensen-Shannon divergence (JSD) as follows:
+    Let P represent a probability distribution for designs1, Q represent
+    a probability distribution for designs2, and M be (1/2)*(P + Q).
+    By definition,
+        JSD = (1/2)*sum(P(x)*log(P(x)/M(x))) + (1/2)*sum(Q(x)*log(Q(x)/M(x)))
+    where sums are taken over designs x for x in the union of designs1
+    and designs2. Simplifying this:
+        JSD = (1/2)*(-H(P) - H(Q) - sum((P(x) + Q(x))*log(M(x))))
+            = -(1/2)*sum((P(x) + Q(x))*log(M(x))) - (1/2)*H(P) - (1/2)*H(Q)
+            = -sum(M(x)*log(M(x))) - (1/2)*(H(P) + H(Q))
+            = H(M) - (1/2)*(H(P) + H(Q))
+    where H(.) is the Shannon entropy.
+
+    Args:
+        designs1: collection of Design objects
+        designs2: collection of Design objects
+
+    Returns:
+        Jensen-Shannon divergence
+    """
+    # Compute the entropy of M = (1/2)*(P + Q)
+    P_design_count = defaultdict(int)
+    for design in designs1:
+        P_design_count[design] += 1
+    P_design_frac = {design: float(count) / len(designs1)
+            for design, count in P_design_count.items()}
+    Q_design_count = defaultdict(int)
+    for design in designs2:
+        Q_design_count[design] += 1
+    Q_design_frac = {design: float(count) / len(designs2)
+            for design, count in Q_design_count.items()}
+    M_entropy = 0.0
+    for design in set(designs1 + designs2):
+        if design in P_design_frac:
+            P_prob = P_design_frac[design]
+        else:
+            P_prob = 0
+        if design in Q_design_frac:
+            Q_prob = Q_design_frac[design]
+        else:
+            Q_prob = 0
+        M_prob = 0.5 * (P_prob + Q_prob)
+        M_entropy += -1.0 * M_prob * math.log2(M_prob)
+
+    # Compute the entropy of P and Q
+    P_entropy = compute_entropy(designs1)
+    Q_entropy = compute_entropy(designs2)
+
+    jsd = M_entropy - 0.5 * (P_entropy + Q_entropy)
+    return jsd
+
+
+def compute_average_pairwise_jaccard_similarity_within_designs(designs):
+    """Compute average pairwise Jaccard similarity of a collection of designs.
 
     Args:
         designs: collection of Design objects
 
     Returns:
-        average pairwise Jaccard similarity
+        average pairwise Jaccard similarity between all pairs of designs
+        within a collection
     """
     if len(designs) == 1:
         return 1.0
@@ -186,14 +254,60 @@ def compute_average_pairwise_jaccard_similarity(designs):
     return float(total_similarity) / n
 
 
+def compute_average_pairwise_jaccard_similarity_between_designs(designs1,
+        designs2):
+    """Compute average pairwise Jaccard similarity between two collections
+    of designs.
+
+    Note that if designs1 == designs2, the value returned by this function
+    should be slightly greater than the value returned by
+    compute_average_pairwise_jaccard_similarity_within_designs(designs1),
+    even if it seems that they should be equal. The reason is that this
+    function will include, in computing the average, pairs of the
+    same design (i.e., designs1[i] and designs1[j] where i==j), whereas
+    the function averaging *within* designs does *not* include, in computing
+    its average, identical designs (for which the Jaccard similarity is
+    1.0).
+
+    Args:
+        designs1: collection of Design objects
+        designs2: collection of Design objects
+
+    Returns:
+        average pairwise Jaccard similarity between all pairs of designs
+        across two collections
+    """
+    total_similarity = 0
+    n = 0
+    for i in range(len(designs1)):
+        for j in range(len(designs2)):
+            total_similarity += designs1[i].jaccard_similarity(designs2[j])
+            n += 1
+    return float(total_similarity) / n
+
+
 def run_dispersion(args):
     designs = read_designs(args.design_tsvs, num_targets=args.num_targets)
 
     entropy = compute_entropy(designs)
-    jaccard_similarity = compute_average_pairwise_jaccard_similarity(designs)
+    jaccard_similarity = compute_average_pairwise_jaccard_similarity_within_designs(designs)
 
     print("Entropy:", entropy)
-    print("Average pairwise Jaccard similarity:", jaccard_similarity)
+    print("Average pairwise Jaccard similarity within collection of designs:",
+            jaccard_similarity)
+
+
+def run_compare(args):
+    designs1 = read_designs(args.design_tsvs1, num_targets=args.num_targets)
+    designs2 = read_designs(args.design_tsvs2, num_targets=args.num_targets)
+
+    jsd = compute_jensen_shannon_divergence(designs1, designs2)
+    jaccard_similarity = compute_average_pairwise_jaccard_similarity_between_designs(
+            designs1, designs2)
+
+    print("Jensen-Shannon divergence:", jsd)
+    print("Average pairwise Jaccard similarity between collections of designs:",
+            jaccard_similarity)
 
 
 def parse_args():
@@ -217,6 +331,18 @@ def parse_args():
             help=("Paths to one of more TSV files containing designs; use "
                   "* or ** as wildcards"))
 
+    parser_compare = subparsers.add_parser('compare',
+            parents=[common_parser],
+            help=("Compute stats comparing two collections of designs."))
+    parser_compare.add_argument('--design-tsvs1',
+            nargs='+',
+            help=("Paths to one of more TSV files containing designs; use "
+                  "* or ** as wildcards"))
+    parser_compare.add_argument('--design-tsvs2',
+            nargs='+',
+            help=("Paths to one of more TSV files containing designs; use "
+                  "* or ** as wildcards"))
+
     args = parser.parse_args()
     return args
 
@@ -226,6 +352,8 @@ def main():
 
     if args.command == 'dispersion':
         run_dispersion(args)
+    elif args.command =='compare':
+        run_compare(args)
     else:
         raise Exception(("Unknown command %s") % args.command)
 
