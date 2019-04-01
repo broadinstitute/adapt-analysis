@@ -15,7 +15,7 @@ mkdir -p /tmp/prep-memoize-dir/
 NUM_DESIGNS=100
 
 # Set variables for design
-NJOBS=16
+NJOBS=8
 MAFFT_PATH="/home/hayden/viral-ngs/viral-ngs-etc/conda-env/bin/mafft"
 CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
 ARG_GL="28"
@@ -23,11 +23,11 @@ ARG_GM="1"
 ARG_GP="0.99"
 ARG_PL="30"
 ARG_PM="3"
-ARG_PP="0.95"
-ARG_MAXPRIMERSATSITE="5"
+ARG_PP="0.99"
+ARG_MAXPRIMERSATSITE="10"
 ARG_MAXTARGETLENGTH="1000"
 ARG_COSTFNWEIGHTS="0.6667 0.2222 0.1111"
-ARG_BESTNTARGETS="20"
+ARG_BESTNTARGETS="30"
 
 
 function run_for_taxid() {
@@ -54,7 +54,8 @@ function run_for_taxid() {
 
     # Produce NUM_DESIGNS designs, in parallel
     conda activate dgd
-    mkdir -p $outdir/designs
+    mkdir -p $outdir/designs/resampled
+    mkdir -p $outdir/designs/non-resampled
 
     function design() {
         # Echo to /dev/tty so that it's printed without waiting for the function to end
@@ -63,7 +64,8 @@ function run_for_taxid() {
         # Sleep 0-60 seconds, so there are not too many NCBI requests at once
         sleep $((RANDOM % 60))
 
-        design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir /tmp/prep-memoize-dir --sample-seqs $SAMPLE_SIZE --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/design-${1}.out
+        design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/resampled/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir /tmp/prep-memoize-dir --sample-seqs $SAMPLE_SIZE --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/resampled/design-${1}.out
+        design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/non-resampled/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir /tmp/prep-memoize-dir --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/non-resampled/design-${1}.out
         echo "Completed design for $taxid (segment: $segment), $1 of $NUM_DESIGNS" > /dev/tty
     }
 
@@ -99,4 +101,4 @@ function run_for_taxid() {
 run_for_taxid "64320" "None" "NC_035889,NC_012532"
 
 # Run for Lassa virus, S segment
-run_for_taxid "11620" "S" "NC_004296,MH157050"
+run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"

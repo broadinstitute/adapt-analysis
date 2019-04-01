@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Compute coverage of designs against all sequences.
+#
+# The designs using resampled data are, of course, designed against only a subset
+# of all the data. This computes the coverage that these designs achieve against
+# all of the sequences.
+#
+# Author: Hayden Metsky <hayden@mit.edu>
+
+
+# Allow activating conda environments
+source ~/anaconda3/etc/profile.d/conda.sh
+
+conda activate dgd
+
+# Set variables for computing coverage
+NJOBS=16
+ARG_GM="1"
+ARG_PM="3"
+
+
+function run_for_taxid() {
+    # Set information on the taxonomy, from arguments
+    taxid="$1"
+    segment="$2"
+
+    echo "Computing coverage for $taxid (segment: $segment)" > /dev/tty
+
+    outdir="tax-${taxid}_${segment}"
+
+    # Make sure there exists accessions for this taxid
+    if [ ! -f $outdir/accessions.tsv ]; then
+        echo "FATAL: Nonexistent accessions.tsv file in $outdir"
+        exit 1
+    fi
+
+    # Make a directory in which to place the coverage data
+    mkdir -p $outdir/designs/resampled/coverages
+
+    # Write commands to a file
+    commands_fn="/tmp/commands-dispersioncovg-${taxid}_${segment}"
+    echo -n "" > $commands_fn
+
+    # For every design, compute coverage against all the accessions
+    for design_name in $(ls -1 $outdir/designs/resampled/ | grep '.tsv.0' | sed 's/\.tsv.0//'); do
+        echo "analyze_coverage.py $outdir/designs/resampled/${design_name}.tsv.0 $outdir/accessions.tsv -gm $ARG_GM -pm $ARG_PM --use-accessions --write-frac-bound $outdir/designs/resampled/coverages/${design_name}.coverage-against-all.txt --verbose &> $outdir/designs/resampled/coverages/${design_name}.coverage-against-all.out" >> $commands_fn
+    done
+
+    # Run parallel
+    parallel --jobs $NJOBS --no-notice < $commands_fn
+
+    rm $commands_fn
+}
+
+
+# Run for Zika virus
+run_for_taxid "64320" "None"
+
+# Run for Lassa virus, S segment
+run_for_taxid "11620" "S"
