@@ -35,6 +35,9 @@ function run_for_taxid() {
         exit 1
     fi
 
+    # Pull out only the accessions
+    cat $outdir/accessions.tsv | awk '{print $3}' > $outdir/accessions.acc-only.txt.tmp
+
     # Make a directory in which to place the coverage data
     mkdir -p $outdir/designs/resampled/coverages
 
@@ -44,13 +47,14 @@ function run_for_taxid() {
 
     # For every design, compute coverage against all the accessions
     for design_name in $(ls -1 $outdir/designs/resampled/ | grep '.tsv.0' | sed 's/\.tsv.0//'); do
-        echo "analyze_coverage.py $outdir/designs/resampled/${design_name}.tsv.0 $outdir/accessions.tsv -gm $ARG_GM -pm $ARG_PM --use-accessions --write-frac-bound $outdir/designs/resampled/coverages/${design_name}.coverage-against-all.txt --verbose &> $outdir/designs/resampled/coverages/${design_name}.coverage-against-all.out" >> $commands_fn
+        echo "analyze_coverage.py $outdir/designs/resampled/${design_name}.tsv.0 $outdir/accessions.acc-only.txt.tmp -gm $ARG_GM -pm $ARG_PM --use-accessions --write-frac-bound $outdir/designs/resampled/coverages/${design_name}.coverage-against-all.txt --verbose &> $outdir/designs/resampled/coverages/${design_name}.coverage-against-all.out" >> $commands_fn
     done
 
     # Run parallel
     parallel --jobs $NJOBS --no-notice < $commands_fn
 
     rm $commands_fn
+    rm $outdir/accessions.acc-only.txt.tmp
 }
 
 
