@@ -5,6 +5,7 @@ import argparse
 from collections import defaultdict
 import glob
 import math
+import statistics
 
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
@@ -232,31 +233,30 @@ def compute_jensen_shannon_divergence(designs1, designs2):
     return jsd
 
 
-def compute_average_pairwise_jaccard_similarity_within_designs(designs):
-    """Compute average pairwise Jaccard similarity of a collection of designs.
+def compute_pairwise_jaccard_similarity_within_designs(designs):
+    """Compute pairwise Jaccard similarities of a collection of designs.
 
     Args:
         designs: collection of Design objects
 
     Returns:
-        average pairwise Jaccard similarity between all pairs of designs
+        list of pairwise Jaccard similarity between all pairs of designs
         within a collection
     """
     if len(designs) == 1:
-        return 1.0
+        # Undefined
+        return None
 
-    total_similarity = 0
-    n = 0
+    similarities = []
     for i in range(len(designs)):
         for j in range(i+1, len(designs)):
-            total_similarity += designs[i].jaccard_similarity(designs[j])
-            n += 1
-    return float(total_similarity) / n
+            similarities += [designs[i].jaccard_similarity(designs[j])]
+    return similarities
 
 
-def compute_average_pairwise_jaccard_similarity_between_designs(designs1,
+def compute_pairwise_jaccard_similarity_between_designs(designs1,
         designs2):
-    """Compute average pairwise Jaccard similarity between two collections
+    """Compute pairwise Jaccard similarity between two collections
     of designs.
 
     Note that if designs1 == designs2, the value returned by this function
@@ -274,27 +274,30 @@ def compute_average_pairwise_jaccard_similarity_between_designs(designs1,
         designs2: collection of Design objects
 
     Returns:
-        average pairwise Jaccard similarity between all pairs of designs
+        list of pairwise Jaccard similarity between all pairs of designs
         across two collections
     """
-    total_similarity = 0
-    n = 0
+    similarities = []
     for i in range(len(designs1)):
         for j in range(len(designs2)):
-            total_similarity += designs1[i].jaccard_similarity(designs2[j])
-            n += 1
-    return float(total_similarity) / n
+            similarities += [designs1[i].jaccard_similarity(designs2[j])]
+    return similarities
 
 
 def run_dispersion(args):
     designs = read_designs(args.design_tsvs, num_targets=args.num_targets)
 
     entropy = compute_entropy(designs)
-    jaccard_similarity = compute_average_pairwise_jaccard_similarity_within_designs(designs)
+    jaccard_similarities = compute_pairwise_jaccard_similarity_within_designs(designs)
+
+    if args.pairwise_jaccard_distribution_out:
+        with open(args.pairwise_jaccard_distribution_out, 'w') as f:
+            for s in jaccard_similarities:
+                f.write(str(s) + '\n')
 
     print("Entropy:", entropy)
     print("Average pairwise Jaccard similarity within collection of designs:",
-            jaccard_similarity)
+            statistics.mean(jaccard_similarities))
 
 
 def run_compare(args):
@@ -302,12 +305,17 @@ def run_compare(args):
     designs2 = read_designs(args.design_tsvs2, num_targets=args.num_targets)
 
     jsd = compute_jensen_shannon_divergence(designs1, designs2)
-    jaccard_similarity = compute_average_pairwise_jaccard_similarity_between_designs(
+    jaccard_similarities = compute_pairwise_jaccard_similarity_between_designs(
             designs1, designs2)
+
+    if args.pairwise_jaccard_distribution_out:
+        with open(args.pairwise_jaccard_distribution_out, 'w') as f:
+            for s in jaccard_similarities:
+                f.write(str(s) + '\n')
 
     print("Jensen-Shannon divergence:", jsd)
     print("Average pairwise Jaccard similarity between collections of designs:",
-            jaccard_similarity)
+            statistics.mean(jaccard_similarities))
 
 
 def parse_args():
@@ -330,6 +338,9 @@ def parse_args():
             nargs='+',
             help=("Paths to one of more TSV files containing designs; use "
                   "* or ** as wildcards"))
+    parser_dispersion.add_argument('--pairwise-jaccard-distribution-out',
+            help=("If specified, path to which to write the distribution "
+                  "of pairwise Jaccard similarity values"))
 
     parser_compare = subparsers.add_parser('compare',
             parents=[common_parser],
@@ -342,6 +353,9 @@ def parse_args():
             nargs='+',
             help=("Paths to one of more TSV files containing designs; use "
                   "* or ** as wildcards"))
+    parser_compare.add_argument('--pairwise-jaccard-distribution-out',
+            help=("If specified, path to which to write the distribution "
+                  "of pairwise Jaccard similarity values"))
 
     args = parser.parse_args()
     return args
