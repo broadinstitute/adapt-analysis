@@ -8,14 +8,12 @@
 # Allow activating conda environments
 source ~/anaconda3/etc/profile.d/conda.sh
 
-# Make tmp directory for memoizing alignments and stats
-mkdir -p /tmp/prep-memoize-dir/
-
 # Set variables for measuring dispersion
 NUM_DESIGNS=100
 
 # Set variables for design
 NJOBS=8
+PREP_MEMOIZE_DIR="/ebs/dgd-analysis/prep-memoize-dir"
 MAFFT_PATH="/home/hayden/viral-ngs/viral-ngs-etc/conda-env/bin/mafft"
 CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
 ARG_GL="28"
@@ -29,6 +27,9 @@ ARG_MAXTARGETLENGTH="1000"
 ARG_COSTFNWEIGHTS="0.6667 0.2222 0.1111"
 ARG_BESTNTARGETS="30"
 
+
+# Make tmp directory for memoizing alignments and stats
+mkdir -p $PREP_MEMOIZE_DIR
 
 function run_for_taxid() {
     # Set information on taxonomy, from arguments
@@ -64,8 +65,8 @@ function run_for_taxid() {
         # Sleep 0-60 seconds, so there are not too many NCBI requests at once
         sleep $((RANDOM % 60))
 
-        design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/resampled/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir /tmp/prep-memoize-dir --sample-seqs $SAMPLE_SIZE --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/resampled/design-${1}.out
-        design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/non-resampled/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir /tmp/prep-memoize-dir --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/non-resampled/design-${1}.out
+        design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/resampled/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --sample-seqs $SAMPLE_SIZE --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/resampled/design-${1}.out
+        design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/non-resampled/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/non-resampled/design-${1}.out
         echo "Completed design for $taxid (segment: $segment), $1 of $NUM_DESIGNS" > /dev/tty
     }
 

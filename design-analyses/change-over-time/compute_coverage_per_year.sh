@@ -8,15 +8,12 @@
 # Allow activating conda environments
 source ~/anaconda3/etc/profile.d/conda.sh
 
-# Make tmp directory for memoizing alignments and stats
-mkdir -p /tmp/prep-memoize-dir/
+conda activate dgd
 
 # Set variables for design
 NJOBS=16
-MAFFT_PATH="/home/hayden/viral-ngs/viral-ngs-etc/conda-env/bin/mafft"
-CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
 ARG_GM="1"
-ARG_PM="2"
+ARG_PM="3"
 
 # Set variables for measuring change over time
 START_YEAR=2005
