@@ -17,12 +17,41 @@ class DesignTarget:
     does not store positional information (only sequence).
     """
 
-    def __init__(self, guide_seqs, left_primer_seqs, right_primer_seqs,
-            cost):
+    def __init__(self, target_start, target_end, guide_seqs,
+            left_primer_seqs, right_primer_seqs, cost):
+        self.target_start = target_start
+        self.target_end = target_end
         self.guide_seqs = tuple(sorted(guide_seqs))
         self.left_primer_seqs = tuple(sorted(left_primer_seqs))
         self.right_primer_seqs = tuple(sorted(right_primer_seqs))
         self.cost = cost
+
+    def has_similar_endpoints(self, other, nearby_nt=20):
+        """
+        Determine if this target is similar to another based on coordinates.
+
+        This compares the start/end coordinates of this target to
+        another. Note that because coordinates depend on the alignment,
+        this should only be compared against designs from the same
+        or highly similar alignment (so coordinates are in the same
+        space).
+
+        An alternative way to compute this would be based on the left/right
+        primer sequences: for example, by seeing if the longest common
+        substring up to k mismatches is at least some length long.
+
+        Args:
+            other: DesignTarget object
+            nearby_nt: say that other is similar to self if the start/end
+                coordinates are within nearby_nt nt of each other
+
+        Returns:
+            True iff the start/end of other are both near the start/end
+            of self
+        """
+        start_diff = math.fabs(self.target_start - other.target_start)
+        end_diff = math.fabs(self.target_end - other.target_end)
+        return start_diff <= nearby_nt and end_diff <= nearby_nt
 
     def __eq__(self, other):
         return (self.guide_seqs == other.guide_seqs and
@@ -64,6 +93,45 @@ class Design:
         intersection = self.targets & other.targets
         union = self.targets | other.targets
         return float(len(intersection)) / float(len(union))
+
+    def jaccard_similarity_with_loose_equality(self, other):
+        """Compute Jaccard similarity between this design and another
+        by counting two designs as the same if their endpoint coordinates
+        are almost identical.
+
+        Note that this is currently highly inefficient, by comparing
+        all pairs of DesignTargets. It might be more efficient to sort
+        by coordinate and iterate through the combination of DesignTargets
+        from both self and other.
+
+        Also, note that designs should be produced from the same alignments
+        (e.g., exactly the same inputs); otherwise, the coordinates
+        between them may not be comparable.
+
+        Args:
+            other: design object
+
+        Returns:
+            Jaccard similarity, by comparing targets, between self and other
+        """
+        def find_unique_targets(targets):
+            unique = set()
+            for target in targets:
+                # Check if an 'equivalent' target already exists
+                already_exists = False
+                for ut in unique:
+                    if target.has_similar_endpoints(ut):
+                        already_exists = True
+                        break
+                if not already_exists:
+                    unique.add(target)
+            return unique
+        unique_self = find_unique_targets(self.targets)
+        unique_other = find_unique_targets(other.targets)
+        union = find_unique_targets(self.targets.union(other.targets))
+        union_size = len(union)
+        intersection_size = len(unique_self) + len(unique_other) - union_size
+        return float(intersection_size) / float(union_size)
 
     @staticmethod
     def from_file(fn, num_targets=None):
@@ -111,6 +179,8 @@ class Design:
         for row in rows:
             _, _, _, cols = row
             targets += [DesignTarget(
+                int(cols['target-start']),
+                int(cols['target-end']),
                 cols['guide-target-sequences'].split(' '),
                 cols['left-primer-target-sequences'].split(' '),
                 cols['right-primer-target-sequences'].split(' '),
@@ -233,11 +303,14 @@ def compute_jensen_shannon_divergence(designs1, designs2):
     return jsd
 
 
-def compute_pairwise_jaccard_similarity_within_designs(designs):
+def compute_pairwise_jaccard_similarity_within_designs(designs,
+        use_loose_equality=False):
     """Compute pairwise Jaccard similarities of a collection of designs.
 
     Args:
         designs: collection of Design objects
+        use_loose_equality: if True, compare design targets based on loose
+            equality (coordinates)
 
     Returns:
         list of pairwise Jaccard similarity between all pairs of designs
@@ -247,15 +320,22 @@ def compute_pairwise_jaccard_similarity_within_designs(designs):
         # Undefined
         return None
 
+    if use_loose_equality:
+        def js(design_i, design_j):
+            return design_i.jaccard_similarity_with_loose_equality(design_j)
+    else:
+        def js(design_i, design_j):
+            return design_i.jaccard_similarity(design_j)
+
     similarities = []
     for i in range(len(designs)):
         for j in range(i+1, len(designs)):
-            similarities += [designs[i].jaccard_similarity(designs[j])]
+            similarities += [js(designs[i], designs[j])]
     return similarities
 
 
 def compute_pairwise_jaccard_similarity_between_designs(designs1,
-        designs2):
+        designs2, use_loose_equality=False):
     """Compute pairwise Jaccard similarity between two collections
     of designs.
 
@@ -272,15 +352,24 @@ def compute_pairwise_jaccard_similarity_between_designs(designs1,
     Args:
         designs1: collection of Design objects
         designs2: collection of Design objects
+        use_loose_equality: if True, compare design targets based on loose
+            equality (coordinates)
 
     Returns:
         list of pairwise Jaccard similarity between all pairs of designs
         across two collections
     """
+    if use_loose_equality:
+        def js(design_i, design_j):
+            return design_i.jaccard_similarity_with_loose_equality(design_j)
+    else:
+        def js(design_i, design_j):
+            return design_i.jaccard_similarity(design_j)
+
     similarities = []
     for i in range(len(designs1)):
         for j in range(len(designs2)):
-            similarities += [designs1[i].jaccard_similarity(designs2[j])]
+            similarities += [js(designs1[i], designs2[j])]
     return similarities
 
 
@@ -288,16 +377,26 @@ def run_dispersion(args):
     designs = read_designs(args.design_tsvs, num_targets=args.num_targets)
 
     entropy = compute_entropy(designs)
-    jaccard_similarities = compute_pairwise_jaccard_similarity_within_designs(designs)
+    jaccard_similarities = compute_pairwise_jaccard_similarity_within_designs(
+            designs, use_loose_equality=False)
+    jaccard_similarities_loose = compute_pairwise_jaccard_similarity_within_designs(
+            designs, use_loose_equality=True)
 
     if args.pairwise_jaccard_distribution_out:
         with open(args.pairwise_jaccard_distribution_out, 'w') as f:
             for s in jaccard_similarities:
                 f.write(str(s) + '\n')
+    if args.pairwise_jaccard_distribution_with_loose_equality_out:
+        with open(args.pairwise_jaccard_distribution_with_loose_equality_out, 'w') as f:
+            for s in jaccard_similarities_loose:
+                f.write(str(s) + '\n')
 
     print("Entropy:", entropy)
     print("Average pairwise Jaccard similarity within collection of designs:",
             statistics.mean(jaccard_similarities))
+    print(("Average pairwise Jaccard similarity between collections of "
+           "designs (loose/coordinate-based):"),
+            statistics.mean(jaccard_similarities_loose))
 
 
 def run_compare(args):
@@ -306,16 +405,25 @@ def run_compare(args):
 
     jsd = compute_jensen_shannon_divergence(designs1, designs2)
     jaccard_similarities = compute_pairwise_jaccard_similarity_between_designs(
-            designs1, designs2)
+            designs1, designs2, use_loose_equality=False)
+    jaccard_similarities_loose = compute_pairwise_jaccard_similarity_between_designs(
+            designs1, designs2, use_loose_equality=True)
 
     if args.pairwise_jaccard_distribution_out:
         with open(args.pairwise_jaccard_distribution_out, 'w') as f:
             for s in jaccard_similarities:
                 f.write(str(s) + '\n')
+    if args.pairwise_jaccard_distribution_with_loose_equality_out:
+        with open(args.pairwise_jaccard_distribution_with_loose_equality_out, 'w') as f:
+            for s in jaccard_similarities_loose:
+                f.write(str(s) + '\n')
 
     print("Jensen-Shannon divergence:", jsd)
     print("Average pairwise Jaccard similarity between collections of designs:",
             statistics.mean(jaccard_similarities))
+    print(("Average pairwise Jaccard similarity between collections of "
+           "designs (loose/coordinate-based):"),
+            statistics.mean(jaccard_similarities_loose))
 
 
 def parse_args():
@@ -341,6 +449,10 @@ def parse_args():
     parser_dispersion.add_argument('--pairwise-jaccard-distribution-out',
             help=("If specified, path to which to write the distribution "
                   "of pairwise Jaccard similarity values"))
+    parser_dispersion.add_argument('--pairwise-jaccard-distribution-with-loose-equality-out',
+            help=("If specified, path to which to write the distribution "
+                  "of pairwise Jaccard similarity values, based on loose "
+                  "equality of targets (coordinate-based)"))
 
     parser_compare = subparsers.add_parser('compare',
             parents=[common_parser],
@@ -356,6 +468,10 @@ def parse_args():
     parser_compare.add_argument('--pairwise-jaccard-distribution-out',
             help=("If specified, path to which to write the distribution "
                   "of pairwise Jaccard similarity values"))
+    parser_compare.add_argument('--pairwise-jaccard-distribution-with-loose-equality-out',
+            help=("If specified, path to which to write the distribution "
+                  "of pairwise Jaccard similarity values, based on loose "
+                  "equality of targets (coordinate-based)"))
 
     args = parser.parse_args()
     return args
