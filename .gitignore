@@ -130,4 +130,5 @@ ENV/
 ## /design-analyses/ ##
 /design-analyses/dispersion/tax-*/designs/*
 /design-analyses/change-over-time/tax-*/designs/*
+/design-analyses/cross-validation/tax-*/designs/*
 #######################
