@@ -18,3 +18,6 @@ Measuring coverage of resampled designs against all data:
           achieve against all sequences (the non-resampled designs should, inherent in the design,
           achieve the desired coverage against all sequences because they were designed using
           all sequences)
+
+Make plots:
+  4) `./make_plots.sh` to produce plots across all taxonomies
