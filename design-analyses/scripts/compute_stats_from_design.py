@@ -12,9 +12,6 @@ __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
 class DesignTarget:
     """Store information on a design of a single target.
-
-    To enable a comparison of designs across different alignments, this
-    does not store positional information (only sequence).
     """
 
     def __init__(self, target_start, target_end, guide_seqs,
