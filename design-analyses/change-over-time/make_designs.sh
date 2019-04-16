@@ -9,7 +9,7 @@
 source ~/anaconda3/etc/profile.d/conda.sh
 
 # Set variables for measuring uncertainty
-NUM_DESIGNS=100
+NUM_DESIGNS=10
 
 # Set variables for design
 NJOBS=8
@@ -58,7 +58,7 @@ function run_for_taxid() {
     conda activate dgd
 
     # Write commands to a file
-    commands_fn="/tmp/commands-${taxid}_${segment}"
+    commands_fn="/tmp/commands-designs-${taxid}_${segment}"
     echo -n "" > $commands_fn
 
     # Produce commands that design using all accessions collected up to each year
@@ -88,3 +88,6 @@ function run_for_taxid() {
 
 # Run for Zika virus
 run_for_taxid "64320" "None" "NC_035889,NC_012532"
+
+# Run for Lassa virus, S segment
+run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
