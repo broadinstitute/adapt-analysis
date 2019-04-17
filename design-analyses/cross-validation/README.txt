@@ -17,3 +17,7 @@ Make a distribution of coverage values:
   2) `./compile_coverages.sh`
         - This reads the coverage values above -- one per target in each
           design -- and summarizes them into a distribution of coverage values.
+
+Plot a distribution of coverage values:
+  3) `./make_plots.sh`
+        - This plots the distribution of coverage values summarized above.
