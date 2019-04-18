@@ -11,7 +11,7 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate dgd
 
 # Set variables for design
-NJOBS=16
+NJOBS=8
 ARG_GM="1"
 ARG_PM="3"
 
@@ -36,7 +36,7 @@ function run_for_taxid() {
     fi
 
     # Write commands to a file
-    commands_fn="/tmp/commands-${taxid}_${segment}"
+    commands_fn="/tmp/commands-covg-${taxid}_${segment}"
     echo -n "" > $commands_fn
 
     # Produce commands that compute coverage, against accessions collected
