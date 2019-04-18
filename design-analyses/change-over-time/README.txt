@@ -34,3 +34,7 @@ Run:
   3) `./compile_coverages.sh` compiles the outputs of `./compute_coverage_per_year.sh`
         - This compiles, for each taxonomy, the coverage files produced above into a
           single file. It creates the file tax-[taxonomy]/coverages.distribution.txt.
+
+Plot the coverage achieved at each year by each design:
+  4) `./make_plots.sh` to produce plots
+        - This produces a plot for each taxonomy, and places all of them in a single PDF
