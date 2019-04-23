@@ -83,9 +83,9 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
 
     # Fill in data frames with a distribution
     real.dist <- data.frame(read.table(
-            file.path(taxonomy, real.design.filename), header=TRUE, sep="\t"))
+            gzfile(file.path(taxonomy, real.design.filename)), header=TRUE, sep="\t"))
     naive.dist <- data.frame(read.table(
-            file.path(taxonomy, naive.design.filename), header=TRUE, sep="\t"))
+            gzfile(file.path(taxonomy, naive.design.filename)), header=TRUE, sep="\t"))
 
     # real.dist may be missing windows -- design.py will not output a window
     # if no guides can be constructed for it (e.g., due to missing data) and
@@ -221,7 +221,7 @@ pdf(out.pdf, width=12, height=8)
 for (taxonomy in taxonomies) {
     title <- paste0("Comparison against baseline for ", taxonomy)
     plot.results.for.taxonomy(taxonomy,
-                              "real-designs.tsv",
-                              "naive-designs.tsv",
+                              "real-designs.tsv.gz",
+                              "naive-designs.tsv.gz",
                               title)
 }

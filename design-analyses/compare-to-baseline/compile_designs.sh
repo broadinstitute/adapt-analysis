@@ -35,4 +35,8 @@ for dir in $(ls -1 . | grep 'tax-'); do
         # Leave out the header when reading the file
         tail -n +2 ${design_file} >> tax-${tax_name}/naive-designs.tsv
     done
+
+    # gzip the files
+    gzip tax-${tax_name}/real-designs.tsv
+    gzip tax-${tax_name}/naive-designs.tsv
 done
