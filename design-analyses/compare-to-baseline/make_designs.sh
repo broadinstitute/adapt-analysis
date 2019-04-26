@@ -15,7 +15,7 @@ source ~/anaconda3/etc/profile.d/conda.sh
 NUM_DESIGNS=10
 
 # Set variables for design
-NJOBS=2
+NJOBS=4
 PREP_MEMOIZE_DIR="/ebs/dgd-analysis/prep-memoize-dir"
 MAFFT_PATH="/home/hayden/viral-ngs/viral-ngs-etc/conda-env/bin/mafft"
 CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
@@ -106,10 +106,10 @@ function run_for_taxid() {
 
 
 # Run for Zika virus
-#run_for_taxid "64320" "None" "NC_035889,NC_012532"
+run_for_taxid "64320" "None" "NC_035889,NC_012532"
 
 # Run for Lassa virus, S segment
-#run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
+run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
 
 # Run for Hepatitis C virus (Hepacivirus C)
 run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
