@@ -95,7 +95,7 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
     window.size <- unique(real.dist$window.end - real.dist$window.start)[1]
     real.dist <- complete(real.dist, window.start=full_seq(real.dist$window.start, 1))
     real.dist <- as.data.frame(real.dist)
-    real.dist[is.na(real.dist$window.end), ]$window.end <- real.dist[is.na(real.dist$window.end), ]$window.start + window.size
+    real.dist$window.end[which(is.na(real.dist$window.end))] <- real.dist$window.start[which(is.na(real.dist$window.end))] + window.size
 
     # Multiply coverage fractions by 100 to obtain percents
     naive.dist$frac.bound.by.consensus <- naive.dist$frac.bound.by.consensus * 100
@@ -107,7 +107,7 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
     real.dist.summary <- summarySE(real.dist, measurevar="count",
                                    groupvars=c("window.start", "window.end"))
     colnames(real.dist.summary)[colnames(real.dist.summary)=="count"] <- "mean"
-    real.dist.summary$approach <- rep("real.guide.count", n=nrow(real.dist.summary))
+    real.dist.summary$approach <- "real.guide.count"
 
     # For the naive designs, summarize the coverage obtained by the naive
     # guide in each window across the replicates -- i.e., for each window,
@@ -116,11 +116,11 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
     naive.dist.consensus.summary <- summarySE(naive.dist, measurevar="frac.bound.by.consensus",
                                               groupvars=c("window.start", "window.end"))
     colnames(naive.dist.consensus.summary)[colnames(naive.dist.consensus.summary)=="frac.bound.by.consensus"] <- "mean"
-    naive.dist.consensus.summary$approach <- rep("naive.consensus.frac.bound", n=nrow(naive.dist.consensus.summary))
+    naive.dist.consensus.summary$approach <- "naive.consensus.frac.bound"
     naive.dist.mode.summary <- summarySE(naive.dist, measurevar="frac.bound.by.mode",
                                          groupvars=c("window.start", "window.end"))
     colnames(naive.dist.mode.summary)[colnames(naive.dist.mode.summary)=="frac.bound.by.mode"] <- "mean"
-    naive.dist.mode.summary$approach <- rep("naive.mode.frac.bound", n=nrow(naive.dist.mode.summary))
+    naive.dist.mode.summary$approach <- "naive.mode.frac.bound"
 
     # Combine the naive data frames
     naive.dist.summary <- rbind(naive.dist.consensus.summary,
@@ -129,8 +129,8 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
 
     # Ignore windows where the number of replicates is small, e.g., due
     # to missing data, by making the mean value be NA
-    naive.dist.summary[naive.dist.summary$N < 5, ]$mean <- NA
-    real.dist.summary[real.dist.summary$N < 5, ]$mean <- NA
+    naive.dist.summary$mean[which(naive.dist.summary$N < 5)] <- NA
+    real.dist.summary$mean[which(real.dist.summary$N < 5)] <- NA
 
     # First produce a plot for the naive designs, showing the fraction
     # of genomes covered at each window
