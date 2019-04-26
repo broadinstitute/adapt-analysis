@@ -160,10 +160,18 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
                                fill=approach), alpha=0.2)
     # Manually set the y-axis limits to avoid outliers in the confidence
     # intervals (the ribbon); these outliers may not show on the plot
-    p1.y.min <- quantile(naive.dist.summary$mean - naive.dist.summary$ci,
-                         probs=c(0.01), na.rm=TRUE)[1]
-    p1.y.max <- quantile(naive.dist.summary$mean + naive.dist.summary$ci,
-                         probs=c(0.99), na.rm=TRUE)[1]
+    # (use the outlier definition of any point <(Qlo - 1.5*IQR) or
+    # >(Qhi + 1.5*IQR) where IQR=Qhi-Qlo and Qlo=10% pctile and Qhi=90% pctile,
+    # and the Qlo/Qhi are computed across the genome based on the mean +/- ci
+    # value at each position)
+    p1.y.Qlo <- quantile(naive.dist.summary$mean - naive.dist.summary$ci,
+                         probs=c(0.1), na.rm=TRUE)[1]
+    p1.y.Qhi <- quantile(naive.dist.summary$mean + naive.dist.summary$ci,
+                         probs=c(0.9), na.rm=TRUE)[1]
+    p1.y.min <- max(min(naive.dist.summary$mean - naive.dist.summary$ci),
+                    p1.y.Qlo - 1.5*(p1.y.Qhi - p1.y.Qlo))
+    p1.y.max <- min(max(naive.dist.summary$mean + naive.dist.summary$ci),
+                    p1.y.Qhi + 1.5*(p1.y.Qhi - p1.y.Qlo))
     p1 <- p1 + scale_y_continuous(limits=c(p1.y.min, p1.y.max))
     # Add title to plot and axis labels
     p1 <- p1 + ggtitle(title)
@@ -198,10 +206,15 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
                                fill=approach), alpha=0.2)
     # Manually set the y-axis limits to avoid outliers in the confidence
     # intervals (the ribbon); these outliers may not show on the plot
-    p2.y.min <- quantile(real.dist.summary$mean - real.dist.summary$ci,
-                         probs=c(0.01), na.rm=TRUE)[1]
-    p2.y.max <- quantile(real.dist.summary$mean + real.dist.summary$ci,
-                         probs=c(0.99), na.rm=TRUE)[1]
+    p2.y.Qlo <- quantile(real.dist.summary$mean - real.dist.summary$ci,
+                         probs=c(0.1), na.rm=TRUE)[1]
+    p2.y.Qhi <- quantile(real.dist.summary$mean + real.dist.summary$ci,
+                         probs=c(0.9), na.rm=TRUE)[1]
+    p2.y.min <- max(min(real.dist.summary$mean - real.dist.summary$ci),
+                    p2.y.Qlo - 1.5*(p2.y.Qhi - p2.y.Qlo))
+    p2.y.max <- min(max(real.dist.summary$mean + real.dist.summary$ci),
+                    p2.y.Qhi + 1.5*(p2.y.Qhi - p2.y.Qlo))
+    p2.y.min <- min(0, p2.y.min)    # make sure to show y=0 guides
     p2 <- p2 + scale_y_continuous(limits=c(p2.y.min, p2.y.max))
     # Add axis labels
     p2 <- p2 + xlab("Position") + ylab("Number of guides")
