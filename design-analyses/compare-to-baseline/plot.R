@@ -83,9 +83,19 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
 
     # Fill in data frames with a distribution
     real.dist <- data.frame(read.table(
-            gzfile(file.path(taxonomy, real.design.filename)), header=TRUE, sep="\t"))
+            gzfile(file.path(taxonomy, real.design.filename)), header=TRUE,
+            sep="\t", na.strings=c("NA", "None")))
     naive.dist <- data.frame(read.table(
-            gzfile(file.path(taxonomy, naive.design.filename)), header=TRUE, sep="\t"))
+            gzfile(file.path(taxonomy, naive.design.filename)), header=TRUE,
+            sep="\t", na.strings=c("NA", "None")))
+
+    # If the guide sequence is NA, then interpret the count or coverage as NA too
+    # (it may be 0)
+    real.dist$count[which(is.na(real.dist$target.sequences))] <- NA
+    real.dist$total.frac.bound[which(is.na(real.dist$target.sequences))] <- NA
+    real.dist$score[which(is.na(real.dist$target.sequences))] <- NA
+    naive.dist$frac.bound.by.consensus[which(is.na(naive.dist$target.sequence.by.consensus))] <- NA
+    naive.dist$frac.bound.by.mode[which(is.na(naive.dist$target.sequence.by.mode))] <- NA
 
     # real.dist may be missing windows -- design.py will not output a window
     # if no guides can be constructed for it (e.g., due to missing data) and
@@ -127,8 +137,8 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
                                 naive.dist.mode.summary)
     naive.dist.summary$approach <- factor(naive.dist.summary$approach)
 
-    # Ignore windows where the number of replicates is small, e.g., due
-    # to missing data, by making the mean value be NA
+    # Ignore windows where the number of replicates is small (e.g., due
+    # to missing data or too many gaps) by making the mean value be NA
     naive.dist.summary$mean[which(naive.dist.summary$N < 5)] <- NA
     real.dist.summary$mean[which(real.dist.summary$N < 5)] <- NA
 
