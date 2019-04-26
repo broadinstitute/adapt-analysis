@@ -48,6 +48,32 @@ function run_for_taxid() {
         python ../scripts/find_year_for_accessions.py $taxid $segment | awk -v taxid="$taxid" -v segment="$segment" '{print taxid"\t"segment"\t"$1}' | sort | uniq > $outdir/accessions.tsv
     fi
 
+    # Run design.py to create an alignment from all the sequences; continue with
+    # the sliding-window design approach (using a window size equal to guide size
+    # so it's fast), but ignore the output
+    conda activate dgd
+    design.py sliding-window auto-from-args $taxid $segment $refaccs /tmp/design-for-aln.tsv --window-size $ARG_GL -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --write-input-aln $outdir/input-alns/all-accessions.fasta --verbose &> $outdir/input-alns/all-accessions.out
+    rm /tmp/design-for-aln.tsv.0
+    # The output alignment will have a `.0` suffix because it corresponds to the
+    # first cluster (there will be only one cluster); rename it to remove the
+    # suffix
+    mv $outdir/input-alns/all-accessions.fasta.0 $outdir/input-alns/all-accessions.fasta
+
+    # Randomly sample a number of sequences equal to the number
+    # of accessions (bootstrapping over the input)
+    sample_size=$(cat $outdir/accessions.tsv | wc -l)
+
+    # Randomly sample the alignment to create a fasta file as input for
+    # each design; by sampling the same alignment, all designs are
+    # produced from the same coordinate space and so window positions
+    # across designs can be matched
+    # (If we were to use --sample-seqs with design.py, it would create a
+    # separate alignment for each design where the coordinates could
+    # differ across those alignments)
+    for i in $(seq 1 $NUM_DESIGNS); do
+        python ../scripts/randomly_sample_fasta.py $outdir/input-alns/all-accessions.fasta $sample_size $outdir/input-alns/design-${i}.fasta
+    done
+
     # Activate environment for design
     conda activate dgd
 
@@ -55,15 +81,10 @@ function run_for_taxid() {
     commands_fn="/tmp/commands-designs-${taxid}_${segment}"
     echo -n "" > $commands_fn
 
-    # Randomly sample a number of sequences equal to the number
-    # of accessions (bootstrapping over the input)
-    sample_size=$(cat $outdir/accessions.tsv | wc -l)
-
-    # Produce a design.py command for each design (each with randomly sampled input)
-    # Be sure to save the exact input (alignment) it used, to use this as input
-    # later with the naive approach
+    # Produce a design.py command for each design, using the alignment
+    # produced above
     for i in $(seq 1 $NUM_DESIGNS); do
-        echo "design.py sliding-window auto-from-args $taxid $segment $refaccs $outdir/designs/design-${i}.real-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --sample-seqs $sample_size --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --write-input-aln $outdir/input-alns/design-${i}.fasta --verbose &> $outdir/designs/design-${i}.real-design.out" >> $commands_fn
+        echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP --verbose &> $outdir/designs/design-${i}.real-design.out" >> $commands_fn
     done
 
     # Run parallel on the design.py commands
@@ -72,11 +93,9 @@ function run_for_taxid() {
     echo -n "" > $commands_fn
 
     # Produce a design_naively.py command for each design, using the
-    # same input that was used with design.py (the input is
-    # design-${i}.fasta.0, with the `.0` because there will be only
-    # one cluster)
+    # alignment produced above
     for i in $(seq 1 $NUM_DESIGNS); do
-        echo "design_naively.py $outdir/input-alns/design-${i}.fasta.0 $outdir/designs/design-${i}.naive-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM --verbose &> $outdir/designs/design-${i}.naive-design.out" >> $commands_fn
+        echo "design_naively.py $outdir/input-alns/design-${i}.fasta $outdir/designs/design-${i}.naive-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM --verbose &> $outdir/designs/design-${i}.naive-design.out" >> $commands_fn
     done
 
     # Run parallel on the design_naively.py commands

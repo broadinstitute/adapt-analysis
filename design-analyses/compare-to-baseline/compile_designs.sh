@@ -19,9 +19,9 @@ for dir in $(ls -1 . | grep 'tax-'); do
     # Start a file with the distribution of designs for the real designs
     echo -n "" > tax-${tax_name}/real-designs.tsv
     # Add the header to the file
-    head -n 1 tax-${tax_name}/designs/design-1.real-design.tsv.0 >> tax-${tax_name}/real-designs.tsv
+    head -n 1 tax-${tax_name}/designs/design-1.real-design.tsv >> tax-${tax_name}/real-designs.tsv
     # Add to the file the designs (for each window) from each resampling
-    for design_file in $(ls -1 tax-${tax_name}/designs/design-*.real-design.tsv.0); do
+    for design_file in $(ls -1 tax-${tax_name}/designs/design-*.real-design.tsv); do
         # Leave out the header when reading the file
         tail -n +2 ${design_file} >> tax-${tax_name}/real-designs.tsv
     done

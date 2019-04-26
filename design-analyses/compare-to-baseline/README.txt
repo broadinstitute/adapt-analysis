@@ -19,10 +19,10 @@ the number of guides required to achieve a desired coverage in a window).
 Run:
   1) `./make_designs.sh` to produce designs, with both the usual methods and
      naive methods
-        - This produces files tax-[taxonomy]/input-alns/design-{i}.fasta.0
-          containing an alignment on a resampling of input sequences.
-        - This produces files tax-[taxonomy]/designs/design-{i}.real-design.tsv.0,
-          where each design-{i}.real-design.tsv.0 gives a design using
+        - This produces files tax-[taxonomy]/input-alns/design-{i}.fasta
+          containing a resampling of input sequences from an alignment.
+        - This produces files tax-[taxonomy]/designs/design-{i}.real-design.tsv,
+          where each design-{i}.real-design.tsv gives a design using
           `design.py` with the `sliding-window` approach.
         - This produces files tax-[taxonomy]/designs/design-{i}.naive-design.tsv,
           where each design-{i}.naive-design.tsv gives a design using
@@ -30,8 +30,8 @@ Run:
 
 Compile the above results:
   2) `./compile_designs.sh` to compile the outputs of `./make_designs.sh`
-        - This produces files tax-[taxonomy]/naive-designs.tsv and
-          tax-[taxonomy]/real-designs.tsv, which simply concatenate the outputs
+        - This produces files tax-[taxonomy]/naive-designs.tsv.gz and
+          tax-[taxonomy]/real-designs.tsv.gz, which simply concatenate the outputs
           above across the different {i}
 
 Plot the results:
