@@ -21,7 +21,10 @@ for dir in $(ls -1 . | grep 'tax-'); do
     # Start a file with the distribution of coverage on the test set
     echo -e "coverage.against.year\tnum.seqs.against.year\tdesign.up.to.year\tnum.seqs.up.to.year\tcoverage" > tax-${design_name}/coverages.distribution.txt
 
-    for year_against in $(seq $START_YEAR $END_YEAR); do
+    # Find all the years against which coverage was computed
+    years_against=( $(ls -1 tax-${design_name}/designs/accessions.in-*.txt | xargs -n1 basename | awk -F'in-' '{print $2}' | sed 's/\.txt//' | sort -n) )
+
+    for year_against in "${years_against[@]}"; do
         # Find coverage of each design against sequences collected in $year_against
 
         if [ ! -s tax-${design_name}/designs/accessions.in-${year_against}.txt ]; then

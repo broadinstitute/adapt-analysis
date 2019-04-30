@@ -97,6 +97,12 @@ plot.coverage.per.design.per.year <- function(taxonomy, filename, title) {
     # Make coverage.against.year (x-axis) be a factor
     dist.summary$coverage.against.year.factor <- factor(dist.summary$coverage.against.year)
 
+    # If there is an 'upto' level, make this the first level
+    upto.level <- grep('upto', levels(dist.summary$coverage.against.year.factor), value=TRUE)
+    if (length(upto.level) == 1) {
+        dist.summary$coverage.against.year.factor <- relevel(dist.summary$coverage.against.year.factor, upto.level)
+    }
+
     p <- ggplot(dist.summary)
 
     # Plot each point with the confidence interval around each
