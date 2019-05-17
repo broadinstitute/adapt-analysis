@@ -44,7 +44,7 @@ function run_for_taxid() {
     mkdir -p $outdir
 
     # Fetch accessions and create table of them
-    conda activate data-analysis
+    conda activate dgd
     if [ ! -f $outdir/accessions.tsv ]; then
         python ../scripts/find_year_for_accessions.py $taxid $segment | awk -v taxid="$taxid" -v segment="$segment" '{print taxid"\t"segment"\t"$1}' | sort | uniq > $outdir/accessions.tsv
     fi
@@ -54,7 +54,6 @@ function run_for_taxid() {
     SAMPLE_SIZE=$(cat $outdir/accessions.tsv | wc -l)
 
     # Produce NUM_DESIGNS designs, in parallel
-    conda activate dgd
     mkdir -p $outdir/designs/resampled
     mkdir -p $outdir/designs/non-resampled
 
