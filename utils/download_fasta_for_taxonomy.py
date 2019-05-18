@@ -9,10 +9,15 @@ import seq_io
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
 
+INFLUENZA_TAXIDS = [11320, 11520]
+
+
 def main(args):
     # Fetch accessions for tax_id
     segment = None if args.segment == 'None' else args.segment
-    accessions = ncbi.fetch_neighbors_acc(args.tax_id, segment)
+    is_influenza = args.tax_id in INFLUENZA_TAXIDS
+    accessions = ncbi.fetch_neighbors_acc(args.tax_id, segment,
+            influenza=is_influenza)
 
     # Fetch fasta for these accessions (a tempfile)
     fasta_tf = ncbi.fetch_fastas(accessions)
