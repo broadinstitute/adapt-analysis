@@ -2,6 +2,7 @@
 """
 
 from collections import OrderedDict
+import gzip
 import re
 import textwrap
 
@@ -9,7 +10,7 @@ __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
 
 def read_fasta(fn, replace_degenerate=False,
-               skip_gaps=False, make_uppercase=True):
+               skip_gaps=True, make_uppercase=True):
     """Read a FASTA file.
 
     Args:
@@ -31,8 +32,8 @@ def read_fasta(fn, replace_degenerate=False,
     """
     degenerate_pattern = re.compile('[YRWSMKBDHV]')
 
-    m = OrderedDict()
-    with open(fn, 'r') as f:
+    def process(f):
+        m = OrderedDict()
         curr_seq_name = ""
         for line in f:
             line = line.rstrip()
@@ -55,6 +56,15 @@ def read_fasta(fn, replace_degenerate=False,
                 if skip_gaps:
                     line = line.replace('-', '')
                 m[curr_seq_name] += line
+        return m
+
+    if fn.endswith('.gz'):
+        with gzip.open(fn, 'rt') as f:
+            m = process(f)
+    else:
+        with open(fn, 'r') as f:
+            m = process(f)
+
     return m
 
 
