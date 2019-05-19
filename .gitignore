@@ -134,3 +134,8 @@ ENV/
 /design-analyses/compare-to-baseline/tax-*/designs/*
 /design-analyses/compare-to-baseline/tax-*/input-alns/*
 #######################
+
+########################
+## /dgd-benchmarking/ ##
+/dgd-benchmarking/specificity-lookup/data/fastas/*
+########################
