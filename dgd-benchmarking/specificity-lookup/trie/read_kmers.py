@@ -1,6 +1,7 @@
 """Read k-mers from sequence data and compute summary statistics.
 """
 
+from collections import Counter
 from collections import defaultdict
 import glob
 import itertools
@@ -29,11 +30,12 @@ def read_seqs(fasta_dir):
     return seqs
 
 
-def read_kmers(seqs, k=28):
+def read_kmers(seqs, unambig_only=True, k=28):
     """Read k-mers from sequences
 
     Args:
         seqs: output of read_seqs()
+        unambig_only: only output k-mers with unambiguous bases
         k: k-mer length
 
     Returns:
@@ -55,8 +57,40 @@ def read_kmers(seqs, k=28):
         tax_ids[tax_name] = tax_id
         for seq_id, (_, seq) in enumerate(seqs[tax_name].items()):
             for kmer in kmers_from_seq(seq):
+                if unambig_only and is_unambig(kmer) is False:
+                    continue
                 seq_kmers[kmer].add((tax_id, seq_id))
     return (seq_kmers, tax_ids)
+
+
+def compute_kmer_occurrence_distribution(kmers, out_tsv):
+    """Determine distribution of occurrence of k-mers across taxonomies.
+
+    Note that this is only measuring the occurrence of exact k-mer matches,
+    which might not be so meaningful for k=28. We are more likely to find
+    similar 28-mers across taxonomies.
+
+    Args:
+        kmers: dict {k-mer: {(taxonomy identifier, sequence id)}} where the
+            inner set gives pairs of (taxonomy, sequence) that contain the
+            k-mer
+        out_tsv: path to TSV file to write number Y of k-mers that appear
+            in X taxonomies
+    """
+    # Fill in a counter of {X: number of k-mers that appear in X taxonomies}
+    tax_counter = Counter()
+    for kmer in set(kmers.keys()):
+        # Find the number of taxonomies this k-mer occurs in
+        num_tax = len(set(taxid for taxid, _ in kmers[kmer]))
+        tax_counter[num_tax] += 1
+
+    # Write the counter
+    with open(out_tsv, 'w') as fw:
+        def write_row(row):
+            fw.write('\t'.join([str(x) for x in row]) + '\n')
+        write_row(['X', 'num_kmers_in_X_taxonomies'])
+        for num_tax in sorted(tax_counter.keys()):
+            write_row([num_tax, tax_counter[num_tax]])
 
 
 def compute_taxonomy_stats(seqs, out_tsv, k=28):
