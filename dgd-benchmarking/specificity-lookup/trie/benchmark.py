@@ -134,10 +134,22 @@ def query_for_taxonomy(t, taxid, kmer_sample_size=100):
     # Find all the k-mers in taxid
     logging.info("Finding k-mers for taxid %d", taxid)
     leaves = t.root_node.traverse_and_find(taxid)
-    taxid_kmers = [kmer for kmer, _ in leaves]
 
-    # Randomly sample k-mers with replacement
-    taxid_kmers_sample = random.choices(taxid_kmers, k=kmer_sample_size)
+    # Construct a list of k-mers and a corresponding list of the number of
+    # sequences in taxid that contain each k-mer, to use for weighting
+    # during sampling
+    taxid_kmers = []
+    taxid_kmer_occ = []
+    for kmer, li in leaves:
+        num_seqs_with_kmer_in_taxid = len(li.d[taxid])
+        taxid_kmers += [kmer]
+        taxid_kmer_occ += [num_seqs_with_kmer_in_taxid]
+
+    # Randomly sample k-mers with replacement, weighting the selection by
+    # the number of sequences in taxid that contain each k-mer
+    taxid_kmers_sample = random.choices(taxid_kmers,
+            weights=taxid_kmer_occ,
+            k=kmer_sample_size)
 
     # Mask taxid from the trie
     logging.info("Masking taxid %d", taxid)
