@@ -139,11 +139,16 @@ def query_for_taxonomy(t, taxid):
     # Query each k-mer
     for gu_pairing in [False, True]:
         for m in [0, 1, 2, 3, 4, 5]:
-            total = 0
+            total_results = 0
+            total_nodes_visited = 0
             start = time.time()
             for kmer in taxid_kmers:
-                total += len(t.query(kmer, mismatches=m, gu_pairing=gu_pairing))
-            print(gu_pairing, m, total, (time.time()-start)/len(taxid_kmers))
+                results, num_nodes_visited = t.query(
+                        kmer, mismatches=m, gu_pairing=gu_pairing)
+                total_results += len(results)
+                total_nodes_visited += num_nodes_visited
+            print(gu_pairing, m, total_results, (time.time()-start)/len(taxid_kmers),
+                    float(total_nodes_visited)/len(taxid_kmers))
 
     # Unmask taxid
     logging.info("Unmasking taxid %d", taxid)

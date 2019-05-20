@@ -131,7 +131,7 @@ class Node:
                 children += [self.children[i]]
         return children
 
-    def query(self, q, mismatches=0, gu_pairing=True):
+    def query(self, q, mismatches=0, gu_pairing=True, node_count=None):
         """Query a given string in the tree rooted at this node.
 
         Due to mismatches and G-U pairing, this can return multiple
@@ -147,10 +147,15 @@ class Node:
                 in the trie rooted at self
             gu_pairing: tolerate G-U pairing when determining what
                 strings match q
+            node_count: if set, counter to increment for counting
+                number of nodes visited
 
         Returns:
             list of x.leaf_info for all leaves x that match q
         """
+        if node_count is not None:
+            node_count.increment()
+
         if self.leaf_info is not None:
             # This node is a leaf
             if len(q) > 0:
@@ -180,7 +185,7 @@ class Node:
             # mismatches permitted stays the same because there
             # was a match for q_0
             results.extend(child.query(q_remain, mismatches=mismatches,
-                gu_pairing=gu_pairing))
+                gu_pairing=gu_pairing, node_count=node_count))
 
         if mismatches > 0:
             # Query for q_remain in children of this node, using
@@ -192,7 +197,8 @@ class Node:
                     # with q_0
                     results.extend(child.query(q_remain,
                         mismatches=mismatches-1,
-                        gu_pairing=gu_pairing))
+                        gu_pairing=gu_pairing,
+                        node_count=node_count))
 
         return results
 
@@ -415,6 +421,18 @@ class Node:
         return num_leaves
 
 
+class QueryCounter:
+    """Counter for number of nodes visited during a query.
+    """
+    
+    def __init__(self):
+        self.c = 0
+    def increment(self):
+        self.c += 1
+    def count(self):
+        return self.c
+
+
 class Trie:
     """Trie, focused on storing k-mers for small k.
 
@@ -453,10 +471,13 @@ class Trie:
                 strings match q
 
         Returns:
-            list of values corresponding to strings that match q
+            tuple (v, c) where v is a list of values corresponding to strings
+            that match q and c is the number of nodes visited during the query
         """
-        return self.root_node.query(q, mismatches=mismatches,
-                gu_pairing=gu_pairing)
+        counter = QueryCounter()
+        results = self.root_node.query(q, mismatches=mismatches,
+                gu_pairing=gu_pairing, node_count=counter)
+        return (results, counter.count())
 
     def mask(self, d):
         """Mask an object from all leaves and cleanup trie.
