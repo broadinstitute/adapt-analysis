@@ -2,6 +2,7 @@
 """
 
 import logging
+import random
 import time
 
 import read_kmers
@@ -115,8 +116,8 @@ def build_trie(kmers):
     return t
 
 
-def query_for_taxonomy(t, taxid):
-    """Query all k-mers from a given taxonomy in the trie.
+def query_for_taxonomy(t, taxid, kmer_sample_size=100):
+    """Query random sampling of k-mers from a given taxonomy in the trie.
 
     This first masks that taxonomy from the trie (otherwise most results
     will be for that taxonomy).
@@ -124,11 +125,19 @@ def query_for_taxonomy(t, taxid):
     Args:
         t: trie.Trie object
         taxid: taxonomy identifier
+
+    Returns:
+        (num_matches, num_nodes_visited, runtime) where each is a dict
+        {(gu_pairing, mismatches): v} where v is a list of values across
+        the randomly sampled k-mers
     """
     # Find all the k-mers in taxid
     logging.info("Finding k-mers for taxid %d", taxid)
     leaves = t.root_node.traverse_and_find(taxid)
     taxid_kmers = [kmer for kmer, _ in leaves]
+
+    # Randomly sample k-mers with replacement
+    taxid_kmers_sample = random.choices(taxid_kmers, k=kmer_sample_size)
 
     # Mask taxid from the trie
     logging.info("Masking taxid %d", taxid)
@@ -136,23 +145,63 @@ def query_for_taxonomy(t, taxid):
 
     logging.info("Querying for taxid %d", taxid)
 
-    # Query each k-mer
+    # Query each k-mer with different parameters
+    num_matches = {}
+    perf_num_nodes_visited = {}
+    perf_runtime = {}
     for gu_pairing in [False, True]:
         for m in [0, 1, 2, 3, 4, 5]:
-            total_results = 0
-            total_nodes_visited = 0
-            start = time.time()
-            for kmer in taxid_kmers:
+            logging.info("Querying with GU-pairing=%s and mismatches=%d",
+                    str(gu_pairing), m)
+            num_matches_for_params = []
+            perf_num_nodes_visited_for_params = []
+            perf_runtime_for_params = []
+            for kmer in taxid_kmers_sample:
+                start_time = time.time()
                 results, num_nodes_visited = t.query(
                         kmer, mismatches=m, gu_pairing=gu_pairing)
-                total_results += len(results)
-                total_nodes_visited += num_nodes_visited
-            print(gu_pairing, m, total_results, (time.time()-start)/len(taxid_kmers),
-                    float(total_nodes_visited)/len(taxid_kmers))
+                end_time = time.time()
+                num_matches_for_params += [len(results)]
+                perf_num_nodes_visited_for_params += [num_nodes_visited]
+                perf_runtime_for_params += [end_time - start_time]
+            num_matches[(gu_pairing, m)] = num_matches_for_params
+            perf_num_nodes_visited[(gu_pairing, m)] = perf_num_nodes_visited_for_params
+            perf_runtime[(gu_pairing, m)] = perf_runtime_for_params
 
     # Unmask taxid
     logging.info("Unmasking taxid %d", taxid)
     t.unmask_all()
+
+    return (num_matches, perf_num_nodes_visited, perf_runtime)
+
+
+def benchmark_queries_across_taxonomies(t, tax_ids, out_tsv):
+    """Benchmark queries across taxonomies.
+
+    Args:
+        t: trie.Trie object
+        tax_ids: dict {tax_name: taxonomy identifier} where taxonomy
+            identifier is simply an integer
+        out_tsv: path to TSV file to which to write benchmark results
+    """
+    benchmark_results = []
+    for tax_name, taxid in tax_ids.items():
+        num_matches, perf_num_nodes_visited, perf_runtime = query_for_taxonomy(t, taxid)
+        for benchmark_name, d in [('matches', num_matches),
+                ('nodes_visited', perf_num_nodes_visited),
+                ('runtime', perf_runtime)]:
+            for gu_pairing, mismatches in d.keys():
+                for v in d[(gu_pairing, mismatches)]:
+                    benchmark_results += [(tax_name, benchmark_name,
+                        gu_pairing, mismatches, v)]
+
+    with open(out_tsv, 'w') as fw:
+        def write_row(row):
+            fw.write('\t'.join([str(x) for x in row]) + '\n')
+        write_row(['tax_name', 'benchmark', 'gu_pairing', 'mismatches',
+            'value'])
+        for r in benchmark_results:
+            write_row(r)
 
 
 def main():
@@ -175,9 +224,10 @@ def main():
     del kmers
     logging.info("Done building trie")
 
-    for tax_name, taxid in tax_ids.items():
-        # Query for taxonomy taxid
-        query_for_taxonomy(t, taxid)
+    # Benchmark for each taxonomy
+    logging.info("Benchmarking queries on the trie across %d taxonomies",
+            len(tax_ids))
+    benchmark_queries_across_taxonomies(t, tax_ids, 'out/benchmark-queries.tsv')
 
 
 if __name__ == "__main__":
