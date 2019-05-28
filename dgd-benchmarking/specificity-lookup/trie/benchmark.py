@@ -87,7 +87,7 @@ class KmerLeaf(trie.LeafInfo):
         return new
 
 
-def build_trie(kmers):
+def build_trie(kmers, kmer_sample_frac=0.01):
     """Build a trie from 28-mers.
 
     While building, this simultaenously removes k-mers from the input kmers
@@ -96,16 +96,24 @@ def build_trie(kmers):
 
     Args:
         kmers: dict {kmer: {(taxonomy identifier, sequence id)}}
+        kmer_sample_frac: fraction of all k-mers to insert into the tree
+            (randomly sampled); if None, use all
 
     Returns:
         trie.Trie object
     """
+    if kmer_sample_frac is None:
+        # Iterate over set(kmers.keys()) so that dict (kmers) does not change
+        # size during iteration
+        kmers_to_insert = set(kmers.keys())
+    else:
+        num_to_insert = max(1, int(len(kmers) * kmer_sample_frac))
+        kmers_to_insert = set(random.sample(kmers.keys(), num_to_insert))
+
     t = trie.Trie()
-    # Iterate over set(kmers.keys()) so that dict (kmers) does not change
-    # size during iteration
     i = 1
-    num_kmers = len(kmers)
-    for kmer in set(kmers.keys()):
+    num_kmers = len(kmers_to_insert)
+    for kmer in kmers_to_insert:
         if i % 10000 == 0:
             logging.info("Inserting k-mer %d of %d", i, num_kmers)
         i += 1
@@ -125,6 +133,7 @@ def query_for_taxonomy(t, taxid, kmer_sample_size=100):
     Args:
         t: trie.Trie object
         taxid: taxonomy identifier
+        kmer_sample_size: number of k-mers to sample for querying
 
     Returns:
         (num_matches, num_nodes_visited, runtime) where each is a dict
@@ -162,7 +171,7 @@ def query_for_taxonomy(t, taxid, kmer_sample_size=100):
     perf_num_nodes_visited = {}
     perf_runtime = {}
     for gu_pairing in [False, True]:
-        for m in [0, 1, 2, 3, 4, 5]:
+        for m in [0, 1, 2, 3, 4]:
             logging.info("Querying with GU-pairing=%s and mismatches=%d",
                     str(gu_pairing), m)
             num_matches_for_params = []
