@@ -40,10 +40,10 @@ class KmerLeaf(trie.LeafInfo):
         Args:
             other: KmerLeaf object
         """
-        for taxid, seqid in other.d.items():
+        for taxid, seqids in other.d.items():
             if taxid not in self.d:
                 self.d[taxid] = set()
-            self.d[taxid].add(seqid)
+            self.d[taxid].update(seqids)
 
     def remove(self, taxid):
         """Remove taxonomy identifier from self.
