@@ -201,7 +201,7 @@ plot.benchmark.ecdf <- function(benchmark.name, y.lab, y.lim) {
 # Make a plot for each benchmark
 p.14mers.nodes.visited <- plot.benchmark.violin("nodes_visited", "Number of nodes visited (both 14-mers)", TRUE, FALSE, c(10,1e6))
 p.28mers.nodes.visited <- plot.benchmark.violin("nodes_visited_from_28_mer", "Number of nodes visited (28-mer)", TRUE, FALSE, c(10,1e6))
-p.14mers.matches <- plot.benchmark.violin("matches_combined", "1 + Number of results (summed across 14-mers)", TRUE, FALSE, c(1,400000))
+p.14mers.matches <- plot.benchmark.violin("matches_combined", "1 + Number of results (summed across 14-mers)", TRUE, TRUE, c(1,400000))
 p.28mers.matches <- plot.benchmark.violin("matches_from_28_mer", "Number of results (28-mer)", FALSE, FALSE, c(0,25))
 
 # It's hard to read a 'tpr' benchmark violin plot because it's so close to 0,
