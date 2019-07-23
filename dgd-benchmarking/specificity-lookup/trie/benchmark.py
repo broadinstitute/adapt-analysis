@@ -124,6 +124,38 @@ def build_trie(kmers, kmer_sample_frac=0.01):
     return t
 
 
+def build_trie_space(kmers, rm=False):
+    """Build a space of tries from 28-mers.
+
+    Args:
+        kmers_with_sig: dict {kmer: (signature, {(taxonomy identifier, sequence id)})}
+        rm: if True, remove k-mers from the input kmers dict while building
+            so that they both do not need to be stored at the same time
+
+    Returns:
+        trie.TrieSpace object
+    """
+    # Iterate over set(kmers.keys()) so that dict (kmers) does not change
+    # size during iteration
+    kmers_to_insert = set(kmers.keys())
+
+    ts = trie.TrieSpace()
+    i = 1
+    num_kmers = len(kmers_to_insert)
+    for kmer in kmers_to_insert:
+        if i % 10000 == 0:
+            logging.info("Inserting k-mer %d of %d", i, num_kmers)
+        i += 1
+
+        sig, vals = kmers[kmer]
+        t = ts.get(sig)
+        leaf = KmerLeaf(vals)
+        t.insert([(kmer, leaf)])
+        if rm:
+            del kmers[kmer]
+    return ts
+
+
 def query_for_taxonomy(t, taxid, kmer_sample_size=100):
     """Query random sampling of k-mers from a given taxonomy in the trie.
 

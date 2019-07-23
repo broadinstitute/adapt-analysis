@@ -131,7 +131,8 @@ class Node:
                 children += [self.children[i]]
         return children
 
-    def query(self, q, mismatches=0, gu_pairing=True, node_count=None):
+    def query(self, q, level, mismatches=0, gu_pairing=True,
+            mismatches_used=0, mismatches_to_level=None, node_count=None):
         """Query a given string in the tree rooted at this node.
 
         Due to mismatches and G-U pairing, this can return multiple
@@ -142,11 +143,16 @@ class Node:
 
         Args:
             q: string to query for in the tree rooted at self
+            level: current level of the trie (root is at level 0)
             mismatches: number of mismatches to permit when
                 determining whether q matches a string stored
                 in the trie rooted at self
             gu_pairing: tolerate G-U pairing when determining what
                 strings match q
+            mismatches_used: number of mismatches that have been used so far
+            mismatches_to_level: if set, a tuple (m, l) such that only
+                <= m mismatches are permitted at all levels <= l of the
+                trie (the root is at level 0)
             node_count: if set, counter to increment for counting
                 number of nodes visited
 
@@ -170,6 +176,13 @@ class Node:
             # query
             return []
 
+        if mismatches_to_level is not None:
+            m, l = mismatches_to_level
+            if level <= l and mismatches_used > m:
+                # Too many mismatches have been used for what is allowed at
+                # this level; return no results
+                return []
+
         results = []
 
         # q[0] gives the first char of the string to query, and q[1:]
@@ -184,8 +197,11 @@ class Node:
             # When querying the remaining string, the number of
             # mismatches permitted stays the same because there
             # was a match for q_0
-            results.extend(child.query(q_remain, mismatches=mismatches,
-                gu_pairing=gu_pairing, node_count=node_count))
+            results.extend(child.query(q_remain, level+1,
+                mismatches=mismatches, gu_pairing=gu_pairing,
+                mismatches_used=mismatches_used,
+                mismatches_to_level=mismatches_to_level,
+                node_count=node_count))
 
         if mismatches > 0:
             # Query for q_remain in children of this node, using
@@ -196,8 +212,11 @@ class Node:
                     # This child is under a edge that represents a mismatch
                     # with q_0
                     results.extend(child.query(q_remain,
+                        level+1,
                         mismatches=mismatches-1,
                         gu_pairing=gu_pairing,
+                        mismatches_used=mismatches_used+1,
+                        mismatches_to_level=mismatches_to_level,
                         node_count=node_count))
 
         return results
@@ -459,7 +478,8 @@ class Trie:
             s, li = kv
             self.root_node.insert(s, li)
 
-    def query(self, q, mismatches=0, gu_pairing=True):
+    def query(self, q, mismatches=0, gu_pairing=True,
+            mismatches_to_level=None):
         """Query a given string in the trie.
 
         Args:
@@ -469,14 +489,19 @@ class Trie:
                 in the trie
             gu_pairing: tolerate G-U pairing when determining what
                 strings match q
+            mismatches_to_level: if set, a tuple (m, l) such that only
+                <= m mismatches are permitted at all levels <= l of the trie
+                (the root is at level 0)
 
         Returns:
             tuple (v, c) where v is a list of values corresponding to strings
             that match q and c is the number of nodes visited during the query
         """
         counter = QueryCounter()
-        results = self.root_node.query(q, mismatches=mismatches,
-                gu_pairing=gu_pairing, node_count=counter)
+        results = self.root_node.query(q, 0, mismatches=mismatches,
+                gu_pairing=gu_pairing, node_count=counter,
+                mismatches_used=0,
+                mismatches_to_level=mismatches_to_level)
         return (results, counter.count())
 
     def mask(self, d):
@@ -521,3 +546,38 @@ class Trie:
 
         # Nothing is masked anymore
         self.masked = {}
+
+
+class TrieSpace:
+    """A space of tries, where each trie is addressed by a signature.
+    """
+
+    def __init__(self):
+        self.tries = {}
+
+    def get(self, sig, make=True):
+        """Fetch a trie with a given signature.
+
+        Args:
+            sig: signature (e.g., string)
+            make: if True, make a trie if one does not exist with sig
+
+        Returns:
+            Trie object (or, if one does not exist and make is False, None)
+        """
+        if sig not in self.tries:
+            if make:
+                # Make an empty trie, and insert it
+                t = Trie()
+                self.tries[sig] = t
+            else:
+                return None
+        return self.tries[sig]
+
+    def all_tries(self):
+        """Iterate over all tries.
+
+        Yields:
+            (signature, trie)
+        """
+        return self.tries.items()
