@@ -7,8 +7,10 @@ require(ggplot2)
 require(reshape2)
 require(gridExtra)
 
-IN.TABLE <- "out/benchmark-queries.tsv.gz"
-OUT.PDF <- "out/benchmark-queries.pdf"
+args <- commandArgs(trailingOnly=TRUE)
+
+IN.TABLE <- args[1]
+OUT.PDF <- args[2]
 
 
 ## A helper function from:
