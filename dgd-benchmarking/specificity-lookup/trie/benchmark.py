@@ -87,7 +87,7 @@ class KmerLeaf(trie.LeafInfo):
         return new
 
 
-def build_trie(kmers, kmer_sample_frac=0.01):
+def build_trie(kmers, kmer_sample_frac=0.0128):
     """Build a trie from 28-mers.
 
     While building, this simultaenously removes k-mers from the input kmers
@@ -273,14 +273,16 @@ def main():
 
     # Build the trie
     logging.info("Building trie")
-    t = build_trie(kmers)
+    kmer_sample_frac = 0.0128
+    t = build_trie(kmers, kmer_sample_frac=kmer_sample_frac)
     del kmers
     logging.info("Done building trie")
 
     # Benchmark for each taxonomy
     logging.info("Benchmarking queries on the trie across %d taxonomies",
             len(tax_ids))
-    benchmark_queries_across_taxonomies(t, tax_ids, 'out/benchmark-queries.tsv')
+    benchmark_queries_across_taxonomies(t, tax_ids,
+            'out/benchmark-queries-subsample-' + str(kmer_sample_frac) + '.tsv')
 
 
 if __name__ == "__main__":
