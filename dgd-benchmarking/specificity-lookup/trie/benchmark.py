@@ -86,8 +86,34 @@ class KmerLeaf(trie.LeafInfo):
         new.d = d_new
         return new
 
+    def __eq__(self, other):
+        """Check equality of self and other.
 
-def build_trie(kmers, kmer_sample_frac=0.0128):
+        Args:
+            other: KmerLeaf object
+
+        Returns:
+            True or False
+        """
+        return self.d == other.d
+
+    @staticmethod
+    def union(kmer_leaves):
+        """Construct a KmerLeaf object representing a union of others.
+
+        Args:
+            kmer_leaves: collection of KmerLeaf objects
+
+        Returns:
+            KmerLeaf object
+        """
+        union = KmerLeaf([])
+        for kl in kmer_leaves:
+            union.extend(kl)
+        return union
+
+
+def build_trie(kmers, kmer_sample_frac=0.0128, rm=True):
     """Build a trie from 28-mers.
 
     While building, this simultaenously removes k-mers from the input kmers
@@ -98,6 +124,7 @@ def build_trie(kmers, kmer_sample_frac=0.0128):
         kmers: dict {kmer: {(taxonomy identifier, sequence id)}}
         kmer_sample_frac: fraction of all k-mers to insert into the tree
             (randomly sampled); if None, use all
+        rm: if True, remove k-mers from the input while processing
 
     Returns:
         trie.Trie object
@@ -120,7 +147,8 @@ def build_trie(kmers, kmer_sample_frac=0.0128):
 
         leaf = KmerLeaf(kmers[kmer])
         t.insert([(kmer, leaf)])
-        del kmers[kmer]
+        if rm:
+            del kmers[kmer]
     return t
 
 

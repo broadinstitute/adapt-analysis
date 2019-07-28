@@ -29,6 +29,9 @@ import trie
 
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
+# Set options
+VERIFY = True  # whether to verify all results using a simple trie
+
 # Configure basic logging
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
@@ -73,7 +76,8 @@ def signatures_with_mismatches(kmer, half):
     return sig_one_mismatch
 
 
-def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100):
+def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100,
+        t_for_verification=None):
     """Query random sampling of k-mers from a given taxonomy in the trie
     spaces.
 
@@ -81,13 +85,15 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100):
     will be for that taxonomy).
 
     Args:
-        t_0: trie.TrieSpace object key'd on first 14-mer
-        t_1: trie.TrieSpace object key'd on first 14-mer
+        ts_0: trie.TrieSpace object key'd on first 14-mer
+        ts_1: trie.TrieSpace object key'd on first 14-mer
         taxid: taxonomy identifier
         kmer_sample_size: number of k-mers to sample for querying
+        t_for_verification: if set, a basic trie with all 28-mers to use
+            for verifying query results
 
     Returns:
-        (num_matches, num_nodes_visited, runtime, num_matches_from_28_mer) where
+        (num_matches, num_nodes_visited, runtime) where
         each is a dict {(gu_pairing, mismatches): v} where v is a list of
         values across the randomly sampled k-mers
     """
@@ -109,6 +115,7 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100):
         taxid_kmer_occ += [num_seqs_with_kmer_in_taxid]
 
     if len(taxid_kmers) == 0:
+        logging.info("No k-mers for taxid %d", taxid)
         return None
 
     # Randomly sample k-mers with replacement, weighting the selection by
@@ -122,16 +129,18 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100):
     for ts in [ts_0, ts_1]:
         for sig, t in ts.all_tries():
             t.mask(taxid)
+    if t_for_verification is not None:
+        t_for_verification.mask(taxid)
 
     logging.info("Querying for taxid %d", taxid)
 
     # Query each k-mer at different parameters (but all with G-U pairing)
-    num_matches_combined = {}
+    num_matches = {}
     perf_num_nodes_visited = {}
     perf_runtime = {}
     gu_pairing = True
     for m in [0, 1, 2, 3]:
-        num_matches_combined_for_params = []
+        num_matches_for_params = []
         perf_num_nodes_visited_for_params = []
         perf_runtime_for_params = []
         for kmer in taxid_kmers_sample:
@@ -150,8 +159,9 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100):
                 sigs1 = signatures_with_mismatches(kmer, 0)
                 sigs2 = signatures_with_mismatches(kmer, 1)
 
-            num_results_combined = 0
-            num_nodes_visited_combined = 0
+            num_results = 0
+            num_nodes_visited = 0
+            all_results = []
 
             # Query for tries maybe containing each half of the kmer
             for reverse, sigs, ts in [(False, sigs1, ts_0), (True, sigs2, ts_1)]:
@@ -171,16 +181,27 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100):
                         q_results, q_num_nodes_visited = t.query(
                                 q, mismatches=m, gu_pairing=gu_pairing,
                                 mismatches_to_level=(m_half, 13))
-                        num_results_combined += len(q_results)
-                        num_nodes_visited_combined += q_num_nodes_visited
+                        num_results += len(q_results)
+                        num_nodes_visited += q_num_nodes_visited
+                        all_results.extend(q_results)
 
             end_time = time.time()
 
-            num_matches_combined_for_params += [num_results_combined]
-            perf_num_nodes_visited_for_params += [num_nodes_visited_combined]
+            # Verify the results
+            if t_for_verification is not None:
+                true_results, _ = t_for_verification.query(
+                        kmer, mismatches=m, gu_pairing=gu_pairing)
+                true_results = benchmark.KmerLeaf.union(true_results)
+                results_to_test = benchmark.KmerLeaf.union(all_results)
+                if results_to_test != true_results:
+                    raise Exception(("Trie verification failed"))
+                print(len(results_to_test.d), 'passed')
+
+            num_matches_for_params += [num_results]
+            perf_num_nodes_visited_for_params += [num_nodes_visited]
             perf_runtime_for_params += [end_time - start_time]
 
-        num_matches_combined[(gu_pairing, m)] = num_matches_combined_for_params
+        num_matches[(gu_pairing, m)] = num_matches_for_params
         perf_num_nodes_visited[(gu_pairing, m)] = perf_num_nodes_visited_for_params
         perf_runtime[(gu_pairing, m)] = perf_runtime_for_params
 
@@ -189,29 +210,43 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100):
     for ts in [ts_0, ts_1]:
         for sig, t in ts.all_tries():
             t.unmask_all()
+    if t_for_verification is not None:
+        t_for_verification.unmask_all()
 
-    return (num_matches_combined,
+    return (num_matches,
             perf_num_nodes_visited, perf_runtime)
 
 
-def benchmark_queries_across_taxonomies(t_0, t_1, tax_ids, out_tsv):
+def benchmark_queries_across_taxonomies(ts_0, ts_1, tax_ids, out_tsv,
+        tax_ids_to_sample=None, t_for_verification=None):
     """Benchmark queries across taxonomies.
 
     Args:
-        t_0: trie.TrieSpace object key'd on first 14-mer
-        t_1: trie.TrieSpace object key'd on first 14-mer
+        ts_0: trie.TrieSpace object key'd on first 14-mer
+        ts_1: trie.TrieSpace object key'd on first 14-mer
         tax_ids: dict {tax_name: taxonomy identifier} where taxonomy
             identifier is simply an integer
         out_tsv: path to TSV file to which to write benchmark results
+        tax_ids_to_sample: number of tax ids to sample
+        t_for_verification: if set, a basic trie with all 28-mers to use
+            for verifying query results
     """
+    if tax_ids_to_sample is not None:
+        tax_ids_to_insert = set(random.sample(tax_ids.keys(), tax_ids_to_sample))
+        tax_ids_subsampled = {}
+        for k in tax_ids_to_insert:
+            tax_ids_subsampled[k] = tax_ids[k]
+        tax_ids = tax_ids_subsampled
+
     benchmark_results = []
     for tax_name, taxid in tax_ids.items():
-        x = query_for_taxonomy(t_0, t_1, taxid)
+        x = query_for_taxonomy(ts_0, ts_1, taxid,
+                t_for_verification=t_for_verification)
         if x is None:
             # No k-mers for taxid
             continue
-        num_matches_combined, perf_num_nodes_visited, perf_runtime = x
-        for benchmark_name, d in [('matches_combined', num_matches_combined),
+        num_matches, perf_num_nodes_visited, perf_runtime = x
+        for benchmark_name, d in [('matches', num_matches),
                 ('nodes_visited', perf_num_nodes_visited),
                 ('runtime', perf_runtime)]:
             for gu_pairing, mismatches in d.keys():
@@ -228,14 +263,27 @@ def benchmark_queries_across_taxonomies(t_0, t_1, tax_ids, out_tsv):
             write_row(r)
 
 
-def run(kmer_sample_frac, kmers28, tax_ids):
+def run(kmer_sample_frac, kmers28, tax_ids,
+        tax_ids_to_sample=None, verify_in_trie=False):
     # Subsample k-mers
-    num_to_insert = max(1, int(len(kmers28) * kmer_sample_frac))
-    kmers_to_insert = set(random.sample(kmers28.keys(), num_to_insert))
-    kmers28_subsampled = {}
-    for kmer in kmers_to_insert:
-        kmers28_subsampled[kmer] = kmers28[kmer]
-    kmers28 = kmers28_subsampled
+    if kmer_sample_frac is not None:
+        num_to_insert = max(1, int(len(kmers28) * kmer_sample_frac))
+        kmers_to_insert = set(random.sample(kmers28.keys(), num_to_insert))
+        kmers28_subsampled = {}
+        for kmer in kmers_to_insert:
+            kmers28_subsampled[kmer] = kmers28[kmer]
+        kmers28 = kmers28_subsampled
+
+    if verify_in_trie:
+        # Pass the same already-downsampled kmers (kmers28) rather than
+        # downsampling separately
+        logging.info("Building basic trie for verifying results")
+        t_for_verification = benchmark.build_trie(
+                kmers28,
+                kmer_sample_frac=None,
+                rm=False)
+    else:
+        t_for_verification = None
 
     logging.info("Building trie space of 28-mers, key'd by the first 14-mer")
     # Build trie space key'd by the first 14-mer
@@ -258,11 +306,13 @@ def run(kmer_sample_frac, kmers28, tax_ids):
     del kmers28_rev
 
     # Benchmark for each taxonomy
-    logging.info("Benchmarking queries on the trie across %d taxonomies",
+    logging.info("Benchmarking queries on the data structure across %d taxonomies",
             len(tax_ids))
     benchmark_queries_across_taxonomies(ts_0, ts_1, tax_ids,
             ('out/benchmark-queries-signature-subsample-' +
-            str(kmer_sample_frac) + '.tsv'))
+            str(kmer_sample_frac) + '.tsv'),
+            tax_ids_to_sample=tax_ids_to_sample,
+            t_for_verification=t_for_verification)
 
 
 def main():
@@ -273,10 +323,17 @@ def main():
     logging.info("Parsing 28-mers from sequences")
     kmers28, tax_ids = read_kmers.read_kmers(seqs, k=28)
 
-    #for kmer_sample_frac in [0.0001, 0.0002, 0.0004, 0.0008, 0.0016, 0.0032,
-    #        0.0064, 0.0128]:
-    for kmer_sample_frac in [0.0128]:
-        run(kmer_sample_frac, kmers28, tax_ids)
+    for kmer_sample_frac in [0.0001, 0.0002, 0.0004, 0.0008, 0.0016, 0.0032,
+            0.0128, None]:
+       if kmer_sample_frac is None:
+           # Using all kmers, so only query for 10 of the tax ids (so
+           # it's not so slow
+           s = 10
+       else:
+           # Using just a fraction of kmers, so query for all tax ids
+           s = None
+       run(kmer_sample_frac, kmers28, tax_ids, tax_ids_to_sample=s,
+           verify_in_trie=VERIFY)
 
 
 if __name__ == "__main__":
