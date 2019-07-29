@@ -214,6 +214,10 @@ def query_for_taxonomy(t, taxid, kmer_sample_size=100):
         taxid_kmers += [kmer]
         taxid_kmer_occ += [num_seqs_with_kmer_in_taxid]
 
+    if len(taxid_kmers) == 0:
+        logging.info("No k-mers for taxid %d", taxid)
+        return None
+
     # Randomly sample k-mers with replacement, weighting the selection by
     # the number of sequences in taxid that contain each k-mer
     taxid_kmers_sample = random.choices(taxid_kmers,
@@ -267,7 +271,11 @@ def benchmark_queries_across_taxonomies(t, tax_ids, out_tsv):
     """
     benchmark_results = []
     for tax_name, taxid in tax_ids.items():
-        num_matches, perf_num_nodes_visited, perf_runtime = query_for_taxonomy(t, taxid)
+        x = query_for_taxonomy(t, taxid)
+        if x is None:
+            # No k-mers for taxid
+            continue
+        num_matches, perf_num_nodes_visited, perf_runtime = x
         for benchmark_name, d in [('matches', num_matches),
                 ('nodes_visited', perf_num_nodes_visited),
                 ('runtime', perf_runtime)]:
@@ -301,7 +309,7 @@ def main():
 
     # Build the trie
     logging.info("Building trie")
-    kmer_sample_frac = 0.0128
+    kmer_sample_frac = 0.0016
     t = build_trie(kmers, kmer_sample_frac=kmer_sample_frac)
     del kmers
     logging.info("Done building trie")
