@@ -323,11 +323,13 @@ def main():
     logging.info("Parsing 28-mers from sequences")
     kmers28, tax_ids = read_kmers.read_kmers(seqs, k=28)
 
-    for kmer_sample_frac in [0.0001, 0.0002, 0.0004, 0.0008, 0.0016, 0.0032,
-            0.0128, None]:
+    #test_fracs = [0.0001, 0.0002, 0.0004, 0.0008, 0.0016, 0.0032, 0.0128]
+    test_fracs = [0.002]
+    #test_fracs = [None]
+    for kmer_sample_frac in test_fracs:
        if kmer_sample_frac is None:
            # Using all kmers, so only query for 10 of the tax ids (so
-           # it's not so slow
+           # it's not so slow)
            s = 10
        else:
            # Using just a fraction of kmers, so query for all tax ids
