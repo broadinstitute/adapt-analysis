@@ -30,7 +30,7 @@ import trie
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
 # Set options
-VERIFY = True  # whether to verify all results using a simple trie
+VERIFY = False  # whether to verify all results using a simple trie
 
 # Configure basic logging
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
@@ -195,7 +195,6 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100,
                 results_to_test = benchmark.KmerLeaf.union(all_results)
                 if results_to_test != true_results:
                     raise Exception(("Trie verification failed"))
-                print(len(results_to_test.d), 'passed')
 
             num_matches_for_params += [num_results]
             perf_num_nodes_visited_for_params += [num_nodes_visited]
@@ -324,8 +323,8 @@ def main():
     kmers28, tax_ids = read_kmers.read_kmers(seqs, k=28)
 
     #test_fracs = [0.0001, 0.0002, 0.0004, 0.0008, 0.0016, 0.0032, 0.0128]
-    test_fracs = [0.002]
-    #test_fracs = [None]
+    #test_fracs = [0.002]
+    test_fracs = [None]
     for kmer_sample_frac in test_fracs:
        if kmer_sample_frac is None:
            # Using all kmers, so only query for 10 of the tax ids (so
