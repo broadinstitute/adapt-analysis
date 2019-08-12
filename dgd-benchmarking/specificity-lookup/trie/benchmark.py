@@ -97,6 +97,17 @@ class KmerLeaf(trie.LeafInfo):
         """
         return self.d == other.d
 
+    def __len__(self):
+        """Sum number of sequences stored.
+
+        Returns:
+            total number of sequences stored across taxids
+        """
+        n = 0
+        for taxid, seqids in self.d.items():
+            n += len(seqids)
+        return n
+
     @staticmethod
     def union(kmer_leaves):
         """Construct a KmerLeaf object representing a union of others.

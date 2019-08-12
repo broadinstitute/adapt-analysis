@@ -15,9 +15,17 @@ and the same for q_2.
 
 Each trie should have, on average, 1/2^14 of the total number of 28-mers. So
 the total space of 28-mers that we're querying is 30/2^14 = 0.002.
+
+
+This also benchmarks a related, simplified approach that is based on just
+one signature for each 28-mer. There are 2^28 tries each with, on average,
+1/2^28 of the total number of 28-mers. To query up to 3 mismatches, we have
+to flip the letter at every combination of 1, 2, and 3 positions of the
+signature.
 """
 
 from collections import defaultdict
+from itertools import combinations
 import logging
 import math
 import random
@@ -30,13 +38,41 @@ import trie
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
 # Set options
-VERIFY = False  # whether to verify all results using a simple trie
+VERIFY = True  # whether to verify all results using a simple trie
 
 # Configure basic logging
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
 
 
-def signature(kmer, half):
+def signatures_with_mismatches(sig, m):
+    """Generate signatures within m mismatches given a signature.
+
+    Args:
+        sig: signature as string
+        m: number of mismatches such that all signatures have 0,1,...,m
+            mismatches relative to kmer
+
+    Returns:
+        list of signatures as strings
+    """
+    sigs_with_mismatches = [sig]
+    for mi in range(1, m+1):
+        # Introduce mi mismatches to sig
+        for pos in combinations(range(len(sig)), mi):
+            # Introduce mismatches to sig at positions in pos
+            # Note that len(pos) == mi
+            sig_mi = list(str(sig))
+            for j in pos:
+                # Introduce a mismatch at position j
+                if sig_mi[j] == 'G':
+                    sig_mi[j] = 'T'
+                else:
+                    sig_mi[j] = 'G'
+            sigs_with_mismatches += [''.join(sig_mi)]
+    return sigs_with_mismatches
+
+
+def split_signature(kmer, half):
     """Generate a 2-letter alphabet signature of one half of a k-mer.
 
     The transformations are A->G and C->T.
@@ -54,29 +90,53 @@ def signature(kmer, half):
     return kmer_half.replace('A', 'G').replace('C', 'T')
 
 
-def signatures_with_mismatches(kmer, half):
-    """Generate signatures within one mismatch.
+def split_signatures_with_mismatches(kmer, half, m):
+    """Generate signatures within one mismatch given a k-mer.
 
     Args:
         kmer: 28-mer
         half: 0 or 1, denoting the first or second half
+        m: number of mismatches such that all signatures have 0,1,...,m
+            mismatches relative to kmer
 
     Returns:
         list of signatures as strings
     """
-    sig = signature(kmer, half)
-    sig_one_mismatch = [sig]
-    for i in range(len(sig)):
-        sig_r = list(str(sig))
-        if sig_r[i] == 'G':
-            sig_r[i] = 'T'
-        else:
-            sig_r[i] = 'G'
-        sig_one_mismatch += [''.join(sig_r)]
-    return sig_one_mismatch
+    sig = split_signature(kmer, half)
+    return signatures_with_mismatches(sig, m)
 
 
-def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100,
+def full_signature(kmer):
+    """Generate a 2-letter alphabet signature of a full k-mer.
+
+    The transformations are A->G and C->T.
+
+    Args:
+        kmer: 28-mer
+
+    Returns:
+        signature as a string
+    """
+    assert len(kmer) == 28
+    return kmer.replace('A', 'G').replace('C', 'T')
+
+
+def full_signatures_with_mismatches(kmer, m):
+    """Generate signatures within m mismatches given a k-mer.
+
+    Args:
+        kmer: 28-mer
+        m: number of mismatches such that all signatures have 0,1,...,m
+            mismatches relative to kmer
+
+    Returns:
+        list of signatures as strings
+    """
+    sig = full_signature(kmer)
+    return signatures_with_mismatches(sig, m)
+
+
+def query_for_taxonomy(ts_0, ts_1, ts_full, taxid, kmer_sample_size=100,
         t_for_verification=None):
     """Query random sampling of k-mers from a given taxonomy in the trie
     spaces.
@@ -87,17 +147,22 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100,
     Args:
         ts_0: trie.TrieSpace object key'd on first 14-mer
         ts_1: trie.TrieSpace object key'd on first 14-mer
+        ts_full: trie.TrieSpace object key'd on full 28-mer
         taxid: taxonomy identifier
         kmer_sample_size: number of k-mers to sample for querying
         t_for_verification: if set, a basic trie with all 28-mers to use
             for verifying query results
 
     Returns:
-        (num_matches, num_nodes_visited, runtime) where
-        each is a dict {(gu_pairing, mismatches): v} where v is a list of
-        values across the randomly sampled k-mers
+        tuple (split, full) where each is a tuple giving information on the
+        split signature approach or full signature approach:
+            (has_hit, num_nodes_visited, runtime) where
+            each is a dict {(gu_pairing, mismatches): v} where v is a list of
+            values across the randomly sampled k-mers
     """
     # Find all the k-mers in taxid
+    # Only do this using the split trie spaces (ts_0 and ts_1); ts_full should
+    # provide the same k-mers
     logging.info("Finding k-mers for taxid %d", taxid)
     leaves = []
     for ts in [ts_0, ts_1]:
@@ -126,7 +191,7 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100,
 
     # Mask taxid from the tries
     logging.info("Masking taxid %d", taxid)
-    for ts in [ts_0, ts_1]:
+    for ts in [ts_0, ts_1, ts_full]:
         for sig, t in ts.all_tries():
             t.mask(taxid)
     if t_for_verification is not None:
@@ -135,29 +200,38 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100,
     logging.info("Querying for taxid %d", taxid)
 
     # Query each k-mer at different parameters (but all with G-U pairing)
-    num_matches = {}
-    perf_num_nodes_visited = {}
-    perf_runtime = {}
+    split_has_hit = {}
+    split_perf_num_nodes_visited = {}
+    split_perf_runtime = {}
+    full_has_hit = {}
+    full_perf_num_nodes_visited = {}
+    full_perf_runtime = {}
     gu_pairing = True
-    for m in [0, 1, 2, 3]:
-        num_matches_for_params = []
-        perf_num_nodes_visited_for_params = []
-        perf_runtime_for_params = []
+    for m in [0, 1, 2, 3, 4, 5]:
+        split_has_hit_for_params = []
+        split_perf_num_nodes_visited_for_params = []
+        split_perf_runtime_for_params = []
+        full_has_hit_for_params = []
+        full_perf_num_nodes_visited_for_params = []
+        full_perf_runtime_for_params = []
         for kmer in taxid_kmers_sample:
+            ##########
+            # Benchmark the approach that splits a 28-mer into two halves
+            # and computes a signature on each half
+
             start_time = time.time()
 
             # By the pigeonhole principle, we'll have at most floor(m/2)
             # mismatches in one of the two halves of the 28-mer
             m_half = int(m / 2)
-            assert m_half in [0, 1]
 
             # Determine signatures of each half of the k-mer to use
             if m_half == 0:
-                sigs1 = [signature(kmer, 0)]
-                sigs2 = [signature(kmer, 1)]
+                sigs1 = [split_signature(kmer, 0)]
+                sigs2 = [split_signature(kmer, 1)]
             else:
-                sigs1 = signatures_with_mismatches(kmer, 0)
-                sigs2 = signatures_with_mismatches(kmer, 1)
+                sigs1 = split_signatures_with_mismatches(kmer, 0, m_half)
+                sigs2 = split_signatures_with_mismatches(kmer, 1, m_half)
 
             num_results = 0
             num_nodes_visited = 0
@@ -187,42 +261,93 @@ def query_for_taxonomy(ts_0, ts_1, taxid, kmer_sample_size=100,
 
             end_time = time.time()
 
+            # num_results can overcount because the same result (hit) can
+            # appear for queries from both the first and second half of the
+            # kmer; instead, simply count whether this kmer had a hit
+            has_hit = int(num_results > 0)
+
             # Verify the results
             if t_for_verification is not None:
                 true_results, _ = t_for_verification.query(
                         kmer, mismatches=m, gu_pairing=gu_pairing)
                 true_results = benchmark.KmerLeaf.union(true_results)
-                results_to_test = benchmark.KmerLeaf.union(all_results)
-                if results_to_test != true_results:
-                    raise Exception(("Trie verification failed"))
+                results_of_queries = benchmark.KmerLeaf.union(all_results)
+                if results_of_queries != true_results:
+                    raise Exception(("Trie verification failed (split approach)"))
 
-            num_matches_for_params += [num_results]
-            perf_num_nodes_visited_for_params += [num_nodes_visited]
-            perf_runtime_for_params += [end_time - start_time]
+            split_has_hit_for_params += [has_hit]
+            split_perf_num_nodes_visited_for_params += [num_nodes_visited]
+            split_perf_runtime_for_params += [end_time - start_time]
+            ##########
 
-        num_matches[(gu_pairing, m)] = num_matches_for_params
-        perf_num_nodes_visited[(gu_pairing, m)] = perf_num_nodes_visited_for_params
-        perf_runtime[(gu_pairing, m)] = perf_runtime_for_params
+            ##########
+            # Benchmark the related approach of using a signature based on
+            # a full 28-mer
+
+            start_time = time.time()
+
+            all_results = []
+            num_results = 0
+            num_nodes_visited = 0
+
+            sigs = full_signatures_with_mismatches(kmer, m)
+            for sig in sigs:
+                t = ts_full.get(sig, make=False)
+                if t is None:
+                    # No results
+                    pass
+                else:
+                    q = kmer
+                    q_results, q_num_nodes_visited = t.query(
+                            q, mismatches=m, gu_pairing=gu_pairing)
+                    num_results += len(q_results)
+                    num_nodes_visited += q_num_nodes_visited
+                    all_results.extend(q_results)
+
+            end_time = time.time()
+
+            has_hit = int(num_results > 0)
+
+            # Verify the results
+            if t_for_verification is not None:
+                results_of_queries = benchmark.KmerLeaf.union(all_results)
+                if results_of_queries != true_results:
+                    raise Exception(("Trie verification failed (full approach)"))
+
+            full_has_hit_for_params += [has_hit]
+            full_perf_num_nodes_visited_for_params += [num_nodes_visited]
+            full_perf_runtime_for_params += [end_time - start_time]
+            ##########
+
+        split_has_hit[(gu_pairing, m)] = split_has_hit_for_params
+        split_perf_num_nodes_visited[(gu_pairing, m)] = split_perf_num_nodes_visited_for_params
+        split_perf_runtime[(gu_pairing, m)] = split_perf_runtime_for_params
+        full_has_hit[(gu_pairing, m)] = full_has_hit_for_params
+        full_perf_num_nodes_visited[(gu_pairing, m)] = full_perf_num_nodes_visited_for_params
+        full_perf_runtime[(gu_pairing, m)] = full_perf_runtime_for_params
 
     # Unmask taxid
     logging.info("Unmasking taxid %d", taxid)
-    for ts in [ts_0, ts_1]:
+    for ts in [ts_0, ts_1, ts_full]:
         for sig, t in ts.all_tries():
             t.unmask_all()
     if t_for_verification is not None:
         t_for_verification.unmask_all()
 
-    return (num_matches,
-            perf_num_nodes_visited, perf_runtime)
+    return ((split_has_hit,
+                split_perf_num_nodes_visited, split_perf_runtime),
+            (full_has_hit,
+                full_perf_num_nodes_visited, full_perf_runtime))
 
 
-def benchmark_queries_across_taxonomies(ts_0, ts_1, tax_ids, out_tsv,
+def benchmark_queries_across_taxonomies(ts_0, ts_1, ts_full, tax_ids, out_tsv,
         tax_ids_to_sample=None, t_for_verification=None):
     """Benchmark queries across taxonomies.
 
     Args:
         ts_0: trie.TrieSpace object key'd on first 14-mer
         ts_1: trie.TrieSpace object key'd on first 14-mer
+        ts_full: trie.TrieSpace object key'd on full 28-mer
         tax_ids: dict {tax_name: taxonomy identifier} where taxonomy
             identifier is simply an integer
         out_tsv: path to TSV file to which to write benchmark results
@@ -239,15 +364,20 @@ def benchmark_queries_across_taxonomies(ts_0, ts_1, tax_ids, out_tsv,
 
     benchmark_results = []
     for tax_name, taxid in tax_ids.items():
-        x = query_for_taxonomy(ts_0, ts_1, taxid,
+        x = query_for_taxonomy(ts_0, ts_1, ts_full, taxid,
                 t_for_verification=t_for_verification)
         if x is None:
             # No k-mers for taxid
             continue
-        num_matches, perf_num_nodes_visited, perf_runtime = x
-        for benchmark_name, d in [('matches', num_matches),
-                ('nodes_visited', perf_num_nodes_visited),
-                ('runtime', perf_runtime)]:
+        split_info, full_info = x
+        split_has_hit, split_perf_num_nodes_visited, split_perf_runtime = split_info
+        full_has_hit, full_perf_num_nodes_visited, full_perf_runtime = full_info
+        for benchmark_name, d in [('split_approach_has_hit', split_has_hit),
+                ('split_approach_nodes_visited', split_perf_num_nodes_visited),
+                ('split_approach_runtime', split_perf_runtime),
+                ('full_approach_has_hit', full_has_hit),
+                ('full_approach_nodes_visited', full_perf_num_nodes_visited),
+                ('full_approach_runtime', full_perf_runtime)]:
             for gu_pairing, mismatches in d.keys():
                 for v in d[(gu_pairing, mismatches)]:
                     benchmark_results += [(tax_name, benchmark_name,
@@ -284,11 +414,20 @@ def run(kmer_sample_frac, kmers28, tax_ids,
     else:
         t_for_verification = None
 
+    logging.info("Building trie space of 28-mers, key'd on the full 28-mer")
+    # Build trie space key'd by the full 28-mer, for the approach that
+    # uses the full signature (rather than splitting into two halves)
+    for kmer in kmers28:
+        sig = full_signature(kmer)
+        kmers28[kmer] = (sig, kmers28[kmer])
+    ts_full = benchmark.build_trie_space(kmers28, rm=False)
+
     logging.info("Building trie space of 28-mers, key'd by the first 14-mer")
     # Build trie space key'd by the first 14-mer
     for kmer in kmers28:
-        sig = signature(kmer, 0)
-        kmers28[kmer] = (sig, kmers28[kmer])
+        sig = split_signature(kmer, 0)
+        old_sig, vals = kmers28[kmer]
+        kmers28[kmer] = (sig, vals)
     ts_0 = benchmark.build_trie_space(kmers28, rm=False)
 
     logging.info("Building trie space of 28-mers, key'd by the second 14-mer")
@@ -296,7 +435,7 @@ def run(kmer_sample_frac, kmers28, tax_ids,
     # in reverse, to make queries faster
     kmers28_rev = {}
     for kmer in kmers28:
-        sig = signature(kmer, 1)
+        sig = split_signature(kmer, 1)
         old_sig, vals = kmers28[kmer]
         kmer_rev = kmer[::-1]
         kmers28_rev[kmer_rev] = (sig, vals)
@@ -307,7 +446,7 @@ def run(kmer_sample_frac, kmers28, tax_ids,
     # Benchmark for each taxonomy
     logging.info("Benchmarking queries on the data structure across %d taxonomies",
             len(tax_ids))
-    benchmark_queries_across_taxonomies(ts_0, ts_1, tax_ids,
+    benchmark_queries_across_taxonomies(ts_0, ts_1, ts_full, tax_ids,
             ('out/benchmark-queries-signature-subsample-' +
             str(kmer_sample_frac) + '.tsv'),
             tax_ids_to_sample=tax_ids_to_sample,
@@ -324,12 +463,16 @@ def main():
 
     #test_fracs = [0.0001, 0.0002, 0.0004, 0.0008, 0.0016, 0.0032, 0.0128]
     #test_fracs = [0.002]
-    test_fracs = [None]
+    #test_fracs = [None]
+    test_fracs = [0.0001, 0.0016, 0.0128]
     for kmer_sample_frac in test_fracs:
        if kmer_sample_frac is None:
            # Using all kmers, so only query for 10 of the tax ids (so
            # it's not so slow)
-           s = 10
+           s = min(10, len(tax_ids))
+       elif kmer_sample_frac > 0.01:
+           # Use only some tax ids so it's not so slow
+           s = min(100, len(tax_ids))
        else:
            # Using just a fraction of kmers, so query for all tax ids
            s = None
