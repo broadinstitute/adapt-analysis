@@ -143,9 +143,9 @@ plot.benchmark.violin <- function(benchmark.name, y.lab, log10, add1, y.lim) {
 p.has.hit <- plot.benchmark.violin("has_hit", "Fraction of queries with hit",
                                    FALSE, FALSE, c(0,1))
 p.nodes.visited <- plot.benchmark.violin("nodes_visited", "Number of nodes visited",
-                                         TRUE, FALSE, c(10,1e6))
+                                         TRUE, FALSE, c(1,1e6))
 p.runtime <- plot.benchmark.violin("runtime", "Runtime (sec)",
-                                   TRUE, FALSE, c(1e-06,2))
+                                   TRUE, FALSE, c(1e-06,1))
 
 ggsave(OUT.PDF, arrangeGrob(p.has.hit, p.nodes.visited, p.runtime, ncol=1),
        width=8, height=16, useDingbats=FALSE)
