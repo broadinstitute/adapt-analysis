@@ -13,7 +13,7 @@ library(ggplot2)
 library(gridExtra)
 
 
-taxonomies <- list.files(path=".", pattern="tax-*")
+taxonomies <- list.files(path=".", pattern="^tax-*")
 
 args <- commandArgs(trailingOnly=TRUE)
 out.pdf <- args[1]
@@ -54,7 +54,8 @@ plot.violin <- function(filename, title) {
     # Leave out usual ggplot2 background and grid lines, but keep border
     # Use aspect.ratio=1 to make the plot square
     p <- p + theme_bw()
-    p <- p + theme(strip.background=element_blank(),
+    p <- p + theme(axis.text.x=element_text(angle=90, hjust=1),
+                   strip.background=element_blank(),
                    panel.grid.major=element_blank(),
                    panel.grid.minor=element_blank(),
                    panel.border=element_rect(colour="black"),

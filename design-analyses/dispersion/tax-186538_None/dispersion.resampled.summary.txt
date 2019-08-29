@@ -1,0 +1,3 @@
+Entropy: 6.6438561897747395
+Average pairwise Jaccard similarity within collection of designs: 0.28723943344955055
+Average pairwise Jaccard similarity between collections of designs (loose/coordinate-based): 0.37515622831837925

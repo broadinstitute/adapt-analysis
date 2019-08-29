@@ -12,10 +12,10 @@
 # Allow activating conda environments
 source ~/anaconda3/etc/profile.d/conda.sh
 
-conda activate dgd
+conda activate adapt
 
 # Set variables for computing coverage
-NJOBS=16
+NJOBS=72
 ARG_GM="1"
 ARG_PM="3"
 
@@ -63,3 +63,16 @@ run_for_taxid "64320" "None"
 
 # Run for Lassa virus, S segment
 run_for_taxid "11620" "S"
+
+# Run for Ebola virus (Zaire)
+run_for_taxid "186538" "None" "NC_002549"
+
+# Run for Nipah virus
+run_for_taxid "121791" "None" "NC_002728"
+
+# Run for HIV-1
+run_for_taxid "11676" "None" "NC_001802"
+
+# Run for HCV
+# See make_designs.sh for why this is skipped
+#run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
