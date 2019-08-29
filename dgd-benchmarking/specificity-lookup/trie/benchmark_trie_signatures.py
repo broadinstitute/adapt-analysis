@@ -11,7 +11,8 @@ q_2. Let's only query for Q up to 3 mismatches. By the pigeonhole principle,
 either Q[0:14] or Q[14:28] has <= 1 mismatch with any possible result. So
 we can query in 30 tries (corresponding to 30 signatures): q_1, as well as
 q_1 where at every position we flip the letter (i.e., introduce a mismatch);
-and the same for q_2.
+and the same for q_2. The results with this are the 'split' approach
+('split_approach_*').
 
 Each trie should have, on average, 1/2^14 of the total number of 28-mers. So
 the total space of 28-mers that we're querying is 30/2^14 = 0.002.
@@ -21,7 +22,11 @@ This also benchmarks a related, simplified approach that is based on just
 one signature for each 28-mer. There are 2^28 tries each with, on average,
 1/2^28 of the total number of 28-mers. To query up to 3 mismatches, we have
 to flip the letter at every combination of 1, 2, and 3 positions of the
-signature.
+signature. The results on this are the 'full' approach ('full_approach_*').
+
+Optionally, this will benchmark results on a regular/simple trie (i.e.,
+without the sharding approach described above). The results on this are
+the 'noshard' approach ('noshard_approach_*').
 """
 
 from collections import defaultdict
@@ -37,8 +42,9 @@ import trie
 
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
-# Set options
-VERIFY = True  # whether to verify all results using a simple trie
+# Set whether to verify all results using a regular/simple trie, and to
+# report benchmarking results on this
+VERIFY = True
 
 # Configure basic logging
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.DEBUG)
@@ -151,7 +157,8 @@ def query_for_taxonomy(ts_0, ts_1, ts_full, taxid, kmer_sample_size=100,
         taxid: taxonomy identifier
         kmer_sample_size: number of k-mers to sample for querying
         t_for_verification: if set, a basic trie with all 28-mers to use
-            for verifying query results
+            for verifying query results and reporting benchmarks on this
+            ('noshard' results)
 
     Returns:
         tuple (split, full) where each is a tuple giving information on the
@@ -201,19 +208,30 @@ def query_for_taxonomy(ts_0, ts_1, ts_full, taxid, kmer_sample_size=100,
 
     # Query each k-mer at different parameters (but all with G-U pairing)
     split_has_hit = {}
+    split_num_results = {}
     split_perf_num_nodes_visited = {}
     split_perf_runtime = {}
     full_has_hit = {}
+    full_num_results = {}
     full_perf_num_nodes_visited = {}
     full_perf_runtime = {}
-    gu_pairing = True
-    for m in [0, 1, 2, 3, 4, 5]:
+    noshard_has_hit = {}
+    noshard_num_results = {}
+    noshard_perf_num_nodes_visited = {}
+    noshard_perf_runtime = {}
+    def evaluate_for_params(gu_pairing, m):
         split_has_hit_for_params = []
+        split_num_results_for_params = []
         split_perf_num_nodes_visited_for_params = []
         split_perf_runtime_for_params = []
         full_has_hit_for_params = []
+        full_num_results_for_params = []
         full_perf_num_nodes_visited_for_params = []
         full_perf_runtime_for_params = []
+        noshard_has_hit_for_params = []
+        noshard_num_results_for_params = []
+        noshard_perf_num_nodes_visited_for_params = []
+        noshard_perf_runtime_for_params = []
         for kmer in taxid_kmers_sample:
             ##########
             # Benchmark the approach that splits a 28-mer into two halves
@@ -233,7 +251,6 @@ def query_for_taxonomy(ts_0, ts_1, ts_full, taxid, kmer_sample_size=100,
                 sigs1 = split_signatures_with_mismatches(kmer, 0, m_half)
                 sigs2 = split_signatures_with_mismatches(kmer, 1, m_half)
 
-            num_results = 0
             num_nodes_visited = 0
             all_results = []
 
@@ -255,29 +272,44 @@ def query_for_taxonomy(ts_0, ts_1, ts_full, taxid, kmer_sample_size=100,
                         q_results, q_num_nodes_visited = t.query(
                                 q, mismatches=m, gu_pairing=gu_pairing,
                                 mismatches_to_level=(m_half, 13))
-                        num_results += len(q_results)
                         num_nodes_visited += q_num_nodes_visited
                         all_results.extend(q_results)
 
             end_time = time.time()
 
-            # num_results can overcount because the same result (hit) can
-            # appear for queries from both the first and second half of the
-            # kmer; instead, simply count whether this kmer had a hit
+            # Just adding up len(q_results) above can overcount because the
+            # same result (hit) can appear for queries from both the first and
+            # second half of the kmer; instead, simply compute the length
+            # of the union of all_results
+            results_of_queries = benchmark.KmerLeaf.union(all_results)
+            num_results = len(results_of_queries)
             has_hit = int(num_results > 0)
 
-            # Verify the results
+            split_has_hit_for_params += [has_hit]
+            split_num_results_for_params += [num_results]
+            split_perf_num_nodes_visited_for_params += [num_nodes_visited]
+            split_perf_runtime_for_params += [end_time - start_time]
+            ##########
+
+            ##########
+            # Verify the results and benchmark the simple/no-sharding approach
             if t_for_verification is not None:
-                true_results, _ = t_for_verification.query(
+                start_time = time.time()
+                true_results, num_nodes_visited = t_for_verification.query(
                         kmer, mismatches=m, gu_pairing=gu_pairing)
+                end_time = time.time()
+
                 true_results = benchmark.KmerLeaf.union(true_results)
-                results_of_queries = benchmark.KmerLeaf.union(all_results)
                 if results_of_queries != true_results:
                     raise Exception(("Trie verification failed (split approach)"))
 
-            split_has_hit_for_params += [has_hit]
-            split_perf_num_nodes_visited_for_params += [num_nodes_visited]
-            split_perf_runtime_for_params += [end_time - start_time]
+                num_results = len(true_results)
+                has_hit = int(num_results > 0)
+
+                noshard_has_hit_for_params += [has_hit]
+                noshard_num_results_for_params += [num_results]
+                noshard_perf_num_nodes_visited_for_params += [num_nodes_visited]
+                noshard_perf_runtime_for_params += [end_time - start_time]
             ##########
 
             ##########
@@ -287,7 +319,6 @@ def query_for_taxonomy(ts_0, ts_1, ts_full, taxid, kmer_sample_size=100,
             start_time = time.time()
 
             all_results = []
-            num_results = 0
             num_nodes_visited = 0
 
             sigs = full_signatures_with_mismatches(kmer, m)
@@ -300,31 +331,42 @@ def query_for_taxonomy(ts_0, ts_1, ts_full, taxid, kmer_sample_size=100,
                     q = kmer
                     q_results, q_num_nodes_visited = t.query(
                             q, mismatches=m, gu_pairing=gu_pairing)
-                    num_results += len(q_results)
                     num_nodes_visited += q_num_nodes_visited
                     all_results.extend(q_results)
 
             end_time = time.time()
 
+            results_of_queries = benchmark.KmerLeaf.union(all_results)
+            num_results = len(results_of_queries)
             has_hit = int(num_results > 0)
 
             # Verify the results
             if t_for_verification is not None:
-                results_of_queries = benchmark.KmerLeaf.union(all_results)
                 if results_of_queries != true_results:
                     raise Exception(("Trie verification failed (full approach)"))
 
             full_has_hit_for_params += [has_hit]
+            full_num_results_for_params += [num_results]
             full_perf_num_nodes_visited_for_params += [num_nodes_visited]
             full_perf_runtime_for_params += [end_time - start_time]
             ##########
 
         split_has_hit[(gu_pairing, m)] = split_has_hit_for_params
+        split_num_results[(gu_pairing, m)] = split_num_results_for_params
         split_perf_num_nodes_visited[(gu_pairing, m)] = split_perf_num_nodes_visited_for_params
         split_perf_runtime[(gu_pairing, m)] = split_perf_runtime_for_params
         full_has_hit[(gu_pairing, m)] = full_has_hit_for_params
+        full_num_results[(gu_pairing, m)] = full_num_results_for_params
         full_perf_num_nodes_visited[(gu_pairing, m)] = full_perf_num_nodes_visited_for_params
         full_perf_runtime[(gu_pairing, m)] = full_perf_runtime_for_params
+        noshard_has_hit[(gu_pairing, m)] = noshard_has_hit_for_params
+        noshard_num_results[(gu_pairing, m)] = noshard_num_results_for_params
+        noshard_perf_num_nodes_visited[(gu_pairing, m)] = noshard_perf_num_nodes_visited_for_params
+        noshard_perf_runtime[(gu_pairing, m)] = noshard_perf_runtime_for_params
+
+    for gu_pairing in [False, True]:
+        for m in [0, 1, 2, 3, 4, 5, 6]:
+            evaluate_for_params(gu_pairing, m)
 
     # Unmask taxid
     logging.info("Unmasking taxid %d", taxid)
@@ -334,10 +376,12 @@ def query_for_taxonomy(ts_0, ts_1, ts_full, taxid, kmer_sample_size=100,
     if t_for_verification is not None:
         t_for_verification.unmask_all()
 
-    return ((split_has_hit,
+    return ((split_has_hit, split_num_results,
                 split_perf_num_nodes_visited, split_perf_runtime),
-            (full_has_hit,
-                full_perf_num_nodes_visited, full_perf_runtime))
+            (full_has_hit, full_num_results,
+                full_perf_num_nodes_visited, full_perf_runtime),
+            (noshard_has_hit, noshard_num_results,
+                noshard_perf_num_nodes_visited, noshard_perf_runtime))
 
 
 def benchmark_queries_across_taxonomies(ts_0, ts_1, ts_full, tax_ids, out_tsv,
@@ -353,7 +397,7 @@ def benchmark_queries_across_taxonomies(ts_0, ts_1, ts_full, tax_ids, out_tsv,
         out_tsv: path to TSV file to which to write benchmark results
         tax_ids_to_sample: number of tax ids to sample
         t_for_verification: if set, a basic trie with all 28-mers to use
-            for verifying query results
+            for verifying query results and benchmarking
     """
     if tax_ids_to_sample is not None:
         tax_ids_to_insert = set(random.sample(tax_ids.keys(), tax_ids_to_sample))
@@ -369,15 +413,22 @@ def benchmark_queries_across_taxonomies(ts_0, ts_1, ts_full, tax_ids, out_tsv,
         if x is None:
             # No k-mers for taxid
             continue
-        split_info, full_info = x
-        split_has_hit, split_perf_num_nodes_visited, split_perf_runtime = split_info
-        full_has_hit, full_perf_num_nodes_visited, full_perf_runtime = full_info
+        split_info, full_info, noshard_info = x
+        split_has_hit, split_num_results, split_perf_num_nodes_visited, split_perf_runtime = split_info
+        full_has_hit, full_num_results, full_perf_num_nodes_visited, full_perf_runtime = full_info
+        noshard_has_hit, noshard_num_results, noshard_perf_num_nodes_visited, noshard_perf_runtime = noshard_info
         for benchmark_name, d in [('split_approach_has_hit', split_has_hit),
+                ('split_approach_num_results', split_num_results),
                 ('split_approach_nodes_visited', split_perf_num_nodes_visited),
                 ('split_approach_runtime', split_perf_runtime),
                 ('full_approach_has_hit', full_has_hit),
+                ('full_approach_num_results', full_num_results),
                 ('full_approach_nodes_visited', full_perf_num_nodes_visited),
-                ('full_approach_runtime', full_perf_runtime)]:
+                ('full_approach_runtime', full_perf_runtime),
+                ('noshard_approach_has_hit', noshard_has_hit),
+                ('noshard_approach_num_results', noshard_num_results),
+                ('noshard_approach_nodes_visited', noshard_perf_num_nodes_visited),
+                ('noshard_approach_runtime', noshard_perf_runtime)]:
             for gu_pairing, mismatches in d.keys():
                 for v in d[(gu_pairing, mismatches)]:
                     benchmark_results += [(tax_name, benchmark_name,
