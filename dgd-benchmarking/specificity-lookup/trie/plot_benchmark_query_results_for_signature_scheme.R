@@ -79,15 +79,26 @@ benchmarks <- read.table(gzfile(IN.TABLE), header=TRUE, sep="\t")
 names(benchmarks) <- gsub("_", ".", names(benchmarks))
 
 
-# Make a column giving the approach as either 'full' (do not break into
-# two 14-mers) or 'split' (break 28-mer into two 14-mers and compute
-# signature from each)
+# Make a column giving the approach as either 'full' (shard based on 28-mers;
+# do not break into two 14-mers and compute signature on full 28-mer) or
+# 'split' (shard based on 14-mers; break 28-mer into two 14-mers and compute
+# signature from each) or 'noshard' (no sharding; just use a single large,
+# regular trie)
+# Use 'other' just in case but there should not be any 'other'
 # The approach is the prefix of the benchmark value
-benchmarks$approach.type <- ifelse(grepl("^full_approach", benchmarks$benchmark), "full", "split")
+benchmarks$approach.type <- ifelse(grepl("^full_approach", benchmarks$benchmark),
+                                   "full",
+                                   ifelse(grepl("^split_approach", benchmarks$benchmark),
+                                          "split",
+                                          ifelse(grepl("^noshard_approach", benchmarks$benchmark),
+                                                 "noshard",
+                                                 "other")
+                                          )
+                                   )
 
-# Remove the name of the approach ('full_approach' or 'split_approach') from
-# the 'benchmark' column
-benchmarks$benchmark <- str_replace_all(benchmarks$benchmark, "^(full|split)_approach_", "")
+# Remove the name of the approach ('full_approach' or 'split_approach' or
+# 'noshard_approach') from the 'benchmark' column
+benchmarks$benchmark <- str_replace_all(benchmarks$benchmark, "^(full|split|noshard)_approach_", "")
 
 # Summarize the value across the randomly sampled k-mers for each
 # taxonomy and 'experiment' (so there will be a value for each 'experiment'
@@ -96,21 +107,37 @@ benchmarks.summary <- summarySE(benchmarks,
                                 measurevar="value",
                                 groupvars=c("tax.name", "benchmark",
                                             "approach.type",
+                                            "gu.pairing",
                                             "mismatches"))
 
 
-plot.benchmark.violin <- function(benchmark.name, y.lab, log10, add1, y.lim) {
+plot.benchmark.violin <- function(benchmark.name, title, y.lab, no.shard.only, gu.pairing.only,
+                                  log10, add1, y.lim, violin.position) {
     # Args:
-    #   benchmark.name: name of benchmark to plot ('has.hit', 'nodes_visited',
-    #       'runtime')
+    #   benchmark.name: name of benchmark to plot ('has.hit', 'num.results',
+    #       'nodes_visited', 'runtime')
+    #   title: plot title
     #   y.lab: y-axis label
+    #   no.shard.only: FALSE/TRUE indicating whether to only show results
+    #       from the no-sharding approach
+    #   gu.pairing.only: FALSE/TRUE indicating whether to only show results
+    #       with GU pairing
     #   log10: FALSE/TRUE indicating whether to plot y-axis on log10 scale
     #   add1: FALSE/TRUE indicating whether to add 1 to all values
     #   y.lim: y-axis limits
+    #   violin.position: "identity" for the violin plots to be overlayed
+    #       or "dodge" for them to be adjacent to each other
 
     # Pull out values for the given benchmark
     benchmarks.to.plot <- benchmarks.summary[benchmarks.summary$benchmark == benchmark.name, ]
     benchmarks.to.plot$mismatches <- factor(benchmarks.to.plot$mismatches)
+
+    if (no.shard.only) {
+        benchmarks.to.plot <- benchmarks.to.plot[benchmarks.to.plot$approach.type == "noshard", ]
+    }
+    if (gu.pairing.only) {
+        benchmarks.to.plot <- benchmarks.to.plot[benchmarks.to.plot$gu.pairing == "True", ]
+    }
 
     if (add1) {
         benchmarks.to.plot$value <- 1 + benchmarks.to.plot$value
@@ -125,30 +152,57 @@ plot.benchmark.violin <- function(benchmark.name, y.lab, log10, add1, y.lim) {
     # to each other
     # Note that this assumes gu.pairing is TRUE for all (if not, it will just
     # combine across FALSE/TRUE for gu.pairing)
-    p <- p + geom_violin(aes(x=mismatches, y=value, fill=approach.type, color=approach.type),
-                         alpha=0.5, position="identity")
+    p <- p + geom_violin(aes(x=mismatches, y=value, fill=interaction(gu.pairing, approach.type)),
+                         alpha=0.5, position=violin.position)
     if (log10) {
         p <- p + scale_y_log10(limits=y.lim)
     } else {
         p <- p + ylim(y.lim)
     }
+    p <- p + ggtitle(title)
     p <- p + xlab("Mismatches") + ylab(y.lab)
-    p <- p + labs(fill="Approach type", color="Approach type")
+    p <- p + labs(fill="GU pairing / approach type")
+    p <- p + theme_bw()
 
     return(p)
 }
 
 
-# Make a plot for each benchmark
-p.has.hit <- plot.benchmark.violin("has_hit", "Fraction of queries with hit",
-                                   FALSE, FALSE, c(0,1))
-p.nodes.visited <- plot.benchmark.violin("nodes_visited", "Number of nodes visited",
-                                         TRUE, FALSE, c(1,1e6))
-p.runtime <- plot.benchmark.violin("runtime", "Runtime (sec)",
-                                   TRUE, FALSE, c(1e-06,1))
+# Make plots with just the no-sharding approach to demonstrate effect
+# of GU pairing
+p.noshard.has.hit <- plot.benchmark.violin("has_hit", "No sharding: effect of GU pairing on having a hit",
+                                           "Fraction of queries with hit",
+                                           TRUE, FALSE, FALSE, FALSE, c(0,1), "dodge")
+p.noshard.num.results <- plot.benchmark.violin("num_results", "No sharding: effect of GU pairing on number of results",
+                                               "1 + Number of results",
+                                               TRUE, FALSE, TRUE, TRUE, c(1, 1e4), "dodge")
+p.noshard.nodes.visited <- plot.benchmark.violin("nodes_visited", "No sharding: effect of GU pairing on nodes visited",
+                                                 "1 + Number of nodes visited",
+                                                 TRUE, FALSE, TRUE, TRUE, c(1,1e6), "identity")
+p.noshard.runtime <- plot.benchmark.violin("runtime", "No sharding: effect of GU pairing on runtime",
+                                           "Runtime (sec)",
+                                           TRUE, FALSE, TRUE, FALSE, c(1e-06,10), "identity")
 
-ggsave(OUT.PDF, arrangeGrob(p.has.hit, p.nodes.visited, p.runtime, ncol=1),
-       width=8, height=16, useDingbats=FALSE)
+# Make plots with all approaches, but only with GU pairing=TRUE
+p.all.has.hit <- plot.benchmark.violin("has_hit", "Sharding approaches: effect on having a hit",
+                                       "Fraction of queries with hit",
+                                       FALSE, TRUE, FALSE, FALSE, c(0,1), "dodge")
+p.all.num.results <- plot.benchmark.violin("num_results", "Sharding approaches: effect on number of results",
+                                           "1 + Number of results",
+                                           FALSE, TRUE, TRUE, TRUE, c(1, 1e4), "dodge")
+p.all.nodes.visited <- plot.benchmark.violin("nodes_visited", "Sharding approaches: effect on number of nodes visited",
+                                             "1 + Number of nodes visited",
+                                             FALSE, TRUE, TRUE, TRUE, c(1,1e6), "identity")
+p.all.runtime <- plot.benchmark.violin("runtime", "Sharding approaches: effect on runtime",
+                                       "Runtime (sec)",
+                                       FALSE, TRUE, TRUE, FALSE, c(1e-06,10), "identity")
+
+ggsave(OUT.PDF, arrangeGrob(p.noshard.has.hit, p.all.has.hit,
+                            p.noshard.num.results, p.all.num.results,
+                            p.noshard.nodes.visited, p.all.nodes.visited,
+                            p.noshard.runtime, p.all.runtime,
+                            ncol=2),
+       width=16, height=16, useDingbats=FALSE)
 
 # Remove the empty Rplots.pdf created above
 file.remove("Rplots.pdf")
