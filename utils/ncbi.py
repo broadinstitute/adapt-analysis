@@ -1,9 +1,9 @@
 """Utilities for downloading from NCBI.
 
-This is just a wrapper around the ncbi_neighbors module from dgd.
+This is just a wrapper around the ncbi_neighbors module from adapt.
 """
 
-from dxguidedesign.prepare import ncbi_neighbors
+from adapt.prepare import ncbi_neighbors
 
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
