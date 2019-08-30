@@ -13,7 +13,7 @@ __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
 def main(args):
     # Read input fasta
-    seqs = seq_io.read_fasta(args.in_fasta)
+    seqs = seq_io.read_fasta(args.in_fasta, skip_gaps=False)
 
     # Determine which sequence headers will be in the output
     names_to_sample = random.choices(list(seqs.keys()), k=args.num_seqs)
