@@ -16,7 +16,7 @@ library(grid)
 library(tidyr)
 
 
-taxonomies <- list.files(path=".", pattern="tax-*")
+taxonomies <- list.files(path=".", pattern="^tax-*")
 
 args <- commandArgs(trailingOnly=TRUE)
 out.pdf <- args[1]

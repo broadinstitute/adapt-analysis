@@ -3,7 +3,7 @@
 # Make designs to use for comparing performance against baseline (naive) designs.
 #
 # To make a more clear comparison to naive designs (which design one guide per
-# window), this only uses dgd with the sliding window approach.
+# window), this only uses adapt with the sliding window approach.
 #
 # Author: Hayden Metsky <hayden@mit.edu>
 
@@ -42,8 +42,9 @@ function run_for_taxid() {
     mkdir -p $outdir/input-alns
     mkdir -p $outdir/designs
 
+    conda activate adapt
+
     # Fetch accessions and create table of them
-    conda activate data-analysis
     if [ ! -f $outdir/accessions.tsv ]; then
         python ../scripts/find_year_for_accessions.py $taxid $segment | awk -v taxid="$taxid" -v segment="$segment" '{print taxid"\t"segment"\t"$1}' | sort | uniq > $outdir/accessions.tsv
     fi
@@ -51,7 +52,6 @@ function run_for_taxid() {
     # Run design.py to create an alignment from all the sequences; continue with
     # the sliding-window design approach (using a window size equal to guide size
     # so it's fast), but ignore the output
-    conda activate dgd
     design.py sliding-window auto-from-args $taxid $segment $refaccs /tmp/design-for-aln.tsv --window-size $ARG_GL -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --write-input-aln $outdir/input-alns/all-accessions.fasta --verbose &> $outdir/input-alns/all-accessions.out
     rm /tmp/design-for-aln.tsv.0
     # The output alignment will have a `.0` suffix because it corresponds to the
@@ -73,9 +73,6 @@ function run_for_taxid() {
     for i in $(seq 1 $NUM_DESIGNS); do
         python ../scripts/randomly_sample_fasta.py $outdir/input-alns/all-accessions.fasta $sample_size $outdir/input-alns/design-${i}.fasta
     done
-
-    # Activate environment for design
-    conda activate dgd
 
     # Write commands to a file
     commands_fn="/tmp/commands-designs-${taxid}_${segment}"
@@ -111,5 +108,14 @@ run_for_taxid "64320" "None" "NC_035889,NC_012532"
 # Run for Lassa virus, S segment
 run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
 
-# Run for Hepatitis C virus (Hepacivirus C)
+# Run for Ebola virus (Zaire)
+run_for_taxid "186538" "None" "NC_002549"
+
+# Run for Nipah virus
+run_for_taxid "121791" "None" "NC_002728"
+
+# Run for HIV-1
+run_for_taxid "11676" "None" "NC_001802"
+
+# Run for HCV
 run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
