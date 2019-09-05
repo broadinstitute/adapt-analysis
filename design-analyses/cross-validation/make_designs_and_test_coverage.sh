@@ -16,7 +16,7 @@ NUM_DESIGNS=100
 DESIGN_SET_FRACTION=0.8 # Use 80% of accessions as input for design; test against remaining 20%
 
 # Set variables for design
-NJOBS=8
+NJOBS=36
 PREP_MEMOIZE_DIR="/ebs/dgd-analysis/prep-memoize-dir"
 MAFFT_PATH="/home/hayden/viral-ngs/viral-ngs-etc/conda-env/bin/mafft"
 CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
@@ -52,13 +52,12 @@ function run_for_taxid() {
     mkdir -p $outdir/designs/designs
     mkdir -p $outdir/designs/coverages
 
+    conda activate adapt
+
     # Fetch accessions and create table of them
-    conda activate data-analysis
     if [ ! -f $outdir/accessions.all-years.tsv ]; then
         python ../scripts/find_year_for_accessions.py $taxid $segment | awk -v taxid="$taxid" -v segment="$segment" '{print taxid"\t"segment"\t"$1}' | sort | uniq > $outdir/accessions.tsv
     fi
-
-    conda activate dgd
 
     # Determine number of accessions in the design set (rounded to nearest integer)
     total_num_acc=$(cat $outdir/accessions.tsv | wc -l)
@@ -102,3 +101,15 @@ run_for_taxid "64320" "None" "NC_035889,NC_012532"
 
 # Run for Lassa virus, S segment
 run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
+
+# Run for Ebola virus (Zaire)
+run_for_taxid "186538" "None" "NC_002549"
+
+# Run for Nipah virus
+run_for_taxid "121791" "None" "NC_002728"
+
+# Run for HIV-1
+run_for_taxid "11676" "None" "NC_001802"
+
+# Run for HCV
+run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
