@@ -4,7 +4,8 @@ The key results are produced by `benchmark_trie_signatures.py` and plotted by
 `benchmark_trie_signatures.py`: it produces signatures from 14 or 28-mers and
 shards the 28-mers based on the signatures. The same Python script also records
 and reports benchmark results on a single, regular trie (no sharding), and the
-R script plots these results as well.
+R script plots these results as well. The key output results are in
+`out/benchmark-queries-signature-subsample-{subset}.{tsv.gz,pdf}`.
 
 Note that `benchmark.py` benchmarks on a single, regular trie, but the
 advantage to doing it in `benchmark_trie_signatures.py` as well is that it
