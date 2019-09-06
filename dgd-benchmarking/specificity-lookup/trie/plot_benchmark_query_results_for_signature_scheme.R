@@ -12,6 +12,7 @@ require(ggplot2)
 require(reshape2)
 require(gridExtra)
 require(stringr)
+require(viridis)
 
 args <- commandArgs(trailingOnly=TRUE)
 subsampled.size <- args[1]
@@ -150,10 +151,13 @@ plot.benchmark.violin <- function(benchmark.name, title, y.lab, no.shard.only, g
     # Use `position="identity"` so that the full vs. split approaches are
     # shown together (overlayed); otherwise, they would be adjacent (dodge)
     # to each other
+    # Use `color=NA` to avoid the outline of each violin
     # Note that this assumes gu.pairing is TRUE for all (if not, it will just
     # combine across FALSE/TRUE for gu.pairing)
     p <- p + geom_violin(aes(x=mismatches, y=value, fill=interaction(gu.pairing, approach.type)),
-                         alpha=0.5, position=violin.position)
+                         alpha=0.8, position=violin.position, color=NA,
+                         scale="width")
+    p <- p + scale_fill_viridis(discrete=TRUE)
     if (log10) {
         p <- p + scale_y_log10(limits=y.lim)
     } else {
@@ -178,7 +182,7 @@ p.noshard.num.results <- plot.benchmark.violin("num_results", "No sharding: effe
                                                TRUE, FALSE, TRUE, TRUE, c(1, 1e4), "dodge")
 p.noshard.nodes.visited <- plot.benchmark.violin("nodes_visited", "No sharding: effect of GU pairing on nodes visited",
                                                  "1 + Number of nodes visited",
-                                                 TRUE, FALSE, TRUE, TRUE, c(1,1e6), "identity")
+                                                 TRUE, FALSE, TRUE, TRUE, c(1,1e7), "identity")
 p.noshard.runtime <- plot.benchmark.violin("runtime", "No sharding: effect of GU pairing on runtime",
                                            "Runtime (sec)",
                                            TRUE, FALSE, TRUE, FALSE, c(1e-06,10), "identity")
@@ -192,7 +196,7 @@ p.all.num.results <- plot.benchmark.violin("num_results", "Sharding approaches: 
                                            FALSE, TRUE, TRUE, TRUE, c(1, 1e4), "dodge")
 p.all.nodes.visited <- plot.benchmark.violin("nodes_visited", "Sharding approaches: effect on number of nodes visited",
                                              "1 + Number of nodes visited",
-                                             FALSE, TRUE, TRUE, TRUE, c(1,1e6), "identity")
+                                             FALSE, TRUE, TRUE, TRUE, c(1,1e7), "identity")
 p.all.runtime <- plot.benchmark.violin("runtime", "Sharding approaches: effect on runtime",
                                        "Runtime (sec)",
                                        FALSE, TRUE, TRUE, FALSE, c(1e-06,10), "identity")
