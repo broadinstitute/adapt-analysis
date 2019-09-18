@@ -14,6 +14,7 @@ library(gridExtra)
 library(reshape2)
 library(grid)
 library(tidyr)
+library(viridis)
 
 
 taxonomies <- list.files(path=".", pattern="^tax-*")
@@ -180,7 +181,6 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
     # Also leave out the x-axis title/ticks/text
     p1 <- p1 + theme_bw()
     p1 <- p1 + theme(strip.background=element_blank(),
-                     panel.grid.major=element_blank(),
                      panel.grid.minor=element_blank(),
                      panel.border=element_rect(colour="black"),
                      plot.title=element_text(size=12),
@@ -221,7 +221,6 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
     # Leave out usual ggplot2 background and grid lines, but keep border
     p2 <- p2 + theme_bw()
     p2 <- p2 + theme(strip.background=element_blank(),
-                     panel.grid.major=element_blank(),
                      panel.grid.minor=element_blank(),
                      panel.border=element_rect(colour="black"),
                      plot.title=element_blank())
@@ -233,6 +232,12 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
                  max(real.dist.summary$window.start))
     p1 <- p1 + scale_x_continuous(limits=c(x.min, x.max))
     p2 <- p2 + scale_x_continuous(limits=c(x.min, x.max))
+
+    # Use viridis color map for both plots
+    p1 <- p1 + scale_color_viridis(discrete=TRUE)
+    p1 <- p1 + scale_fill_viridis(discrete=TRUE)
+    p2 <- p2 + scale_color_viridis(discrete=TRUE)
+    p2 <- p2 + scale_fill_viridis(discrete=TRUE)
 
     # Place p1 on top of p2, and draw the plot
     grid.newpage()

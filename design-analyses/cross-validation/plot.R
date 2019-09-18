@@ -44,11 +44,12 @@ plot.violin <- function(filename, title) {
     # that all violins have the same width
     p <- p + geom_violin(trim=TRUE,
                          scale="width",
-                         adjust=2)
+                         adjust=2,
+                         fill="lightgray")
 
     # Add a bar with the mean +/- 1 std deviation (1 because mult=1)
     p <- p + stat_summary(fun.data="mean_sdl", fun.args=list(mult=1),
-                          geom="pointrange", color="lightgray")
+                          geom="pointrange", color="darkgray")
 
     # Add title to plot and axis labels
     p <- p + ggtitle(title)
@@ -58,7 +59,6 @@ plot.violin <- function(filename, title) {
     # Use aspect.ratio=1 to make the plot square
     p <- p + theme_bw()
     p <- p + theme(strip.background=element_blank(),
-                   panel.grid.major=element_blank(),
                    panel.grid.minor=element_blank(),
                    panel.border=element_rect(colour="black"),
                    aspect.ratio=1,

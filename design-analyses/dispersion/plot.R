@@ -41,11 +41,12 @@ plot.violin <- function(filename, title) {
     # that all violins have the same width
     p <- p + geom_violin(trim=TRUE,
                          scale="width",
-                         adjust=2)
+                         adjust=2,
+                         fill="lightgray")
 
     # Add a bar with the mean +/- 1 std deviation (1 because mult=1)
     p <- p + stat_summary(fun.data="mean_sdl", fun.args=list(mult=1),
-                          geom="pointrange", color="lightgray")
+                          geom="pointrange", color="darkgray")
 
     # Add title to plot and axis labels
     p <- p + ggtitle(title)
