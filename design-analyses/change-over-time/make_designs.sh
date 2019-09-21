@@ -48,14 +48,13 @@ function run_for_taxid() {
     outdir="tax-${taxid}_${segment}"
     mkdir -p $outdir
 
+    # Activate environment for design
+    conda activate adapt
+
     # Fetch accessions and create table of them
-    conda activate data-analysis
     if [ ! -f $outdir/accessions.all-years.tsv ]; then
         python ../scripts/find_year_for_accessions.py $taxid $segment | awk -v taxid="$taxid" -v segment="$segment" '{print taxid"\t"segment"\t"$1"\t"$2}' | sort | uniq > $outdir/accessions.all-years.tsv
     fi
-
-    # Activate environment for design
-    conda activate dgd
 
     # Write commands to a file
     commands_fn="/tmp/commands-designs-${taxid}_${segment}"
@@ -91,3 +90,16 @@ run_for_taxid "64320" "None" "NC_035889,NC_012532"
 
 # Run for Lassa virus, S segment
 run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
+
+# Run for Ebola virus (Zaire)
+run_for_taxid "186538" "None" "NC_002549"
+
+# Run for Nipah virus
+run_for_taxid "121791" "None" "NC_002728"
+
+# Run for HIV-1
+# Skip - this is very memory intensive
+#run_for_taxid "11676" "None" "NC_001802"
+
+# Run for HCV
+run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"

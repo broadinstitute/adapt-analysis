@@ -12,9 +12,10 @@
 library(ggplot2)
 library(gridExtra)
 library(reshape2)
+library(viridis)
 
 
-taxonomies <- list.files(path=".", pattern="tax-*")
+taxonomies <- list.files(path=".", pattern="^tax-*")
 
 args <- commandArgs(trailingOnly=TRUE)
 out.pdf <- args[1]
@@ -118,8 +119,8 @@ plot.coverage.per.design.per.year <- function(taxonomy, filename, title) {
     # Be sure to show a label for each value on the x-axis
     #p <- p + scale_x_continuous(breaks=dist.summary$coverage.against.year.factor)
 
-    # Label the color legend
-    p <- p + scale_color_discrete(name="Design in\nyear") 
+    # Use viridis color map and label the color legend
+    p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear") 
 
     # Make sure the y-axis goes up to 100%; show marks every 10%
     ci.lower.min <- min(dist.summary$coverage - dist.summary$ci)
@@ -133,7 +134,6 @@ plot.coverage.per.design.per.year <- function(taxonomy, filename, title) {
     # Leave out usual ggplot2 background and grid lines, but keep border
     p <- p + theme_bw()
     p <- p + theme(strip.background=element_blank(),
-                   panel.grid.major=element_blank(),
                    panel.grid.minor=element_blank(),
                    panel.border=element_rect(colour="black"),
                    plot.title=element_text(size=12))

@@ -8,7 +8,7 @@
 # Allow activating conda environments
 source ~/anaconda3/etc/profile.d/conda.sh
 
-conda activate dgd
+conda activate adapt
 
 # Set variables for design
 NJOBS=8
@@ -95,7 +95,20 @@ function run_for_taxid() {
 
 
 # Run for Zika virus
-run_for_taxid "64320" "None"
+run_for_taxid "64320" "None" "NC_035889,NC_012532"
 
 # Run for Lassa virus, S segment
-run_for_taxid "11620" "S"
+run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
+
+# Run for Ebola virus (Zaire)
+run_for_taxid "186538" "None" "NC_002549"
+
+# Run for Nipah virus
+run_for_taxid "121791" "None" "NC_002728"
+
+# Run for HIV-1
+# Skip - this is very memory intensive
+#run_for_taxid "11676" "None" "NC_001802"
+
+# Run for HCV
+run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
