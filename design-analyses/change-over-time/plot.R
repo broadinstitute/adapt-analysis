@@ -135,7 +135,9 @@ plot.coverage.per.design.per.year <- function(taxonomy, filename, title) {
     # Leave out usual ggplot2 background and grid lines, but keep border
     p <- p + theme_bw()
     p <- p + theme(strip.background=element_blank(),
-                   panel.grid.major=element_blank(),
+                   panel.grid.major.x=element_blank(),
+                   panel.grid.minor.x=element_blank(),
+                   panel.grid.minor.y=element_blank(),
                    panel.border=element_rect(colour="black"),
                    plot.title=element_text(size=12))
 
