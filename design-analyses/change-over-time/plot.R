@@ -13,6 +13,7 @@ library(ggplot2)
 library(gridExtra)
 library(reshape2)
 library(viridis)
+library(ggpubr)
 
 
 taxonomies <- list.files(path=".", pattern="^tax-*")
@@ -114,13 +115,13 @@ plot.coverage.per.design.per.year <- function(taxonomy, filename, title) {
                                  color=factor(design.up.to.year)),
                              size=0.5,
                              fatten=1,
-                             position=position_dodge(width=0.5))
+                             position=position_dodge(width=0.4))
 
     # Be sure to show a label for each value on the x-axis
     #p <- p + scale_x_continuous(breaks=dist.summary$coverage.against.year.factor)
 
     # Use viridis color map and label the color legend
-    p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear") 
+    p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear")
 
     # Make sure the y-axis goes up to 100%; show marks every 10%
     ci.lower.min <- min(dist.summary$coverage - dist.summary$ci)
@@ -134,7 +135,7 @@ plot.coverage.per.design.per.year <- function(taxonomy, filename, title) {
     # Leave out usual ggplot2 background and grid lines, but keep border
     p <- p + theme_bw()
     p <- p + theme(strip.background=element_blank(),
-                   panel.grid.minor=element_blank(),
+                   panel.grid.major=element_blank(),
                    panel.border=element_rect(colour="black"),
                    plot.title=element_text(size=12))
 
@@ -158,5 +159,7 @@ for (taxonomy in taxonomies) {
     i <- i + 1
 }
 
-g <- grid.arrange(grobs=taxonomy.plots)
-ggsave(out.pdf, g, width=8, height=8, useDingbats=FALSE)
+# Share a common legend (design.up.to.year) across the plots so that they are
+# on the same color scale (min/max)
+g <- ggarrange(plotlist=taxonomy.plots, ncol=2, nrow=3, common.legend=TRUE, legend="right")
+ggsave(out.pdf, g, width=16, height=16, useDingbats=FALSE)
