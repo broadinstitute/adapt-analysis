@@ -146,6 +146,11 @@ plot.benchmark.violin <- function(benchmark.name, title, y.lab, no.shard.only, g
 
     p <- ggplot(benchmarks.to.plot)
 
+    if (violin.position == "dodge") {
+        # Allow some width between the plots
+        violin.position <- position_dodge(width=0.5)
+    }
+
     # Show a violin plot for each value of mismatches, and a separate plot
     # (colored) for the full vs. split approach
     # Use `position="identity"` so that the full vs. split approaches are
