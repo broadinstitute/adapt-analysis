@@ -18,6 +18,7 @@ the most number of sequences.
 from collections import Counter
 from collections import defaultdict
 
+from adapt.prepare import align
 from adapt.prepare import ncbi_neighbors
 
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
@@ -29,6 +30,31 @@ OUTPUT_CUMULATIVE = 'data/counts-cumulative.tsv'
 
 START_YEAR = 2000
 END_YEAR = 2019
+
+
+def num_unique_kmers(accessions, k=31):
+    """Download sequences and count number of unique k-mers.
+
+    This uses k=31 by default, which is what kraken uses for metagenomic
+    classification.
+
+    Args:
+        accessions: list of accessions
+        k: k-mer size
+
+    Returns:
+        number of unique k-mers
+    """
+    accessions = list(accessions)
+    seqs_fp = ncbi_neighbors.fetch_fastas(accessions)
+    seqs = align.read_unaligned_seqs(seqs_fp)
+    all_kmers = set()
+    for accver, seq in seqs.items():
+        kmers = [seq[i:i+k] for i in range(len(seq) - k + 1)]
+        all_kmers |= set(kmers)
+    seqs_fp.close()
+
+    return len(all_kmers)
 
 
 def main():
@@ -101,43 +127,70 @@ def main():
         n += 1
         print("  Fetched metadata for {} for {} taxonomies".format(n, len(taxa)))
 
+    # Fetch sequences and compute number of unique k-mers
+    print("Determining number of unique k-mers")
+    n = 0
+    for taxid in taxa.keys():
+        taxon = taxa[taxid]
+
+        # Do this for the collection of accessions from each year
+        acc_for_year = defaultdict(set)
+        for acc, m in taxon['metadata'].items():
+            acc_year = m['entry_create_year']
+            acc_for_year[acc_year].add(acc)
+        nuk_for_year = defaultdict(int)
+        for year, accessions in acc_for_year.items():
+            nuk = num_unique_kmers(accessions)
+            nuk_for_year[year] = nuk
+        taxon['num_unique_kmers'] = nuk_for_year
+
+        n += 1
+        print("  Counted unique k-mers for {} for {} taxonomies".format(n, len(taxa)))
+
     # Write TSV
     print("Writing output TSVs")
     with open(OUTPUT_PER_YEAR, 'w') as fw:
         def write_row(row):
             fw.write('\t'.join(str(x) for x in row) + '\n')
 
-        header = ['taxid', 'family', 'genus', 'species', 'segment', 'year', 'count']
+        header = ['taxid', 'family', 'genus', 'species', 'segment', 'year',
+                'num_genomes', 'num_unique_kmers']
         write_row(header)
 
         for taxid in taxa.keys():
             taxon = taxa[taxid]
-            year_count = defaultdict(int)
+            year_genome_count = defaultdict(int)
             for acc, m in taxon['metadata'].items():
-                year_count[m['entry_create_year']] += 1
+                year_genome_count[m['entry_create_year']] += 1
             for year in range(START_YEAR, END_YEAR+1):
                 row = [taxid, taxon['family'], taxon['genus'],
                         taxon['species'], taxon['rep_segment'],
-                        year, year_count[year]]
+                        year, year_genome_count[year],
+                        taxon['num_unique_kmers'][year]]
                 write_row(row)
 
     with open(OUTPUT_CUMULATIVE, 'w') as fw:
         def write_row(row):
             fw.write('\t'.join(str(x) for x in row) + '\n')
 
-        header = ['taxid', 'family', 'genus', 'species', 'segment', 'year', 'cumulative_count']
+        header = ['taxid', 'family', 'genus', 'species', 'segment', 'year',
+                'cumulative_num_genomes', 'cumulative_num_unique_kmers']
         write_row(header)
 
         for taxid in taxa.keys():
             taxon = taxa[taxid]
             for year in range(START_YEAR, END_YEAR+1):
-                year_count = 0
+                year_genome_count = 0
                 for acc, m in taxon['metadata'].items():
                     if m['entry_create_year'] <= year:
-                        year_count += 1
+                        year_genome_count += 1
+                year_kmer_count = 0
+                for y, nuk in taxon['num_unique_kmers'].items():
+                    if y <= year:
+                        year_kmer_count += nuk
                 row = [taxid, taxon['family'], taxon['genus'],
                         taxon['species'], taxon['rep_segment'],
-                        year, year_count]
+                        year, year_genome_count, year_kmer_count]
                 write_row(row)
 
 
