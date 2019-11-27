@@ -31,8 +31,8 @@ summary.ns$num.primers.total.diff <- summary.ns$num.primers.total - summary.ns$n
 summary.ns$num.guides.diff <- summary.ns$num.guides - summary.ns$nonspecific.num.guides
 
 # Determine non-specific and specific colors
-nonspecific.pt.color <- viridis(2)[1]
-specific.pt.color <- viridis(2)[2]
+nonspecific.pt.color <- viridis(5)[1]
+specific.pt.color <- viridis(5)[4]
 
 # The dengue cost is so much larger than the others and throws off the
 # cost plot; bring down values > 3 by 2
@@ -41,8 +41,8 @@ summary.ns$nonspecific.cost <- ifelse(summary.ns$nonspecific.cost<=3, summary.ns
 
 # Plot non-specific and specific costs
 p <- ggplot(summary.ns, aes(x=name))
-p <- p + geom_point(aes(y=nonspecific.cost), color=nonspecific.pt.color)
-p <- p + geom_point(aes(y=cost), color=specific.pt.color)
+p <- p + geom_point(aes(y=nonspecific.cost), color=nonspecific.pt.color, size=4)
+p <- p + geom_point(aes(y=cost), color=specific.pt.color, size=4)
 p <- p + ylab("Cost") + xlab("Species")
 p <- p + scale_y_continuous(breaks=c(2.5,3,3.5,4), labels=c(2.5,3,5.5,6), limits=c(2.5,4))  # accommodate high dengue cost value by inserting break
 p <- p + theme_bw(base_size=18) # bw & larger font sizes
@@ -53,8 +53,8 @@ ggsave("plots/costs.pdf", p, width=8, height=8, useDingbats=FALSE)
 
 # Plot non-specific and specific target lengths
 p <- ggplot(summary.ns, aes(x=name))
-p <- p + geom_point(aes(y=nonspecific.target.len), color=nonspecific.pt.color)
-p <- p + geom_point(aes(y=target.len), color=specific.pt.color)
+p <- p + geom_point(aes(y=nonspecific.target.len), color=nonspecific.pt.color, size=4)
+p <- p + geom_point(aes(y=target.len), color=specific.pt.color, size=4)
 p <- p + scale_y_continuous(breaks=c(80,90,100,110,120), limits=c(80,120))
 p <- p + ylab("Target length") + xlab("Species")
 p <- p + theme_bw(base_size=18) # bw & larger font sizes
@@ -65,8 +65,8 @@ ggsave("plots/target-len.pdf", p, width=8, height=8, useDingbats=FALSE)
 
 # Plot non-specific and specific total number of primers
 p <- ggplot(summary.ns, aes(x=name))
-p <- p + geom_point(aes(y=nonspecific.num.primers.total), color=nonspecific.pt.color)
-p <- p + geom_point(aes(y=num.primers.total), color=specific.pt.color)
+p <- p + geom_point(aes(y=nonspecific.num.primers.total), color=nonspecific.pt.color, size=4)
+p <- p + geom_point(aes(y=num.primers.total), color=specific.pt.color, size=4)
 p <- p + ylab("Total number of primers") + xlab("Species")
 p <- p + theme_bw(base_size=18) # bw & larger font sizes
 p <- p + theme(panel.grid.minor=element_blank(), # leave out minor grid
@@ -76,8 +76,8 @@ ggsave("plots/total-num-primers.pdf", p, width=8, height=8, useDingbats=FALSE)
 
 # Plot non-specific and specific number of guides
 p <- ggplot(summary.ns, aes(x=name))
-p <- p + geom_point(aes(y=nonspecific.num.guides), color=nonspecific.pt.color)
-p <- p + geom_point(aes(y=num.guides), color=specific.pt.color)
+p <- p + geom_point(aes(y=nonspecific.num.guides), color=nonspecific.pt.color, size=4)
+p <- p + geom_point(aes(y=num.guides), color=specific.pt.color, size=4)
 p <- p + scale_y_continuous(breaks=c(1,2,3,4,5,6))
 p <- p + ylab("Number of guides") + xlab("Species")
 p <- p + theme_bw(base_size=18) # bw & larger font sizes
