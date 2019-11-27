@@ -1,0 +1,15 @@
+Run via design.py with the following arguments:
+
+CLUSTER_THRESHOLD=0.20
+ARG_GL="28"
+ARG_GM="1"
+ARG_GP="0.99"
+ARG_PL="30"
+ARG_PM="3"
+ARG_PP="0.99"
+ARG_MAXPRIMERSATSITE="5"
+ARG_MAXTARGETLENGTH="250"
+ARG_COSTFNWEIGHTS="0.6667 0.2222 0.1111"
+ARG_BESTNTARGETS="2"
+
+[These should also be in design.out.gz]
