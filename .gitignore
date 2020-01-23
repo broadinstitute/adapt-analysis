@@ -139,3 +139,10 @@ ENV/
 ## /dgd-benchmarking/ ##
 /dgd-benchmarking/specificity-lookup/data/fastas/*
 ########################
+
+####################
+## /misc-designs/ ##
+####################
+/misc-designs/ncov/**/out/designs/*
+!/misc-designs/ncov/**/out/designs/*.tsv
+####################
