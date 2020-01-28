@@ -1,2 +1,2 @@
-# diagnostic-guide-design-analysis
-Analysis of data for SHERLOCK guide design.
+# ADAPT analysis
+ADAPT runs and data analyses.
