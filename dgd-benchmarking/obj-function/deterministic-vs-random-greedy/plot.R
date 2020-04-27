@@ -102,7 +102,7 @@ make.plot <- function(args) {
 
 pl <- map(list(c("sars-related-cov", 0.1), c("sars-related-cov", 0.5), c("rhinovirus-a", 0.1), c("rhinovirus-a", 0.5)), make.plot)
 g <- ggarrange(plotlist=pl, nrow=2, ncol=2, common.legend=TRUE)
-ggsave(OUT.PDF, g, device="pdf", width=16, height=16)
+ggsave(OUT.PDF, g, device="pdf", width=16, height=16, useDingbats=FALSE)
 
 # Remove the empty Rplots.pdf created above
 file.remove("Rplots.pdf")
