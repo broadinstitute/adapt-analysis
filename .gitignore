@@ -138,6 +138,8 @@ ENV/
 ########################
 ## /dgd-benchmarking/ ##
 /dgd-benchmarking/specificity-lookup/data/fastas/*
+/dgd-benchmarking/obj-function/deterministic-vs-random-greedy/designs/*
+/dgd-benchmarking/obj-function/deterministic-vs-random-greedy/out/*
 ########################
 
 ####################
