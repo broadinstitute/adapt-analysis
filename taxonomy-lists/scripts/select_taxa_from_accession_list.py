@@ -118,6 +118,29 @@ def read_force_exclude_taxa(fn):
     return lineages
 
 
+def read_taxids(fn):
+    """Read taxonomic IDs for each species.
+
+    Args:
+        fn: path to tsv
+
+    Returns:
+        dict {species name: taxid}
+    """
+    taxids = {}
+    with open(fn) as f:
+        for i, line in enumerate(f):
+            if i == 0:
+                # Header
+                continue
+            ls = line.rstrip().split('\t')
+            if len(ls) < 2 or len(ls[1].strip()) == 0:
+                # No taxid; skip
+                continue
+            taxids[ls[0]] = int(ls[1])
+    return taxids
+
+
 def lineage_refseqs(sequences):
     """Find RefSeqs for each lineage.
 
@@ -129,7 +152,7 @@ def lineage_refseqs(sequences):
     """
     r = defaultdict(set)
     for s in sequences:
-        r[s.lineage].add(s.representative)
+        r[(s.lineage, s.segment)].add(s.representative)
     return r
 
 
@@ -237,18 +260,18 @@ def main(args):
 
     sequences = read_genome_accession_list(args.accession_list,
             force_exclude_taxa=forced_exclude_taxa)
+    taxids = read_taxids(args.taxids)
 
     sequences = filter_by_host(sequences, force_include_taxa=forced_include_taxa,
             force_exclude_taxa=forced_exclude_taxa)
     sequences = filter_to_have_family(sequences)
 
-    segments = pick_segment(sequences)
     refseqs = lineage_refseqs(sequences)
     counts = count_seqs_per_lineage(sequences)
 
     lineages = sorted(list(set([s.lineage for s in sequences])))
     with open(args.out_tsv, 'w') as fw:
-        header = ['family', 'genus', 'species', 'segment', 'refseqs', 'neighbor-count']
+        header = ['family', 'genus', 'species', 'taxid', 'segment', 'refseqs', 'neighbor-count']
         fw.write('\t'.join(header) + '\n')
 
         for lineage in lineages:
@@ -262,22 +285,45 @@ def main(args):
                 family, genus, species = ls
             if genus == '':
                 genus = 'unknown'
-            rs = ','.join(list(refseqs[lineage]))
-            s = segments[lineage]
-            neighbor_count = counts[lineage][s]
-            if 'Influenza A virus' in species or 'Influenza B virus' in species:
-                # The accession list does not store their accessions
-                neighbor_count = 'NA'
 
-            row = [family, genus, species, s, rs, neighbor_count]
+            if species not in taxids:
+                # No reported taxid; skip it
+                continue
+            taxid = taxids[species]
 
-            fw.write('\t'.join(str(x) for x in row) + '\n')
+            segments = counts[lineage].keys()
+            for seg in segments:
+                rs = ','.join(list(refseqs[(lineage, seg)]))
+
+                neighbor_count = counts[lineage][seg]
+                if 'Influenza A virus' in species or 'Influenza B virus' in species:
+                    # The accession list does not store their accessions
+                    neighbor_count = 'NA'
+
+                # For influenza (an outlier), pick only 1 segment - the one we
+                # know should be most conserved
+                # Also manually specify RefSeq accessions
+                if 'Influenza A virus' in lineage:
+                    if seg != '2':
+                        continue
+                    rs = 'NC_026435,NC_002021,NC_007375,NC_026423,NC_007372'
+                elif 'Influenza B virus' in lineage:
+                    if seg != 'RNA 1' and seg != '1':
+                        continue
+                    seg = '1'
+                    rs = 'NC_002204,MG925358,MT314615'
+
+                row = [family, genus, species, taxid, seg, rs, neighbor_count]
+
+                fw.write('\t'.join(str(x) for x in row) + '\n')
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('accession_list',
         help=("Path to genome accession list, gzip'd"))
+    parser.add_argument('taxids',
+        help=("Path to TSV with taxonomic IDs for each species"))
     parser.add_argument('out_tsv',
         help=("Path to output TSV"))
 

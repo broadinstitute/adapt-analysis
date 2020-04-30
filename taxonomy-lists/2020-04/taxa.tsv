@@ -13,7 +13,7 @@ Adenoviridae	Aviadenovirus	Fowl aviadenovirus A	190061	None	NC_001720	4
 Adenoviridae	Aviadenovirus	Fowl aviadenovirus B	190062	None	NC_021221	1
 Adenoviridae	Aviadenovirus	Fowl aviadenovirus C	190063	None	NC_015323	38
 Adenoviridae	Aviadenovirus	Fowl aviadenovirus D	190064	None	NC_000899	12
-Adenoviridae	Aviadenovirus	Fowl aviadenovirus E	190065	None	NC_014969,NC_038332,NC_038332,NC_014969	10
+Adenoviridae	Aviadenovirus	Fowl aviadenovirus E	190065	None	NC_038332,NC_014969,NC_014969,NC_038332	10
 Adenoviridae	Aviadenovirus	Goose aviadenovirus A	1193420	None	NC_017979	1
 Adenoviridae	Aviadenovirus	Pigeon aviadenovirus A	1548417	None	NC_024474	1
 Adenoviridae	Aviadenovirus	Pigeon aviadenovirus B	2169708	None	NC_031503	1
@@ -24,7 +24,7 @@ Adenoviridae	Aviadenovirus	Turkey aviadenovirus D	1962302	None	NC_022613	1
 Adenoviridae	Mastadenovirus	Bat mastadenovirus	740971	None	NC_031948	1
 Adenoviridae	Mastadenovirus	Bat mastadenovirus A	1146877	None	NC_016895	2
 Adenoviridae	Mastadenovirus	Bat mastadenovirus B	1146874	None	NC_015932	2
-Adenoviridae	Mastadenovirus	Bat mastadenovirus C	2015370	None	NC_029899,NC_029902,NC_029898,NC_029902,NC_029898,NC_029899	2
+Adenoviridae	Mastadenovirus	Bat mastadenovirus C	2015370	None	NC_029902,NC_029898,NC_029899,NC_029899,NC_029902,NC_029898	2
 Adenoviridae	Mastadenovirus	Bat mastadenovirus D	2015372	None	NC_030860	1
 Adenoviridae	Mastadenovirus	Bat mastadenovirus E	2015374	None	NC_030874	1
 Adenoviridae	Mastadenovirus	Bat mastadenovirus F	2015375	None	NC_034626	1
@@ -87,12 +87,21 @@ Alloherpesviridae	Ictalurivirus	Acipenserid herpesvirus 2	320884	None	NC_043042	
 Alloherpesviridae	Ictalurivirus	Ictalurid herpesvirus 1	10401	None	NC_001493	1
 Alloherpesviridae	Ictalurivirus	Ictalurid herpesvirus 2	508441	None	NC_036579	1
 Amalgaviridae	unknown	Zygosaccharomyces bailii virus Z	114871	None	NC_003874	2
-Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	1	NC_029927,NC_029921,NC_029928,NC_029925,NC_029926,NC_029930,NC_029923,NC_029929,NC_029922,NC_029924	14
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	2	NC_029921	7
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	4	NC_029922	5
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	5	NC_029923	7
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	7	NC_029924	2
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	9	NC_029925	6
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	1	NC_029926	14
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	3	NC_029927	7
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	6	NC_029928	7
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	8	NC_029929	2
+Amnoonviridae	Tilapinevirus	Tilapia tilapinevirus	2034996	10	NC_029930	2
 Anelloviridae	unknown	Giant panda anellovirus	2016460	None	NC_035192	19
 Anelloviridae	unknown	Gorilla anellovirus	1743411	None	NC_030650	1
 Anelloviridae	unknown	Lesser panda anellovirus	2012640	None	NC_040531	1
 Anelloviridae	unknown	Rodent Torque teno virus 2	1514665	None	NC_025966	4
-Anelloviridae	unknown	Rodent Torque teno virus 3	2054610	None	NC_040546,NC_040686,NC_040617	3
+Anelloviridae	unknown	Rodent Torque teno virus 3	2054610	None	NC_040686,NC_040617,NC_040546	3
 Anelloviridae	unknown	Rodent Torque teno virus 4	2054611	None	NC_040547,NC_040801	7
 Anelloviridae	unknown	Rodent Torque teno virus 6	2054613	None	NC_040618	1
 Anelloviridae	unknown	Rodent Torque teno virus 7	2054614	None	NC_040687	1
@@ -189,58 +198,107 @@ Anelloviridae	Lambdatorquevirus	Torque teno zalophus virus 1	1218490	None	NC_012
 Anelloviridae	Mutorquevirus	Torque teno equus virus 1	1673633	None	NC_040668	1
 Anelloviridae	Thetatorquevirus	Torque teno canis virus	687385	None	NC_014071	11
 Anelloviridae	Zetatorquevirus	Torque teno douroucouli virus	687383	None	NC_014087	1
-Arenaviridae	unknown	Morogoro mammarenavirus	573900	S	NC_013057,NC_013058	1
-Arenaviridae	unknown	Wenling frogfish arenavirus 1	2116466	M	NC_040428,NC_040426,NC_040427	1
-Arenaviridae	unknown	Wenling frogfish arenavirus 2	2116467	S	NC_040466,NC_040465,NC_040464	2
-Arenaviridae	Arenavirus	Mopeia Lassa virus reassortant 29	300180	L	NC_006572,NC_006573	23
-Arenaviridae	Hartmanivirus	Haartman hartmanivirus	2169909	L	NC_043443,NC_043444	1
-Arenaviridae	Mammarenavirus	Allpahuayo mammarenavirus	144752	S	NC_010253,NC_010249	3
-Arenaviridae	Mammarenavirus	Apore mammarenavirus	2059312	S	NC_040763,NC_040762	1
-Arenaviridae	Mammarenavirus	Argentinian mammarenavirus	2169991	S	NC_005080,NC_005081	34
-Arenaviridae	Mammarenavirus	Bear Canyon mammarenavirus	192848	S	NC_010256,NC_010255	3
-Arenaviridae	Mammarenavirus	Brazilian mammarenavirus	2169992	L	NC_006317,NC_006313	3
-Arenaviridae	Mammarenavirus	Cali mammarenavirus	2169993	S	NC_006439,NC_006447	11
-Arenaviridae	Mammarenavirus	Chapare mammarenavirus	499556	S	NC_010562,NC_010563	1
-Arenaviridae	Mammarenavirus	Cupixi mammarenavirus	208899	L	NC_010252,NC_010254	1
-Arenaviridae	Mammarenavirus	Flexal mammarenavirus	45220	S	NC_010759,NC_010757	2
-Arenaviridae	Mammarenavirus	Gairo mammarenavirus	1535802	S	NC_026247,NC_026246	1
-Arenaviridae	Mammarenavirus	Guanarito mammarenavirus	45219	S	NC_005082,NC_005077	28
-Arenaviridae	Mammarenavirus	Ippy mammarenavirus	55096	S	NC_007906,NC_007905	1
-Arenaviridae	Mammarenavirus	Lassa mammarenavirus	11620	S	NC_004297,NC_004296	308
-Arenaviridae	Mammarenavirus	Latino mammarenavirus	45221	S	NC_010758,NC_010760	3
-Arenaviridae	Mammarenavirus	Loei River mammarenavirus	1437126	S	NC_038364,NC_038365	3
-Arenaviridae	Mammarenavirus	Lujo mammarenavirus	649188	S	NC_012777,NC_012776	2
-Arenaviridae	Mammarenavirus	Luna mammarenavirus	883876	S	NC_016153,NC_016152	6
-Arenaviridae	Mammarenavirus	Lunk mammarenavirus	1912901	S	NC_018710,NC_018711	1
-Arenaviridae	Mammarenavirus	Lymphocytic choriomeningitis mammarenavirus	11623	S	NC_004294,NC_004291	45
-Arenaviridae	Mammarenavirus	Machupo mammarenavirus	11628	S	NC_005079,NC_005078	26
-Arenaviridae	Mammarenavirus	Mariental mammarenavirus	1642436	S	NC_027134,NC_027136	1
-Arenaviridae	Mammarenavirus	Merino Walk mammarenavirus	743685	L	NC_023764,NC_023763	1
-Arenaviridae	Mammarenavirus	Mobala mammarenavirus	55097	S	NC_007903,NC_007904	1
-Arenaviridae	Mammarenavirus	Mopeia mammarenavirus	11629	L	NC_006574,NC_006575	4
-Arenaviridae	Mammarenavirus	Okahandja mammarenavirus	1642458	S	NC_027137,NC_027135	1
-Arenaviridae	Mammarenavirus	Oliveros mammarenavirus	42764	S	NC_010250,NC_010248	2
-Arenaviridae	Mammarenavirus	Paraguayan mammarenavirus	2169994	S	NC_010761,NC_010756	2
-Arenaviridae	Mammarenavirus	Pirital mammarenavirus	49891	S	NC_005897,NC_005894	9
-Arenaviridae	Mammarenavirus	Ryukyu mammarenavirus	2169995	S	NC_039009,NC_039010	1
-Arenaviridae	Mammarenavirus	Serra do Navio mammarenavirus	2169996	S	NC_010251,NC_010247	2
-Arenaviridae	Mammarenavirus	Solwezi mammarenavirus	2030986	L	NC_038367,NC_038366	1
-Arenaviridae	Mammarenavirus	Souris mammarenavirus	2169997	L	NC_039012,NC_039011	1
-Arenaviridae	Mammarenavirus	Tacaribe mammarenavirus	11631	S	NC_004292,NC_004293	3
-Arenaviridae	Mammarenavirus	Tamiami mammarenavirus	45223	S	NC_010702,NC_010701	3
-Arenaviridae	Mammarenavirus	Wenzhou mammarenavirus	1588685	S	NC_026019,NC_026018	9
-Arenaviridae	Mammarenavirus	Whitewater Arroyo mammarenavirus	46919	S	NC_010700,NC_010703	15
-Arenaviridae	Reptarenavirus	Alethinophid 2 reptarenavirus	1653398	L	NC_023765,NC_023766	3
-Arenaviridae	Reptarenavirus	California reptarenavirus	2170175	S	NC_018484,NC_018481	1
-Arenaviridae	Reptarenavirus	Giessen reptarenavirus	2170176	S	NC_039005,NC_039006	7
-Arenaviridae	Reptarenavirus	Golden reptarenavirus	2170177	L	NC_018482,NC_018483	1
-Arenaviridae	Reptarenavirus	Ordinary reptarenavirus	2170178	L	NC_039008,NC_039007	4
-Arenaviridae	Reptarenavirus	Rotterdam reptarenavirus	2170179	S	NC_023761,NC_023762	1
+Arenaviridae	unknown	Morogoro mammarenavirus	573900	S	NC_013057	1
+Arenaviridae	unknown	Morogoro mammarenavirus	573900	L	NC_013058	1
+Arenaviridae	unknown	Wenling frogfish arenavirus 1	2116466	M	NC_040426	1
+Arenaviridae	unknown	Wenling frogfish arenavirus 1	2116466	S	NC_040427	1
+Arenaviridae	unknown	Wenling frogfish arenavirus 1	2116466	L	NC_040428	1
+Arenaviridae	unknown	Wenling frogfish arenavirus 2	2116467	S	NC_040464	2
+Arenaviridae	unknown	Wenling frogfish arenavirus 2	2116467	L	NC_040465	2
+Arenaviridae	unknown	Wenling frogfish arenavirus 2	2116467	M	NC_040466	2
+Arenaviridae	Arenavirus	Mopeia Lassa virus reassortant 29	300180	L	NC_006572	23
+Arenaviridae	Arenavirus	Mopeia Lassa virus reassortant 29	300180	S	NC_006573	23
+Arenaviridae	Hartmanivirus	Haartman hartmanivirus	2169909	L	NC_043443	1
+Arenaviridae	Hartmanivirus	Haartman hartmanivirus	2169909	S	NC_043444	1
+Arenaviridae	Mammarenavirus	Allpahuayo mammarenavirus	144752	L	NC_010249	1
+Arenaviridae	Mammarenavirus	Allpahuayo mammarenavirus	144752	S	NC_010253	3
+Arenaviridae	Mammarenavirus	Apore mammarenavirus	2059312	S	NC_040762	1
+Arenaviridae	Mammarenavirus	Apore mammarenavirus	2059312	L	NC_040763	1
+Arenaviridae	Mammarenavirus	Argentinian mammarenavirus	2169991	L	NC_005080	20
+Arenaviridae	Mammarenavirus	Argentinian mammarenavirus	2169991	S	NC_005081	34
+Arenaviridae	Mammarenavirus	Bear Canyon mammarenavirus	192848	L	NC_010255	2
+Arenaviridae	Mammarenavirus	Bear Canyon mammarenavirus	192848	S	NC_010256	3
+Arenaviridae	Mammarenavirus	Brazilian mammarenavirus	2169992	L	NC_006313	3
+Arenaviridae	Mammarenavirus	Brazilian mammarenavirus	2169992	S	NC_006317	2
+Arenaviridae	Mammarenavirus	Cali mammarenavirus	2169993	L	NC_006439	4
+Arenaviridae	Mammarenavirus	Cali mammarenavirus	2169993	S	NC_006447	11
+Arenaviridae	Mammarenavirus	Chapare mammarenavirus	499556	S	NC_010562	1
+Arenaviridae	Mammarenavirus	Chapare mammarenavirus	499556	L	NC_010563	1
+Arenaviridae	Mammarenavirus	Cupixi mammarenavirus	208899	L	NC_010252	1
+Arenaviridae	Mammarenavirus	Cupixi mammarenavirus	208899	S	NC_010254	1
+Arenaviridae	Mammarenavirus	Flexal mammarenavirus	45220	S	NC_010757	2
+Arenaviridae	Mammarenavirus	Flexal mammarenavirus	45220	L	NC_010759	1
+Arenaviridae	Mammarenavirus	Gairo mammarenavirus	1535802	S	NC_026246	1
+Arenaviridae	Mammarenavirus	Gairo mammarenavirus	1535802	L	NC_026247	1
+Arenaviridae	Mammarenavirus	Guanarito mammarenavirus	45219	S	NC_005077	28
+Arenaviridae	Mammarenavirus	Guanarito mammarenavirus	45219	L	NC_005082	17
+Arenaviridae	Mammarenavirus	Ippy mammarenavirus	55096	S	NC_007905	1
+Arenaviridae	Mammarenavirus	Ippy mammarenavirus	55096	L	NC_007906	1
+Arenaviridae	Mammarenavirus	Lassa mammarenavirus	11620	S	NC_004296	308
+Arenaviridae	Mammarenavirus	Lassa mammarenavirus	11620	L	NC_004297	234
+Arenaviridae	Mammarenavirus	Latino mammarenavirus	45221	S	NC_010758	3
+Arenaviridae	Mammarenavirus	Latino mammarenavirus	45221	L	NC_010760	1
+Arenaviridae	Mammarenavirus	Loei River mammarenavirus	1437126	S	NC_038364	3
+Arenaviridae	Mammarenavirus	Loei River mammarenavirus	1437126	L	NC_038365	2
+Arenaviridae	Mammarenavirus	Lujo mammarenavirus	649188	S	NC_012776	2
+Arenaviridae	Mammarenavirus	Lujo mammarenavirus	649188	L	NC_012777	2
+Arenaviridae	Mammarenavirus	Luna mammarenavirus	883876	S	NC_016152	6
+Arenaviridae	Mammarenavirus	Luna mammarenavirus	883876	L	NC_016153	6
+Arenaviridae	Mammarenavirus	Lunk mammarenavirus	1912901	S	NC_018710	1
+Arenaviridae	Mammarenavirus	Lunk mammarenavirus	1912901	L	NC_018711	1
+Arenaviridae	Mammarenavirus	Lymphocytic choriomeningitis mammarenavirus	11623	L	NC_004291	33
+Arenaviridae	Mammarenavirus	Lymphocytic choriomeningitis mammarenavirus	11623	S	NC_004294	45
+Arenaviridae	Mammarenavirus	Machupo mammarenavirus	11628	S	NC_005078	26
+Arenaviridae	Mammarenavirus	Machupo mammarenavirus	11628	L	NC_005079	17
+Arenaviridae	Mammarenavirus	Mariental mammarenavirus	1642436	S	NC_027134	1
+Arenaviridae	Mammarenavirus	Mariental mammarenavirus	1642436	L	NC_027136	1
+Arenaviridae	Mammarenavirus	Merino Walk mammarenavirus	743685	L	NC_023763	1
+Arenaviridae	Mammarenavirus	Merino Walk mammarenavirus	743685	S	NC_023764	1
+Arenaviridae	Mammarenavirus	Mobala mammarenavirus	55097	S	NC_007903	1
+Arenaviridae	Mammarenavirus	Mobala mammarenavirus	55097	L	NC_007904	1
+Arenaviridae	Mammarenavirus	Mopeia mammarenavirus	11629	L	NC_006574	4
+Arenaviridae	Mammarenavirus	Mopeia mammarenavirus	11629	S	NC_006575	4
+Arenaviridae	Mammarenavirus	Okahandja mammarenavirus	1642458	S	NC_027135	1
+Arenaviridae	Mammarenavirus	Okahandja mammarenavirus	1642458	L	NC_027137	1
+Arenaviridae	Mammarenavirus	Oliveros mammarenavirus	42764	S	NC_010248	2
+Arenaviridae	Mammarenavirus	Oliveros mammarenavirus	42764	L	NC_010250	1
+Arenaviridae	Mammarenavirus	Paraguayan mammarenavirus	2169994	S	NC_010756	2
+Arenaviridae	Mammarenavirus	Paraguayan mammarenavirus	2169994	L	NC_010761	1
+Arenaviridae	Mammarenavirus	Pirital mammarenavirus	49891	S	NC_005894	9
+Arenaviridae	Mammarenavirus	Pirital mammarenavirus	49891	L	NC_005897	2
+Arenaviridae	Mammarenavirus	Ryukyu mammarenavirus	2169995	S	NC_039009	1
+Arenaviridae	Mammarenavirus	Ryukyu mammarenavirus	2169995	L	NC_039010	1
+Arenaviridae	Mammarenavirus	Serra do Navio mammarenavirus	2169996	S	NC_010247	2
+Arenaviridae	Mammarenavirus	Serra do Navio mammarenavirus	2169996	L	NC_010251	2
+Arenaviridae	Mammarenavirus	Solwezi mammarenavirus	2030986	L	NC_038366	1
+Arenaviridae	Mammarenavirus	Solwezi mammarenavirus	2030986	S	NC_038367	1
+Arenaviridae	Mammarenavirus	Souris mammarenavirus	2169997	L	NC_039011	1
+Arenaviridae	Mammarenavirus	Souris mammarenavirus	2169997	S	NC_039012	1
+Arenaviridae	Mammarenavirus	Tacaribe mammarenavirus	11631	L	NC_004292	2
+Arenaviridae	Mammarenavirus	Tacaribe mammarenavirus	11631	S	NC_004293	3
+Arenaviridae	Mammarenavirus	Tamiami mammarenavirus	45223	S	NC_010701	3
+Arenaviridae	Mammarenavirus	Tamiami mammarenavirus	45223	L	NC_010702	2
+Arenaviridae	Mammarenavirus	Wenzhou mammarenavirus	1588685	S	NC_026018	9
+Arenaviridae	Mammarenavirus	Wenzhou mammarenavirus	1588685	L	NC_026019	9
+Arenaviridae	Mammarenavirus	Whitewater Arroyo mammarenavirus	46919	S	NC_010700	15
+Arenaviridae	Mammarenavirus	Whitewater Arroyo mammarenavirus	46919	L	NC_010703	2
+Arenaviridae	Reptarenavirus	Alethinophid 2 reptarenavirus	1653398	L	NC_023765	3
+Arenaviridae	Reptarenavirus	Alethinophid 2 reptarenavirus	1653398	S	NC_023766	2
+Arenaviridae	Reptarenavirus	California reptarenavirus	2170175	S	NC_018481	1
+Arenaviridae	Reptarenavirus	California reptarenavirus	2170175	L	NC_018484	1
+Arenaviridae	Reptarenavirus	Giessen reptarenavirus	2170176	S	NC_039005	7
+Arenaviridae	Reptarenavirus	Giessen reptarenavirus	2170176	L	NC_039006	3
+Arenaviridae	Reptarenavirus	Golden reptarenavirus	2170177	L	NC_018482	1
+Arenaviridae	Reptarenavirus	Golden reptarenavirus	2170177	S	NC_018483	1
+Arenaviridae	Reptarenavirus	Ordinary reptarenavirus	2170178	S	NC_039007	1
+Arenaviridae	Reptarenavirus	Ordinary reptarenavirus	2170178	L	NC_039008	4
+Arenaviridae	Reptarenavirus	Rotterdam reptarenavirus	2170179	S	NC_023761	1
+Arenaviridae	Reptarenavirus	Rotterdam reptarenavirus	2170179	L	NC_023762	1
 Arteriviridae	unknown	Porcine reproductive and respiratory syndrome virus	28344	None	NC_001961	993
 Arteriviridae	unknown	Rodent arterivirus	1806636	None	NC_040535	1
 Arteriviridae	unknown	Southwest baboon virus 1	1546178	None	NC_025113	4
 Arteriviridae	Alphaarterivirus	Alphaarterivirus equid	2499620	None	NC_002532	91
-Arteriviridae	Betaarterivirus	Betaarterivirus chinrav 1	2499930	None	NC_028963,NC_032987	2
+Arteriviridae	Betaarterivirus	Betaarterivirus chinrav 1	2499930	None	NC_032987,NC_028963	2
 Arteriviridae	Betaarterivirus	Betaarterivirus suid 1	2499680	None	NC_043487	6
 Arteriviridae	Betaarterivirus	Betaarterivirus suid 2	2499685	None	NC_038291	21
 Arteriviridae	Deltaarterivirus	Deltaarterivirus pejah	2499623	None	NC_027124	3
@@ -257,7 +315,7 @@ Arteriviridae	Simartevirus	Kafue kinda chacma baboon virus	1823757	None	NC_02905
 Arteriviridae	Simartevirus	Mikumi yellow baboon virus 1	1546177	None	NC_025112	11
 Arteriviridae	Simartevirus	Simian hemorrhagic fever virus	38143	None	NC_003092	10
 Arteriviridae	Zetaarterivirus	Zetaarterivirus ugarco 1	2499932	None	NC_033553	49
-Asfarviridae	Asfivirus	African swine fever virus	10497	None	NC_001659,NC_044941,NC_044942	43
+Asfarviridae	Asfivirus	African swine fever virus	10497	None	NC_044941,NC_044942,NC_001659	43
 Astroviridae	unknown	Astrovirus Er/SZAL6/HUN/2011	1671382	None	NC_027426	1
 Astroviridae	unknown	Astrovirus MLB2	683172	None	NC_016155	3
 Astroviridae	unknown	Astrovirus MLB3	1247114	None	NC_019028	1
@@ -314,14 +372,22 @@ Astroviridae	Mamastrovirus	Qinghai Himalayan marmot astrovirus 1	1961665	None	NC
 Astroviridae	Mamastrovirus	Qinghai Himalayan marmot astrovirus 2	1961666	None	NC_033821	1
 Astroviridae	Mamastrovirus	Rabbit astrovirus TN/2208/2010	1161132	None	NC_025346	1
 Astroviridae	Mamastrovirus	Rodent astrovirus	1914442	None	NC_036583	1
-Birnaviridae	unknown	Espirito Santo virus	1127767	B	NC_016517,NC_016518	1
-Birnaviridae	Aquabirnavirus	Infectious pancreatic necrosis virus	11002	B	NC_001916,NC_001915	143
-Birnaviridae	Aquabirnavirus	Tasmanian aquabirnavirus	1721090	A	NC_028253,NC_028252	14
-Birnaviridae	Aquabirnavirus	Tellina virus	359995	A	NC_038870,NC_038869	1
-Birnaviridae	Aquabirnavirus	Victorian trout aquabirnavirus	1661392	A	NC_030242,NC_030244	1
-Birnaviridae	Aquabirnavirus	Yellowtail ascites virus	59816	A	NC_004176,NC_004168	8
-Birnaviridae	Avibirnavirus	Infectious bursal disease virus	10995	B	NC_004178,NC_004179	142
-Birnaviridae	Blosnavirus	Blotched snakehead virus	311176	A	NC_005982,NC_005983	1
+Birnaviridae	unknown	Espirito Santo virus	1127767	B	NC_016517	1
+Birnaviridae	unknown	Espirito Santo virus	1127767	A	NC_016518	1
+Birnaviridae	Aquabirnavirus	Infectious pancreatic necrosis virus	11002	A	NC_001915	95
+Birnaviridae	Aquabirnavirus	Infectious pancreatic necrosis virus	11002	B	NC_001916	143
+Birnaviridae	Aquabirnavirus	Tasmanian aquabirnavirus	1721090	A	NC_028252	14
+Birnaviridae	Aquabirnavirus	Tasmanian aquabirnavirus	1721090	B	NC_028253	14
+Birnaviridae	Aquabirnavirus	Tellina virus	359995	A	NC_038869	1
+Birnaviridae	Aquabirnavirus	Tellina virus	359995	B	NC_038870	1
+Birnaviridae	Aquabirnavirus	Victorian trout aquabirnavirus	1661392	A	NC_030242	1
+Birnaviridae	Aquabirnavirus	Victorian trout aquabirnavirus	1661392	B	NC_030244	1
+Birnaviridae	Aquabirnavirus	Yellowtail ascites virus	59816	A	NC_004168	8
+Birnaviridae	Aquabirnavirus	Yellowtail ascites virus	59816	B	NC_004176	5
+Birnaviridae	Avibirnavirus	Infectious bursal disease virus	10995	A	NC_004178	140
+Birnaviridae	Avibirnavirus	Infectious bursal disease virus	10995	B	NC_004179	142
+Birnaviridae	Blosnavirus	Blotched snakehead virus	311176	A	NC_005982	1
+Birnaviridae	Blosnavirus	Blotched snakehead virus	311176	B	NC_005983	1
 Bornaviridae	Carbovirus	Queensland carbovirus	2136037	None	NC_039013	1
 Bornaviridae	Carbovirus	Southwest carbovirus	2136038	None	NC_039014	1
 Bornaviridae	Orthobornavirus	Elapid 1 orthobornavirus	1881950	None	NC_024778	1
@@ -329,9 +395,9 @@ Bornaviridae	Orthobornavirus	Mammalian 1 orthobornavirus	1714619	None	NC_001607,
 Bornaviridae	Orthobornavirus	Mammalian 2 orthobornavirus	1897087	None	NC_030701	21
 Bornaviridae	Orthobornavirus	Passeriform 1 orthobornavirus	1548720	None	NC_030690,NC_027892,NC_024296	1
 Bornaviridae	Orthobornavirus	Passeriform 2 orthobornavirus	1548721	None	NC_038268	1
-Bornaviridae	Orthobornavirus	Psittaciform 1 orthobornavirus	1548713	None	NC_030689,NC_039189,NC_028106,NC_030688,NC_030689,NC_039189,NC_028106	10
+Bornaviridae	Orthobornavirus	Psittaciform 1 orthobornavirus	1548713	None	NC_030688,NC_030689,NC_039189,NC_028106,NC_030689,NC_039189,NC_028106	10
 Bornaviridae	Orthobornavirus	Psittaciform 2 orthobornavirus	1884878	None	NC_039190	4
-Bornaviridae	Orthobornavirus	Waterbird 1 orthobornavirus	1548722	None	NC_030691,NC_029642,NC_029642,NC_030691	5
+Bornaviridae	Orthobornavirus	Waterbird 1 orthobornavirus	1548722	None	NC_029642,NC_030691,NC_030691,NC_029642	5
 Caliciviridae	unknown	Calicivirus isolate TCG	243550	None	NC_006875	1
 Caliciviridae	unknown	Fathead minnow calicivirus	1949201	None	NC_035675	1
 Caliciviridae	unknown	Goose calicivirus	1493858	None	NC_024078	3
@@ -349,7 +415,7 @@ Caliciviridae	Norovirus	Primate norovirus	1903318	None	NC_031324	1
 Caliciviridae	Salovirus	Nordland virus	2560615	None	NC_024031	3
 Caliciviridae	Sapovirus	Bat sapovirus	1959930	None	NC_033776	3
 Caliciviridae	Sapovirus	Bat sapovirus TLC58/HK	1185359	None	NC_017936	1
-Caliciviridae	Sapovirus	Sapporo virus	95342	None	NC_010624,NC_027026,NC_006269,NC_006554,NC_006269,NC_027026,NC_010624,NC_000940	143
+Caliciviridae	Sapovirus	Sapporo virus	95342	None	NC_006554,NC_006269,NC_027026,NC_010624,NC_000940,NC_010624,NC_027026,NC_006269	143
 Caliciviridae	Vesivirus	Canine calicivirus	1176484	None	NC_004542	3
 Caliciviridae	Vesivirus	Feline calicivirus	11978	None	NC_001481	46
 Caliciviridae	Vesivirus	Hom-1 vesivirus	1960046	None	NC_034444	1
@@ -357,7 +423,7 @@ Caliciviridae	Vesivirus	Mink calicivirus	154122	None	NC_019712	2
 Caliciviridae	Vesivirus	Rabbit vesivirus	303317	None	NC_008580	1
 Caliciviridae	Vesivirus	San Miguel sea lion virus 8	1564182	None	NC_025676	2
 Caliciviridae	Vesivirus	Steller sea lion vesivirus	436911	None	NC_011050	2
-Caliciviridae	Vesivirus	Vesicular exanthema of swine virus	35612	None	NC_004541,NC_002551,NC_029646,NC_008311,NC_029645,NC_001959,NC_029647	6
+Caliciviridae	Vesivirus	Vesicular exanthema of swine virus	35612	None	NC_029646,NC_008311,NC_029645,NC_001959,NC_029647,NC_004541,NC_002551	6
 Caliciviridae	Vesivirus	Vesivirus ferret badger/JX12/China/2012	1615583	None	NC_027122	1
 Circoviridae	unknown	Apteryx rowi circovirus-like virus	1634476	None	NC_040528	1
 Circoviridae	unknown	Chimpanzee faeces associated circular DNA virus 1	1676184	None	NC_030466	1
@@ -455,7 +521,7 @@ Circoviridae	Cyclovirus	Bat associated cyclovirus 7	1987732	None	NC_038397	1
 Circoviridae	Cyclovirus	Bat associated cyclovirus 8	1987733	None	NC_038398	1
 Circoviridae	Cyclovirus	Bat associated cyclovirus 9	1987734	None	NC_038399	1
 Circoviridae	Cyclovirus	Bovine associated cyclovirus 1	2050927	None	NC_038405	1
-Circoviridae	Cyclovirus	Chicken associated cyclovirus 1	2050596	None	NC_014930,NC_038406,NC_038406,NC_014930	2
+Circoviridae	Cyclovirus	Chicken associated cyclovirus 1	2050596	None	NC_038406,NC_014930,NC_014930,NC_038406	2
 Circoviridae	Cyclovirus	Chicken associated cyclovirus 2	2109365	None	NC_040639	1
 Circoviridae	Cyclovirus	Chimpanzee associated cyclovirus 1	2051672	None	NC_038407	1
 Circoviridae	Cyclovirus	Cyclovirus PKgoat21/PAK/2009	942033	None	NC_014927	1
@@ -506,7 +572,7 @@ Coronaviridae	Alphacoronavirus	Wencheng Sm shrew coronavirus	1508228	None	NC_035
 Coronaviridae	Bafinivirus	Fathead minnow nidovirus 1	1965074	None	NC_038295	1
 Coronaviridae	Bafinivirus	White bream virus	405554	None	NC_008516	1
 Coronaviridae	Betacoronavirus	Bat Hp-betacoronavirus Zhejiang2013	2501961	None	NC_025217	1
-Coronaviridae	Betacoronavirus	Betacoronavirus 1	694003	None	NC_003045,NC_006213,NC_003045	309
+Coronaviridae	Betacoronavirus	Betacoronavirus 1	694003	None	NC_006213,NC_003045,NC_003045	309
 Coronaviridae	Betacoronavirus	Betacoronavirus HKU24	1590370	None	NC_026011	3
 Coronaviridae	Betacoronavirus	Hedgehog coronavirus 1	1965093	None	NC_039207	3
 Coronaviridae	Betacoronavirus	Human coronavirus HKU1	290028	None	NC_006577	47
@@ -516,7 +582,7 @@ Coronaviridae	Betacoronavirus	Pipistrellus bat coronavirus HKU5	694008	None	NC_0
 Coronaviridae	Betacoronavirus	Rabbit coronavirus HKU14	1160968	None	NC_017083	4
 Coronaviridae	Betacoronavirus	Rousettus bat coronavirus GCCDC1	2501962	None	NC_030886	2
 Coronaviridae	Betacoronavirus	Rousettus bat coronavirus HKU9	694006	None	NC_009021	9
-Coronaviridae	Betacoronavirus	Severe acute respiratory syndrome-related coronavirus	694009	None	NC_045512,NC_004718,NC_004718	1946
+Coronaviridae	Betacoronavirus	Severe acute respiratory syndrome-related coronavirus	694009	None	NC_004718,NC_045512,NC_004718	1946
 Coronaviridae	Betacoronavirus	Tylonycteris bat coronavirus HKU4	694007	None	NC_009019	9
 Coronaviridae	Deltacoronavirus	Bulbul coronavirus HKU11	574549	None	NC_011547	2
 Coronaviridae	Deltacoronavirus	Common moorhen coronavirus HKU21	1159902	None	NC_016996	1
@@ -541,9 +607,12 @@ Filoviridae	Ebolavirus	Reston ebolavirus	186539	None	NC_004161	20
 Filoviridae	Ebolavirus	Sudan ebolavirus	186540	None	NC_006432	19
 Filoviridae	Ebolavirus	Tai Forest ebolavirus	186541	None	NC_014372	3
 Filoviridae	Ebolavirus	Zaire ebolavirus	186538	None	NC_002549	1525
-Filoviridae	Marburgvirus	Marburg marburgvirus	11269	None	NC_001608,NC_024781	88
+Filoviridae	Marburgvirus	Marburg marburgvirus	11269	None	NC_024781,NC_001608	88
 Flaviviridae	unknown	Lumpfish flavivirus	2050971	None	NC_040555	1
-Flaviviridae	unknown	Mogiana tick virus	1172985	2	NC_024112,NC_024114,NC_024113,NC_024111	14
+Flaviviridae	unknown	Mogiana tick virus	1172985	4	NC_024111	12
+Flaviviridae	unknown	Mogiana tick virus	1172985	2	NC_024112	14
+Flaviviridae	unknown	Mogiana tick virus	1172985	1	NC_024113	12
+Flaviviridae	unknown	Mogiana tick virus	1172985	3	NC_024114	13
 Flaviviridae	Flavivirus	Aedes flavivirus	390845	None	NC_012932	3
 Flaviviridae	Flavivirus	Apoi virus	64280	None	NC_003676	1
 Flaviviridae	Flavivirus	Aroa virus	64303	None	NC_009026	4
@@ -554,7 +623,7 @@ Flaviviridae	Flavivirus	Cacipacore virus	64305	None	NC_026623	1
 Flaviviridae	Flavivirus	Cell fusing agent virus	31658	None	NC_001564	5
 Flaviviridae	Flavivirus	Chaoyang virus	631267	None	NC_017086	3
 Flaviviridae	Flavivirus	Culex flavivirus	390844	None	NC_008604	29
-Flaviviridae	Flavivirus	Dengue virus	12637	None	NC_001474,NC_002640,NC_001475,NC_001477,NC_001474	5617
+Flaviviridae	Flavivirus	Dengue virus	12637	None	NC_001474,NC_001474,NC_002640,NC_001475,NC_001477	5617
 Flaviviridae	Flavivirus	Donggang virus	985683	None	NC_016997	1
 Flaviviridae	Flavivirus	Edge Hill virus	64296	None	NC_030289	1
 Flaviviridae	Flavivirus	Entebbe bat virus	64283	None	NC_008718	3
@@ -607,7 +676,7 @@ Flaviviridae	Flavivirus	West Nile virus	11082	None	NC_001563,NC_009942	1820
 Flaviviridae	Flavivirus	Yaounde virus	64319	None	NC_034018	1
 Flaviviridae	Flavivirus	Yellow fever virus	11089	None	NC_002031	223
 Flaviviridae	Flavivirus	Yokose virus	64294	None	NC_005039	2
-Flaviviridae	Flavivirus	Zika virus	64320	None	NC_012532,NC_035889	696
+Flaviviridae	Flavivirus	Zika virus	64320	None	NC_035889,NC_012532	696
 Flaviviridae	Hepacivirus	Bat hepacivirus	1325446	None	NC_031947	1
 Flaviviridae	Hepacivirus	Bovine hepacivirus	1633878	None	NC_026797	9
 Flaviviridae	Hepacivirus	Equine hepacivirus	1281455	None	NC_024889	20
@@ -698,7 +767,7 @@ Genomoviridae	Gemycircularvirus	Sheep associated gemycircularvirus 1	1985412	Non
 Genomoviridae	Gemygorvirus	Canine associated gemygorvirus 1	1985425	None	NC_030147	1
 Genomoviridae	Gemygorvirus	Mallard associated gemygorvirus 1	1985426	None	NC_030138	2
 Genomoviridae	Gemygorvirus	Pteropus associated gemygorvirus 1	1985427	None	NC_038495	1
-Genomoviridae	Gemygorvirus	Sewage derived gemygorvirus 1	1985428	None	NC_026817,NC_026161,NC_026161,NC_026817	2
+Genomoviridae	Gemygorvirus	Sewage derived gemygorvirus 1	1985428	None	NC_026161,NC_026817,NC_026817,NC_026161	2
 Genomoviridae	Gemygorvirus	Starling associated gemygorvirus 1	1985429	None	NC_025730	1
 Genomoviridae	Gemykibivirus	Badger associated gemykibivirus 1	1634484	None	NC_026806	1
 Genomoviridae	Gemykibivirus	Black robin associated gemykibivirus 1	1391037	None	NC_025732	1
@@ -719,47 +788,113 @@ Genomoviridae	Gemykrogvirus	Bovine associated gemykrogvirus 1	1985416	None	NC_02
 Genomoviridae	Gemykroznavirus	Rabbit associated gemykroznavirus 1	1985420	None	NC_025729	1
 Genomoviridae	Gemytondvirus	Ostrich associated gemytondvirus 1	1985419	None	NC_025728	1
 Genomoviridae	Gemyvongvirus	Human associated gemyvongvirus 1	1985415	None	NC_028459	1
-Hantaviridae	Loanvirus	Longquan loanvirus	2501379	None	NC_043125,NC_043126,NC_043127	3
-Hantaviridae	Mobatvirus	Laibin mobatvirus	2501380	M	NC_038514,NC_038515,NC_038513	4
-Hantaviridae	Mobatvirus	Nova mobatvirus	2501381	S	NC_034470,NC_034465,NC_034464	103
-Hantaviridae	Mobatvirus	Quezon mobatvirus	2501382	M	NC_034401,NC_034400,NC_034393	1
-Hantaviridae	Orthohantavirus	Andes orthohantavirus	1980456	S	NC_003467,NC_003466,NC_003468	13
-Hantaviridae	Orthohantavirus	Asama orthohantavirus	1980457	S	NC_038274,NC_038273	3
-Hantaviridae	Orthohantavirus	Asikkala orthohantavirus	1980458	None	NC_043069,NC_043070,NC_043068	3
-Hantaviridae	Orthohantavirus	Bayou orthohantavirus	1980459	S	NC_038300,NC_038298,NC_038299	1
-Hantaviridae	Orthohantavirus	Black Creek Canal orthohantavirus	1980460	None	NC_043075,NC_043073,NC_043074	4
-Hantaviridae	Orthohantavirus	Bowe orthohantavirus	1980461	S	NC_034407,NC_034405,NC_034406	1
-Hantaviridae	Orthohantavirus	Bruges orthohantavirus	1980462	S	NC_034395,NC_034394,NC_034402	2
-Hantaviridae	Orthohantavirus	Cano Delgadito orthohantavirus	1980463	L	NC_034525,NC_034515,NC_034528	1
-Hantaviridae	Orthohantavirus	Cao Bang orthohantavirus	1980464	M	NC_034485,NC_034484,NC_034474	1
-Hantaviridae	Orthohantavirus	Choclo orthohantavirus	1980465	M	NC_038374,NC_038373,UNKNOWN	2
-Hantaviridae	Orthohantavirus	Dabieshan orthohantavirus	1980466	S	NC_038384,NC_038383	6
-Hantaviridae	Orthohantavirus	Dobrava-Belgrade orthohantavirus	1980467	S	NC_005234,NC_005235,NC_005233	37
-Hantaviridae	Orthohantavirus	El Moro Canyon orthohantavirus	1980468	S	NC_038423,NC_038424	1
-Hantaviridae	Orthohantavirus	Fugong orthohantavirus	1980469	M	NC_034466,NC_034473,NC_034467	1
-Hantaviridae	Orthohantavirus	Fusong orthohantavirus	1980470	S	NC_038447,NC_038446	1
-Hantaviridae	Orthohantavirus	Hantaan orthohantavirus	1980471	S	NC_005222,NC_005218,NC_005219	250
-Hantaviridae	Orthohantavirus	Hantavirus Z10	93830	S	NC_006433,NC_006437,NC_006435	2
-Hantaviridae	Orthohantavirus	Jeju orthohantavirus	1980473	S	NC_034404,NC_034398,NC_034399	2
-Hantaviridae	Orthohantavirus	Kenkeme orthohantavirus	1980474	S	NC_034559,NC_034565,NC_034560	2
-Hantaviridae	Orthohantavirus	Khabarovsk orthohantavirus	1980475	M	NC_034519,NC_034527,NC_034518	2
-Hantaviridae	Orthohantavirus	Laguna Negra orthohantavirus	1980476	S	NC_038505,NC_038506	1
-Hantaviridae	Orthohantavirus	Luxi orthohantavirus	1980479	M	NC_038529,NC_038528,NC_038530	1
-Hantaviridae	Orthohantavirus	Maporal orthohantavirus	1980480	S	NC_038233,NC_034553,NC_034552,NC_034566	2
-Hantaviridae	Orthohantavirus	Montano orthohantavirus	1980481	S	NC_034397,NC_034403,NC_034396	1
-Hantaviridae	Orthohantavirus	Necocli orthohantavirus	1980482	None	NC_043408,NC_043409,NC_043407	3
-Hantaviridae	Orthohantavirus	Oxbow orthohantavirus	1980484	None	NC_043176,NC_043175,NC_043174	3
-Hantaviridae	Orthohantavirus	Prospect Hill orthohantavirus	1980485	S	NC_038939,NC_038938,NC_038940	1
-Hantaviridae	Orthohantavirus	Puumala orthohantavirus	1980486	S	NC_005225,NC_005223,NC_005224	104
-Hantaviridae	Orthohantavirus	Rockport orthohantavirus	1980488	L	NC_038695,NC_038694,NC_038696	3
-Hantaviridae	Orthohantavirus	Sangassou orthohantavirus	1980489	M	NC_034516,NC_034526,NC_034517	1
-Hantaviridae	Orthohantavirus	Seoul orthohantavirus	1980490	S	NC_005238,NC_005236,NC_005237	104
-Hantaviridae	Orthohantavirus	Sin Nombre orthohantavirus	1980491	M	NC_005217,NC_005216,NC_005215	12
-Hantaviridae	Orthohantavirus	Thailand orthohantavirus	1980492	S	NC_034563,NC_034555,NC_034556	2
-Hantaviridae	Orthohantavirus	Tula orthohantavirus	1980494	S	NC_005228,NC_005227,NC_005226	24
-Hantaviridae	Orthohantavirus	Yakeshi orthohantavirus	1980495	S	NC_038704,NC_038705	3
-Hantaviridae	Thottimvirus	Imjin thottimvirus	2501369	S	NC_034557,NC_034558,NC_034564	27
-Hantaviridae	Thottimvirus	Thottopalayam thottimvirus	2501370	S	NC_010708,NC_010707,NC_010704	14
+Hantaviridae	Loanvirus	Longquan loanvirus	2501379	None	NC_043126,NC_043125,NC_043127	3
+Hantaviridae	Mobatvirus	Laibin mobatvirus	2501380	M	NC_038513	4
+Hantaviridae	Mobatvirus	Laibin mobatvirus	2501380	S	NC_038514	2
+Hantaviridae	Mobatvirus	Laibin mobatvirus	2501380	L	NC_038515	4
+Hantaviridae	Mobatvirus	Nova mobatvirus	2501381	S	NC_034464	103
+Hantaviridae	Mobatvirus	Nova mobatvirus	2501381	L	NC_034465	9
+Hantaviridae	Mobatvirus	Nova mobatvirus	2501381	M	NC_034470	8
+Hantaviridae	Mobatvirus	Quezon mobatvirus	2501382	M	NC_034393	1
+Hantaviridae	Mobatvirus	Quezon mobatvirus	2501382	S	NC_034400	1
+Hantaviridae	Mobatvirus	Quezon mobatvirus	2501382	L	NC_034401	1
+Hantaviridae	Orthohantavirus	Andes orthohantavirus	1980456	S	NC_003466	13
+Hantaviridae	Orthohantavirus	Andes orthohantavirus	1980456	M	NC_003467	7
+Hantaviridae	Orthohantavirus	Andes orthohantavirus	1980456	L	NC_003468	3
+Hantaviridae	Orthohantavirus	Asama orthohantavirus	1980457	S	NC_038273	3
+Hantaviridae	Orthohantavirus	Asama orthohantavirus	1980457	M	NC_038274	2
+Hantaviridae	Orthohantavirus	Asikkala orthohantavirus	1980458	None	NC_043069,NC_043068,NC_043070	3
+Hantaviridae	Orthohantavirus	Bayou orthohantavirus	1980459	S	NC_038298	1
+Hantaviridae	Orthohantavirus	Bayou orthohantavirus	1980459	L	NC_038299	1
+Hantaviridae	Orthohantavirus	Bayou orthohantavirus	1980459	M	NC_038300	1
+Hantaviridae	Orthohantavirus	Black Creek Canal orthohantavirus	1980460	None	NC_043075,NC_043074,NC_043073	4
+Hantaviridae	Orthohantavirus	Bowe orthohantavirus	1980461	S	NC_034405	1
+Hantaviridae	Orthohantavirus	Bowe orthohantavirus	1980461	M	NC_034406	1
+Hantaviridae	Orthohantavirus	Bowe orthohantavirus	1980461	L	NC_034407	1
+Hantaviridae	Orthohantavirus	Bruges orthohantavirus	1980462	S	NC_034394	2
+Hantaviridae	Orthohantavirus	Bruges orthohantavirus	1980462	M	NC_034395	2
+Hantaviridae	Orthohantavirus	Bruges orthohantavirus	1980462	L	NC_034402	2
+Hantaviridae	Orthohantavirus	Cano Delgadito orthohantavirus	1980463	L	NC_034515	1
+Hantaviridae	Orthohantavirus	Cano Delgadito orthohantavirus	1980463	M	NC_034525	1
+Hantaviridae	Orthohantavirus	Cano Delgadito orthohantavirus	1980463	S	NC_034528	1
+Hantaviridae	Orthohantavirus	Cao Bang orthohantavirus	1980464	M	NC_034474	1
+Hantaviridae	Orthohantavirus	Cao Bang orthohantavirus	1980464	S	NC_034484	1
+Hantaviridae	Orthohantavirus	Cao Bang orthohantavirus	1980464	L	NC_034485	1
+Hantaviridae	Orthohantavirus	Choclo orthohantavirus	1980465	S	NC_038373	1
+Hantaviridae	Orthohantavirus	Choclo orthohantavirus	1980465	M	NC_038374	2
+Hantaviridae	Orthohantavirus	Choclo orthohantavirus	1980465	L	UNKNOWN	1
+Hantaviridae	Orthohantavirus	Dabieshan orthohantavirus	1980466	M	NC_038383	1
+Hantaviridae	Orthohantavirus	Dabieshan orthohantavirus	1980466	S	NC_038384	6
+Hantaviridae	Orthohantavirus	Dobrava-Belgrade orthohantavirus	1980467	S	NC_005233	37
+Hantaviridae	Orthohantavirus	Dobrava-Belgrade orthohantavirus	1980467	M	NC_005234	23
+Hantaviridae	Orthohantavirus	Dobrava-Belgrade orthohantavirus	1980467	L	NC_005235	12
+Hantaviridae	Orthohantavirus	El Moro Canyon orthohantavirus	1980468	S	NC_038423	1
+Hantaviridae	Orthohantavirus	El Moro Canyon orthohantavirus	1980468	M	NC_038424	1
+Hantaviridae	Orthohantavirus	Fugong orthohantavirus	1980469	M	NC_034466	1
+Hantaviridae	Orthohantavirus	Fugong orthohantavirus	1980469	L	NC_034467	1
+Hantaviridae	Orthohantavirus	Fugong orthohantavirus	1980469	S	NC_034473	1
+Hantaviridae	Orthohantavirus	Fusong orthohantavirus	1980470	S	NC_038446	1
+Hantaviridae	Orthohantavirus	Fusong orthohantavirus	1980470	M	NC_038447	1
+Hantaviridae	Orthohantavirus	Hantaan orthohantavirus	1980471	S	NC_005218	250
+Hantaviridae	Orthohantavirus	Hantaan orthohantavirus	1980471	M	NC_005219	179
+Hantaviridae	Orthohantavirus	Hantaan orthohantavirus	1980471	L	NC_005222	100
+Hantaviridae	Orthohantavirus	Hantavirus Z10	93830	S	NC_006433	2
+Hantaviridae	Orthohantavirus	Hantavirus Z10	93830	L	NC_006435	1
+Hantaviridae	Orthohantavirus	Hantavirus Z10	93830	M	NC_006437	2
+Hantaviridae	Orthohantavirus	Jeju orthohantavirus	1980473	S	NC_034398	2
+Hantaviridae	Orthohantavirus	Jeju orthohantavirus	1980473	L	NC_034399	2
+Hantaviridae	Orthohantavirus	Jeju orthohantavirus	1980473	M	NC_034404	1
+Hantaviridae	Orthohantavirus	Kenkeme orthohantavirus	1980474	S	NC_034559	2
+Hantaviridae	Orthohantavirus	Kenkeme orthohantavirus	1980474	L	NC_034560	1
+Hantaviridae	Orthohantavirus	Kenkeme orthohantavirus	1980474	M	NC_034565	1
+Hantaviridae	Orthohantavirus	Khabarovsk orthohantavirus	1980475	M	NC_034518	2
+Hantaviridae	Orthohantavirus	Khabarovsk orthohantavirus	1980475	L	NC_034519	1
+Hantaviridae	Orthohantavirus	Khabarovsk orthohantavirus	1980475	S	NC_034527	2
+Hantaviridae	Orthohantavirus	Laguna Negra orthohantavirus	1980476	S	NC_038505	1
+Hantaviridae	Orthohantavirus	Laguna Negra orthohantavirus	1980476	M	NC_038506	1
+Hantaviridae	Orthohantavirus	Luxi orthohantavirus	1980479	M	NC_038528	1
+Hantaviridae	Orthohantavirus	Luxi orthohantavirus	1980479	L	NC_038529	1
+Hantaviridae	Orthohantavirus	Luxi orthohantavirus	1980479	S	NC_038530	1
+Hantaviridae	Orthohantavirus	Maporal orthohantavirus	1980480	M	NC_034552	1
+Hantaviridae	Orthohantavirus	Maporal orthohantavirus	1980480	L	NC_034553	1
+Hantaviridae	Orthohantavirus	Maporal orthohantavirus	1980480	S	NC_034566,NC_038233	2
+Hantaviridae	Orthohantavirus	Montano orthohantavirus	1980481	S	NC_034396	1
+Hantaviridae	Orthohantavirus	Montano orthohantavirus	1980481	M	NC_034397	1
+Hantaviridae	Orthohantavirus	Montano orthohantavirus	1980481	L	NC_034403	1
+Hantaviridae	Orthohantavirus	Necocli orthohantavirus	1980482	None	NC_043407,NC_043409,NC_043408	3
+Hantaviridae	Orthohantavirus	Oxbow orthohantavirus	1980484	None	NC_043175,NC_043176,NC_043174	3
+Hantaviridae	Orthohantavirus	Prospect Hill orthohantavirus	1980485	S	NC_038938	1
+Hantaviridae	Orthohantavirus	Prospect Hill orthohantavirus	1980485	L	NC_038939	1
+Hantaviridae	Orthohantavirus	Prospect Hill orthohantavirus	1980485	M	NC_038940	1
+Hantaviridae	Orthohantavirus	Puumala orthohantavirus	1980486	M	NC_005223	38
+Hantaviridae	Orthohantavirus	Puumala orthohantavirus	1980486	S	NC_005224	104
+Hantaviridae	Orthohantavirus	Puumala orthohantavirus	1980486	L	NC_005225	21
+Hantaviridae	Orthohantavirus	Rockport orthohantavirus	1980488	M	NC_038694	1
+Hantaviridae	Orthohantavirus	Rockport orthohantavirus	1980488	L	NC_038695	3
+Hantaviridae	Orthohantavirus	Rockport orthohantavirus	1980488	S	NC_038696	3
+Hantaviridae	Orthohantavirus	Sangassou orthohantavirus	1980489	M	NC_034516	1
+Hantaviridae	Orthohantavirus	Sangassou orthohantavirus	1980489	L	NC_034517	1
+Hantaviridae	Orthohantavirus	Sangassou orthohantavirus	1980489	S	NC_034526	1
+Hantaviridae	Orthohantavirus	Seoul orthohantavirus	1980490	S	NC_005236	104
+Hantaviridae	Orthohantavirus	Seoul orthohantavirus	1980490	M	NC_005237	78
+Hantaviridae	Orthohantavirus	Seoul orthohantavirus	1980490	L	NC_005238	25
+Hantaviridae	Orthohantavirus	Sin Nombre orthohantavirus	1980491	M	NC_005215	12
+Hantaviridae	Orthohantavirus	Sin Nombre orthohantavirus	1980491	S	NC_005216	10
+Hantaviridae	Orthohantavirus	Sin Nombre orthohantavirus	1980491	L	NC_005217	5
+Hantaviridae	Orthohantavirus	Thailand orthohantavirus	1980492	S	NC_034555	2
+Hantaviridae	Orthohantavirus	Thailand orthohantavirus	1980492	L	NC_034556	1
+Hantaviridae	Orthohantavirus	Thailand orthohantavirus	1980492	M	NC_034563	2
+Hantaviridae	Orthohantavirus	Tula orthohantavirus	1980494	L	NC_005226	1
+Hantaviridae	Orthohantavirus	Tula orthohantavirus	1980494	S	NC_005227	24
+Hantaviridae	Orthohantavirus	Tula orthohantavirus	1980494	M	NC_005228	2
+Hantaviridae	Orthohantavirus	Yakeshi orthohantavirus	1980495	S	NC_038704	3
+Hantaviridae	Orthohantavirus	Yakeshi orthohantavirus	1980495	M	NC_038705	1
+Hantaviridae	Thottimvirus	Imjin thottimvirus	2501369	M	NC_034557	12
+Hantaviridae	Thottimvirus	Imjin thottimvirus	2501369	S	NC_034558	27
+Hantaviridae	Thottimvirus	Imjin thottimvirus	2501369	L	NC_034564	11
+Hantaviridae	Thottimvirus	Thottopalayam thottimvirus	2501370	S	NC_010704	14
+Hantaviridae	Thottimvirus	Thottopalayam thottimvirus	2501370	L	NC_010707	9
+Hantaviridae	Thottimvirus	Thottopalayam thottimvirus	2501370	M	NC_010708	14
 Hepadnaviridae	unknown	Bluegill hepatitis B virus	2169918	None	NC_030445	1
 Hepadnaviridae	unknown	Domestic cat hepadnavirus	2107574	None	NC_040719	3
 Hepadnaviridae	unknown	Tibetan frog hepatitis B virus	2169919	None	NC_030446	2
@@ -804,7 +939,7 @@ Herpesviridae	Iltovirus	Gallid alphaherpesvirus 1	10386	None	NC_006623	50
 Herpesviridae	Iltovirus	Psittacid alphaherpesvirus 1	50294	None	NC_005264	1
 Herpesviridae	Lymphocryptovirus	Callitrichine gammaherpesvirus 3	106331	None	NC_004367	1
 Herpesviridae	Lymphocryptovirus	Gorilline gammaherpesvirus 1	159604	None	NC_038937	1
-Herpesviridae	Lymphocryptovirus	Human gammaherpesvirus 4	10376	None	NC_009334,NC_007605,NC_007605	645
+Herpesviridae	Lymphocryptovirus	Human gammaherpesvirus 4	10376	None	NC_007605,NC_009334,NC_007605	645
 Herpesviridae	Lymphocryptovirus	Macacine gammaherpesvirus 4	45455	None	NC_006146	1
 Herpesviridae	Lymphocryptovirus	Panine gammaherpesvirus 1	159602	None	NC_038859	1
 Herpesviridae	Lymphocryptovirus	Papiine gammaherpesvirus 1	106332	None	NC_043058	1
@@ -895,38 +1030,110 @@ Iridoviridae	Ranavirus	Frog virus 3	10493	None	NC_005946	16
 Iridoviridae	Ranavirus	Santee-Cooper ranavirus	198068	None	NC_038508	5
 Iridoviridae	Ranavirus	Short-finned eel ranavirus	638660	None	NC_030394	1
 Iridoviridae	Ranavirus	Singapore grouper iridovirus	262968	None	NC_006549	2
-Nairoviridae	Orthonairovirus	Burana orthonairovirus	1980518	L	NC_031285,NC_031286,NC_031284	2
-Nairoviridae	Orthonairovirus	Crimean-Congo hemorrhagic fever orthonairovirus	1980519	S	NC_005301,NC_005300,NC_005302	178
-Nairoviridae	Orthonairovirus	Dera Ghazi Khan orthonairovirus	1980520	L	NC_034510,NC_034520,NC_034521	3
-Nairoviridae	Orthonairovirus	Dugbe orthonairovirus	1980521	S	NC_004157,NC_004159,NC_004158	7
-Nairoviridae	Orthonairovirus	Hazara orthonairovirus	1980522	S	NC_038711,NC_038709,NC_038710	3
-Nairoviridae	Orthonairovirus	Hughes orthonairovirus	1980523	L	NC_034502,NC_034503,NC_034494	7
-Nairoviridae	Orthonairovirus	Kasokero orthonairovirus	1980524	S	NC_029933,NC_029932,NC_036636	1
-Nairoviridae	Orthonairovirus	Keterah orthonairovirus	1980525	M	NC_034389,NC_034392,NC_034388	1
-Nairoviridae	Orthonairovirus	Leopards Hill virus	1381104	L	NC_025831,NC_025833,NC_025832	3
-Nairoviridae	Orthonairovirus	Nairobi sheep disease orthonairovirus	1980526	S	NC_034391,NC_034386,NC_034387	19
-Nairoviridae	Orthonairovirus	Qalyub orthonairovirus	1980527	L	NC_034522,NC_034511,NC_034512	2
-Nairoviridae	Orthonairovirus	Sakhalin orthonairovirus	1980528	L	NC_034562,NC_034561,NC_034554	4
-Nairoviridae	Orthonairovirus	Thiafora orthonairovirus	1980529	L	NC_039222,NC_039220,NC_039221	2
-Nairoviridae	Orthonairovirus	Tofla virus	1615758	S	NC_029122,NC_029123,NC_029124	2
-Nairoviridae	Orthonairovirus	Yogue virus	1712572	L	NC_029931,NC_029935,NC_029936	1
-Nodaviridae	Alphanodavirus	Boolarra virus	12286	RNA 1	NC_004142,NC_004145	1
-Nodaviridae	Alphanodavirus	Nodamura virus	12288	RNA 2	NC_002691,NC_002690	2
-Nodaviridae	Betanodavirus	Barfin flounder nervous necrosis virus	43761	RNA 1	NC_013459,NC_013458	2
-Nodaviridae	Betanodavirus	Redspotted grouper nervous necrosis virus	43763	RNA 2	NC_008040,NC_008041	46
-Nodaviridae	Betanodavirus	Senegalese sole Iberian betanodavirus	683176	1	NC_024493,NC_024492	3
-Nodaviridae	Betanodavirus	Striped jack nervous necrosis virus	35297	RNA 1	NC_003449,NC_003448	3
-Nodaviridae	Betanodavirus	Tiger puffer nervous necrosis virus	43764	RNA 1	NC_013461,NC_013460	1
+Nairoviridae	Orthonairovirus	Burana orthonairovirus	1980518	L	NC_031284	2
+Nairoviridae	Orthonairovirus	Burana orthonairovirus	1980518	M	NC_031285	2
+Nairoviridae	Orthonairovirus	Burana orthonairovirus	1980518	S	NC_031286	2
+Nairoviridae	Orthonairovirus	Crimean-Congo hemorrhagic fever orthonairovirus	1980519	M	NC_005300	145
+Nairoviridae	Orthonairovirus	Crimean-Congo hemorrhagic fever orthonairovirus	1980519	L	NC_005301	125
+Nairoviridae	Orthonairovirus	Crimean-Congo hemorrhagic fever orthonairovirus	1980519	S	NC_005302	178
+Nairoviridae	Orthonairovirus	Dera Ghazi Khan orthonairovirus	1980520	M	NC_034510	2
+Nairoviridae	Orthonairovirus	Dera Ghazi Khan orthonairovirus	1980520	L	NC_034520	3
+Nairoviridae	Orthonairovirus	Dera Ghazi Khan orthonairovirus	1980520	S	NC_034521	2
+Nairoviridae	Orthonairovirus	Dugbe orthonairovirus	1980521	S	NC_004157	7
+Nairoviridae	Orthonairovirus	Dugbe orthonairovirus	1980521	M	NC_004158	1
+Nairoviridae	Orthonairovirus	Dugbe orthonairovirus	1980521	L	NC_004159	1
+Nairoviridae	Orthonairovirus	Hazara orthonairovirus	1980522	L	NC_038709	2
+Nairoviridae	Orthonairovirus	Hazara orthonairovirus	1980522	M	NC_038710	2
+Nairoviridae	Orthonairovirus	Hazara orthonairovirus	1980522	S	NC_038711	3
+Nairoviridae	Orthonairovirus	Hughes orthonairovirus	1980523	M	NC_034494	5
+Nairoviridae	Orthonairovirus	Hughes orthonairovirus	1980523	L	NC_034502	7
+Nairoviridae	Orthonairovirus	Hughes orthonairovirus	1980523	S	NC_034503	4
+Nairoviridae	Orthonairovirus	Kasokero orthonairovirus	1980524	S	NC_029932	1
+Nairoviridae	Orthonairovirus	Kasokero orthonairovirus	1980524	M	NC_029933	1
+Nairoviridae	Orthonairovirus	Kasokero orthonairovirus	1980524	L	NC_036636	1
+Nairoviridae	Orthonairovirus	Keterah orthonairovirus	1980525	M	NC_034388	1
+Nairoviridae	Orthonairovirus	Keterah orthonairovirus	1980525	S	NC_034389	1
+Nairoviridae	Orthonairovirus	Keterah orthonairovirus	1980525	L	NC_034392	1
+Nairoviridae	Orthonairovirus	Leopards Hill virus	1381104	L	NC_025831	3
+Nairoviridae	Orthonairovirus	Leopards Hill virus	1381104	M	NC_025832	2
+Nairoviridae	Orthonairovirus	Leopards Hill virus	1381104	S	NC_025833	3
+Nairoviridae	Orthonairovirus	Nairobi sheep disease orthonairovirus	1980526	S	NC_034386	19
+Nairoviridae	Orthonairovirus	Nairobi sheep disease orthonairovirus	1980526	L	NC_034387	6
+Nairoviridae	Orthonairovirus	Nairobi sheep disease orthonairovirus	1980526	M	NC_034391	4
+Nairoviridae	Orthonairovirus	Qalyub orthonairovirus	1980527	L	NC_034511	2
+Nairoviridae	Orthonairovirus	Qalyub orthonairovirus	1980527	S	NC_034512	1
+Nairoviridae	Orthonairovirus	Qalyub orthonairovirus	1980527	M	NC_034522	1
+Nairoviridae	Orthonairovirus	Sakhalin orthonairovirus	1980528	M	NC_034554	2
+Nairoviridae	Orthonairovirus	Sakhalin orthonairovirus	1980528	L	NC_034561	4
+Nairoviridae	Orthonairovirus	Sakhalin orthonairovirus	1980528	S	NC_034562	4
+Nairoviridae	Orthonairovirus	Thiafora orthonairovirus	1980529	L	NC_039220	2
+Nairoviridae	Orthonairovirus	Thiafora orthonairovirus	1980529	M	NC_039221	2
+Nairoviridae	Orthonairovirus	Thiafora orthonairovirus	1980529	S	NC_039222	2
+Nairoviridae	Orthonairovirus	Tofla virus	1615758	S	NC_029122	2
+Nairoviridae	Orthonairovirus	Tofla virus	1615758	M	NC_029123	2
+Nairoviridae	Orthonairovirus	Tofla virus	1615758	L	NC_029124	2
+Nairoviridae	Orthonairovirus	Yogue virus	1712572	L	NC_029931	1
+Nairoviridae	Orthonairovirus	Yogue virus	1712572	M	NC_029935	1
+Nairoviridae	Orthonairovirus	Yogue virus	1712572	S	NC_029936	1
+Nodaviridae	Alphanodavirus	Boolarra virus	12286	RNA 1	NC_004142	1
+Nodaviridae	Alphanodavirus	Boolarra virus	12286	RNA 2	NC_004145	1
+Nodaviridae	Alphanodavirus	Nodamura virus	12288	RNA 1	NC_002690	1
+Nodaviridae	Alphanodavirus	Nodamura virus	12288	RNA 2	NC_002691	2
+Nodaviridae	Betanodavirus	Barfin flounder nervous necrosis virus	43761	RNA 1	NC_013458	2
+Nodaviridae	Betanodavirus	Barfin flounder nervous necrosis virus	43761	RNA 2	NC_013459	2
+Nodaviridae	Betanodavirus	Redspotted grouper nervous necrosis virus	43763	RNA 1	NC_008040	24
+Nodaviridae	Betanodavirus	Redspotted grouper nervous necrosis virus	43763	RNA 2	NC_008041	46
+Nodaviridae	Betanodavirus	Senegalese sole Iberian betanodavirus	683176	1	NC_024492	3
+Nodaviridae	Betanodavirus	Senegalese sole Iberian betanodavirus	683176	2	NC_024493	3
+Nodaviridae	Betanodavirus	Striped jack nervous necrosis virus	35297	RNA 1	NC_003448	3
+Nodaviridae	Betanodavirus	Striped jack nervous necrosis virus	35297	RNA 2	NC_003449	3
+Nodaviridae	Betanodavirus	Tiger puffer nervous necrosis virus	43764	RNA 1	NC_013460	1
+Nodaviridae	Betanodavirus	Tiger puffer nervous necrosis virus	43764	RNA 2	NC_013461	1
 Nyamiviridae	Nyavirus	Midway nyavirus	644609	None	NC_012702	1
 Nyamiviridae	Nyavirus	Nyamanini nyavirus	644610	None	NC_012703	1
-Orthomyxoviridae	Alphainfluenzavirus	Influenza A virus	11320	2	NC_026436,NC_026435,NC_026438,NC_026431,NC_026432,NC_026434,NC_026433,NC_026437	NA
-Orthomyxoviridae	Betainfluenzavirus	Influenza B virus	11520	1	NC_002208,NC_002211,NC_002205,NC_002210,NC_002204,NC_002207,NC_002209,NC_002206	NA
-Orthomyxoviridae	Deltainfluenzavirus	Influenza D virus	1511084	4	NC_036619,NC_036617,NC_036616,NC_036621,NC_036620,NC_036618,NC_036615	20
-Orthomyxoviridae	Gammainfluenzavirus	Influenza C virus	11552	7	NC_006310,NC_006308,NC_006309,NC_006306,NC_006307,NC_006312,NC_006311	2
-Orthomyxoviridae	Isavirus	Salmon isavirus	55987	3	NC_006499,NC_006502,NC_006500,NC_006505,NC_006497,NC_006503,NC_006501,NC_006498	124
-Orthomyxoviridae	Quaranjavirus	Wellfleet Bay virus	1566309	4	NC_025798,NC_025796,NC_025797,NC_025799,NC_025793,NC_025794,NC_025795	1
-Orthomyxoviridae	Thogotovirus	Dhori thogotovirus	11318	2	NC_034255,NC_034261,NC_034254,NC_034262,NC_034263,NC_034256	2
-Orthomyxoviridae	Thogotovirus	Thogoto thogotovirus	11569	6	NC_006496,NC_006506,NC_006507,NC_006504,NC_006495,NC_006508	5
+Orthomyxoviridae	Alphainfluenzavirus	Influenza A virus	11320	2	NC_026435,NC_002021,NC_007375,NC_026423,NC_007372	NA
+Orthomyxoviridae	Betainfluenzavirus	Influenza B virus	11520	1	NC_002204,MG925358,MT314615	NA
+Orthomyxoviridae	Deltainfluenzavirus	Influenza D virus	1511084	2	NC_036615	18
+Orthomyxoviridae	Deltainfluenzavirus	Influenza D virus	1511084	1	NC_036616	19
+Orthomyxoviridae	Deltainfluenzavirus	Influenza D virus	1511084	5	NC_036617	10
+Orthomyxoviridae	Deltainfluenzavirus	Influenza D virus	1511084	4	NC_036618	20
+Orthomyxoviridae	Deltainfluenzavirus	Influenza D virus	1511084	3	NC_036619	10
+Orthomyxoviridae	Deltainfluenzavirus	Influenza D virus	1511084	6	NC_036620	10
+Orthomyxoviridae	Deltainfluenzavirus	Influenza D virus	1511084	7	NC_036621	19
+Orthomyxoviridae	Gammainfluenzavirus	Influenza C virus	11552	4	NC_006310	1
+Orthomyxoviridae	Gammainfluenzavirus	Influenza C virus	11552	2	NC_006308	1
+Orthomyxoviridae	Gammainfluenzavirus	Influenza C virus	11552	6	NC_006312	1
+Orthomyxoviridae	Gammainfluenzavirus	Influenza C virus	11552	3	NC_006309	1
+Orthomyxoviridae	Gammainfluenzavirus	Influenza C virus	11552	1	NC_006307	1
+Orthomyxoviridae	Gammainfluenzavirus	Influenza C virus	11552	5	NC_006311	1
+Orthomyxoviridae	Gammainfluenzavirus	Influenza C virus	11552	7	NC_006306	2
+Orthomyxoviridae	Isavirus	Salmon isavirus	55987	8	NC_006497	43
+Orthomyxoviridae	Isavirus	Salmon isavirus	55987	7	NC_006498	48
+Orthomyxoviridae	Isavirus	Salmon isavirus	55987	6	NC_006499	109
+Orthomyxoviridae	Isavirus	Salmon isavirus	55987	5	NC_006500	120
+Orthomyxoviridae	Isavirus	Salmon isavirus	55987	4	NC_006501	116
+Orthomyxoviridae	Isavirus	Salmon isavirus	55987	3	NC_006502	124
+Orthomyxoviridae	Isavirus	Salmon isavirus	55987	2	NC_006503	40
+Orthomyxoviridae	Isavirus	Salmon isavirus	55987	1	NC_006505	45
+Orthomyxoviridae	Quaranjavirus	Wellfleet Bay virus	1566309	4	NC_025793	1
+Orthomyxoviridae	Quaranjavirus	Wellfleet Bay virus	1566309	7	NC_025794	1
+Orthomyxoviridae	Quaranjavirus	Wellfleet Bay virus	1566309	1	NC_025795	1
+Orthomyxoviridae	Quaranjavirus	Wellfleet Bay virus	1566309	2	NC_025796	1
+Orthomyxoviridae	Quaranjavirus	Wellfleet Bay virus	1566309	3	NC_025797	1
+Orthomyxoviridae	Quaranjavirus	Wellfleet Bay virus	1566309	5	NC_025798	1
+Orthomyxoviridae	Quaranjavirus	Wellfleet Bay virus	1566309	6	NC_025799	1
+Orthomyxoviridae	Thogotovirus	Dhori thogotovirus	11318	2	NC_034254	2
+Orthomyxoviridae	Thogotovirus	Dhori thogotovirus	11318	3	NC_034255	2
+Orthomyxoviridae	Thogotovirus	Dhori thogotovirus	11318	5	NC_034256	2
+Orthomyxoviridae	Thogotovirus	Dhori thogotovirus	11318	1	NC_034261	2
+Orthomyxoviridae	Thogotovirus	Dhori thogotovirus	11318	4	NC_034262	2
+Orthomyxoviridae	Thogotovirus	Dhori thogotovirus	11318	6	NC_034263	2
+Orthomyxoviridae	Thogotovirus	Thogoto thogotovirus	11569	2	NC_006495	2
+Orthomyxoviridae	Thogotovirus	Thogoto thogotovirus	11569	3	NC_006496	3
+Orthomyxoviridae	Thogotovirus	Thogoto thogotovirus	11569	6	NC_006504	5
+Orthomyxoviridae	Thogotovirus	Thogoto thogotovirus	11569	4	NC_006506	2
+Orthomyxoviridae	Thogotovirus	Thogoto thogotovirus	11569	5	NC_006507	2
+Orthomyxoviridae	Thogotovirus	Thogoto thogotovirus	11569	1	NC_006508	2
 Papillomaviridae	unknown	Bandicoot papillomatosis carcinomatosis virus type 1	479058	None	NC_010107	1
 Papillomaviridae	unknown	Bandicoot papillomatosis carcinomatosis virus type 2	500654	None	NC_010817	1
 Papillomaviridae	unknown	Bos taurus papillomavirus 13	1887213	None	NC_030795	1
@@ -961,24 +1168,24 @@ Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 2	337039	None	NC_001576
 Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 3	333767	None	NC_001694	34
 Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 4	337043	None	NC_001352	10
 Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 5	337044	None	NC_001583	63
-Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 6	337050	None	NC_001593,NC_038889,NC_038889	71
+Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 6	337050	None	NC_038889,NC_001593,NC_038889	71
 Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 7	337042	None	NC_001357	220
 Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 8	333757	None	NC_001595	10
 Papillomaviridae	Alphapapillomavirus	Alphapapillomavirus 9	337041	None	NC_001526	4046
 Papillomaviridae	Alphapapillomavirus	Macaca mulatta papillomavirus 6	2364646	None	NC_040727	1
-Papillomaviridae	Betapapillomavirus	Betapapillomavirus 1	337051	None	NC_015692,NC_001531,NC_015692	29
+Papillomaviridae	Betapapillomavirus	Betapapillomavirus 1	337051	None	NC_015692,NC_015692,NC_001531	29
 Papillomaviridae	Betapapillomavirus	Betapapillomavirus 2	333924	None	NC_001596	34
 Papillomaviridae	Betapapillomavirus	Betapapillomavirus 3	334207	None	NC_001591	4
 Papillomaviridae	Betapapillomavirus	Betapapillomavirus 4	334208	None	NC_004500	3
 Papillomaviridae	Betapapillomavirus	Betapapillomavirus 5	334209	None	NC_005134	4
 Papillomaviridae	Betapapillomavirus	Betapapillomavirus 6	1172193	None	NC_015691	1
 Papillomaviridae	Chipapillomavirus	Chipapillomavirus 1	1177758	None	NC_016074,NC_008297,NC_016074	7
-Papillomaviridae	Chipapillomavirus	Chipapillomavirus 2	1177759	None	NC_010226,NC_026640,NC_026640	3
+Papillomaviridae	Chipapillomavirus	Chipapillomavirus 2	1177759	None	NC_026640,NC_010226,NC_026640	3
 Papillomaviridae	Chipapillomavirus	Chipapillomavirus 3	1513276	None	NC_019852,NC_016014,NC_016075	1
 Papillomaviridae	Deltapapillomavirus	Deltapapillomavirus 1	10565	None	NC_001524	2
 Papillomaviridae	Deltapapillomavirus	Deltapapillomavirus 2	10564	None	NC_001523	1
 Papillomaviridae	Deltapapillomavirus	Deltapapillomavirus 3	56144	None	NC_001789	3
-Papillomaviridae	Deltapapillomavirus	Deltapapillomavirus 4	337052	None	NC_001522,NC_030795,NC_001522	54
+Papillomaviridae	Deltapapillomavirus	Deltapapillomavirus 4	337052	None	NC_030795,NC_001522,NC_001522	54
 Papillomaviridae	Deltapapillomavirus	Deltapapillomavirus 5	1175853	None	NC_011051	2
 Papillomaviridae	Deltapapillomavirus	Deltapapillomavirus 6	1513268	None	NC_015268,NC_015267	1
 Papillomaviridae	Deltapapillomavirus	Deltapapillomavirus 7	2169867	None	NC_039036	1
@@ -1007,7 +1214,7 @@ Papillomaviridae	Dyotaupapillomavirus	Dyotaupapillomavirus 1	1932910	None	NC_038
 Papillomaviridae	Dyothetapapillomavirus	Dyothetapapillomavirus 1	1235662	None	NC_038520	1
 Papillomaviridae	Dyoupsilonpapillomavirus	Dyoupsilonpapillomavirus 1	1932912	None	NC_038521	1
 Papillomaviridae	Dyoxipapillomavirus	Dyoxipapillomavirus 1	1513255	None	NC_007612	3
-Papillomaviridae	Dyoxipapillomavirus	Dyoxipapillomavirus 2	2169881	None	NC_030801,NC_030799,NC_030799,NC_030801	2
+Papillomaviridae	Dyoxipapillomavirus	Dyoxipapillomavirus 2	2169881	None	NC_030799,NC_030801,NC_030801,NC_030799	2
 Papillomaviridae	Dyozetapapillomavirus	Dyozetapapillomavirus 1	1177766	None	NC_011530	2
 Papillomaviridae	Epsilonpapillomavirus	Epsilonpapillomavirus 1	40537	None	NC_004195	5
 Papillomaviridae	Epsilonpapillomavirus	Epsilonpapillomavirus 2	2169886	None	NC_030151	1
@@ -1019,7 +1226,7 @@ Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 11	1513256	None	NC_0161
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 12	1513257	None	NC_014955,NC_014469	11
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 13	1513258	None	NC_014952	4
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 14	1513259	None	NC_014954	2
-Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 15	1513260	None	NC_017993,NC_022095,NC_022095,NC_017993	8
+Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 15	1513260	None	NC_022095,NC_017993,NC_017993,NC_022095	8
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 16	1513261	None	NC_017995	2
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 17	1513262	None	NC_017997	1
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 18	1513263	None	NC_033781	4
@@ -1037,14 +1244,14 @@ Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 3	333929	None	NC_001691
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 4	333930	None	NC_001693	1
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 5	333931	None	NC_010329	2
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 6	1175848	None	NC_012213,NC_008189,NC_008188	3
-Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 7	1175849	None	NC_014956,NC_012485,NC_014956	17
+Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 7	1175849	None	NC_012485,NC_014956,NC_014956	17
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 8	1175850	None	NC_012486	11
 Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus 9	1175851	None	NC_013035,NC_014953,NC_014953	6
-Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus sp.	2049444	None	NC_040620,NC_040691,NC_040804,NC_040688,NC_040619,NC_040550,NC_040805,NC_040803,NC_040806	9
+Papillomaviridae	Gammapapillomavirus	Gammapapillomavirus sp.	2049444	None	NC_040688,NC_040550,NC_040805,NC_040691,NC_040620,NC_040803,NC_040806,NC_040619,NC_040804	9
 Papillomaviridae	Gammapapillomavirus	Human papillomavirus KC5	1647924	None	NC_026946	1
 Papillomaviridae	Gammapapillomavirus	Macaca mulatta papillomavirus 5	2364645	None	NC_040655	1
 Papillomaviridae	Gammapapillomavirus	Macaca mulatta papillomavirus 7	2364644	None	NC_040728	1
-Papillomaviridae	Iotapapillomavirus	Iotapapillomavirus 1	10567	None	NC_028492,NC_001605,NC_028492	8
+Papillomaviridae	Iotapapillomavirus	Iotapapillomavirus 1	10567	None	NC_001605,NC_028492,NC_028492	8
 Papillomaviridae	Iotapapillomavirus	Iotapapillomavirus 2	2169961	None	NC_039039	1
 Papillomaviridae	Kappapapillomavirus	Kappapapillomavirus 1	122291	None	NC_002232	1
 Papillomaviridae	Kappapapillomavirus	Kappapapillomavirus 2	10623	None	NC_001541	4
@@ -1061,18 +1268,18 @@ Papillomaviridae	Omegapapillomavirus	Omegapapillomavirus 1	1177763	None	NC_03519
 Papillomaviridae	Omikronpapillomavirus	Omikronpapillomavirus 1	82676	None	NC_018074	4
 Papillomaviridae	Phipapillomavirus	Phipapillomavirus 1	1177757	None	NC_008032	1
 Papillomaviridae	Pipapillomavirus	Pipapillomavirus 1	334212	None	NC_022647	4
-Papillomaviridae	Pipapillomavirus	Pipapillomavirus 2	1176145	None	NC_008582,NC_008519,NC_024893,NC_014326,NC_024893,NC_008582,NC_014326	4
+Papillomaviridae	Pipapillomavirus	Pipapillomavirus 2	1176145	None	NC_024893,NC_008582,NC_014326,NC_008582,NC_008519,NC_024893,NC_014326	4
 Papillomaviridae	Psipapillomavirus	Psipapillomavirus 1	1177762	None	NC_008298	1
 Papillomaviridae	Psipapillomavirus	Psipapillomavirus 2	2170170	None	NC_033740	1
 Papillomaviridae	Psipapillomavirus	Psipapillomavirus 3	2170171	None	NC_033745	1
-Papillomaviridae	Rhopapillomavirus	Rhopapillomavirus 1	1176146	None	NC_016898,NC_006563,NC_006563,NC_016898	2
+Papillomaviridae	Rhopapillomavirus	Rhopapillomavirus 1	1176146	None	NC_006563,NC_016898,NC_016898,NC_006563	2
 Papillomaviridae	Rhopapillomavirus	Rhopapillomavirus 2	1961785	None	NC_038526,NC_028267	1
 Papillomaviridae	Sigmapapillomavirus	Sigmapapillomavirus 1	1176147	None	NC_006951	1
 Papillomaviridae	Taupapillomavirus	Canine papillomavirus 21	2304619	None	NC_040578	1
 Papillomaviridae	Taupapillomavirus	Canine papillomavirus 22	2304620	None	NC_040579	1
 Papillomaviridae	Taupapillomavirus	Taupapillomavirus 1	1176148	None	NC_006564	4
 Papillomaviridae	Taupapillomavirus	Taupapillomavirus 2	1513274	None	NC_023852	1
-Papillomaviridae	Taupapillomavirus	Taupapillomavirus 3	1961786	None	NC_021472,NC_022373,NC_022373,NC_021472	3
+Papillomaviridae	Taupapillomavirus	Taupapillomavirus 3	1961786	None	NC_022373,NC_021472,NC_021472,NC_022373	3
 Papillomaviridae	Taupapillomavirus	Taupapillomavirus 4	2170222	None	NC_022253	1
 Papillomaviridae	Thetapapillomavirus	Thetapapillomavirus 1	197772	None	NC_003973	2
 Papillomaviridae	Treisdeltapapillomavirus	Treisdeltapapillomavirus 1	1921773	None	NC_038527	1
@@ -1135,9 +1342,9 @@ Paramyxoviridae	Morbillivirus	Small ruminant morbillivirus	31604	None	NC_006383	
 Paramyxoviridae	Paraavulavirus	Avian paraavulavirus 4	2560328	None	NC_019531	11
 Paramyxoviridae	Pararubulavirus	Sosuga pararubulavirus	2560773	None	NC_025343	1
 Paramyxoviridae	Pararubulavirus	Teviot pararubulavirus	2560803	None	NC_039198	1
-Paramyxoviridae	Respirovirus	Bovine respirovirus 3	11215	None	NC_028362,NC_002161,NC_028362	30
+Paramyxoviridae	Respirovirus	Bovine respirovirus 3	11215	None	NC_002161,NC_028362,NC_028362	30
 Paramyxoviridae	Respirovirus	Human respirovirus 1	12730	None	NC_003461	42
-Paramyxoviridae	Respirovirus	Human respirovirus 3	11216	None	NC_038270,NC_001796,NC_038270	386
+Paramyxoviridae	Respirovirus	Human respirovirus 3	11216	None	NC_038270,NC_038270,NC_001796	386
 Paramyxoviridae	Respirovirus	Murine respirovirus	11191	None	NC_001552	22
 Paramyxoviridae	Respirovirus	Porcine respirovirus 1	1357321	None	NC_025402	6
 Paramyxoviridae	Rubulavirus	Achimota rubulavirus 1	1979157	None	NC_025403	1
@@ -1164,7 +1371,7 @@ Parvoviridae	unknown	Mouse kidney parvovirus	2316143	None	NC_040843	1
 Parvoviridae	unknown	Parus major densovirus	1907771	None	NC_031450	1
 Parvoviridae	unknown	Parvovirus NIH-CQV	1341019	None	NC_022089	6
 Parvoviridae	unknown	Porcine partetravirus	1208310	None	NC_022104	1
-Parvoviridae	unknown	Red-crowned crane parvovirus	2079601	None	NC_040672,NC_040603	2
+Parvoviridae	unknown	Red-crowned crane parvovirus	2079601	None	NC_040603,NC_040672	2
 Parvoviridae	unknown	Sea otter parvovirus 1	1882382	None	NC_030837	1
 Parvoviridae	unknown	Sesavirus CSL10538	1519097	None	NC_026251	1
 Parvoviridae	unknown	Slow loris parvovirus 1	1581151	None	NC_025891	1
@@ -1173,7 +1380,7 @@ Parvoviridae	Amdoparvovirus	Carnivore amdoparvovirus 1	1511862	None	NC_001662	60
 Parvoviridae	Amdoparvovirus	Carnivore amdoparvovirus 2	1511863	None	NC_038533	1
 Parvoviridae	Amdoparvovirus	Carnivore amdoparvovirus 3	2169702	None	NC_025825	4
 Parvoviridae	Amdoparvovirus	Carnivore amdoparvovirus 4	2169703	None	NC_034445	7
-Parvoviridae	Aveparvovirus	Galliform aveparvovirus 1	1511865	None	NC_038534,NC_024452,NC_024452,NC_038534	42
+Parvoviridae	Aveparvovirus	Galliform aveparvovirus 1	1511865	None	NC_024452,NC_038534,NC_038534,NC_024452	42
 Parvoviridae	Bocaparvovirus	Bat bocavirus	1329649	None	NC_029300	2
 Parvoviridae	Bocaparvovirus	Carnivore bocaparvovirus 1	1511866	None	NC_004442	10
 Parvoviridae	Bocaparvovirus	Carnivore bocaparvovirus 2	1511867	None	NC_020499	1
@@ -1243,91 +1450,227 @@ Parvoviridae	Protoparvovirus	Ungulate protoparvovirus 2	2170151	None	NC_043446	1
 Parvoviridae	Tetraparvovirus	Chiropteran tetraparvovirus 1	1511912	None	NC_016744	1
 Parvoviridae	Tetraparvovirus	Primate tetraparvovirus 1	1511913	None	NC_007018	27
 Parvoviridae	Tetraparvovirus	Tetraparvovirus sp.	1908804	None	NC_031670	1
-Parvoviridae	Tetraparvovirus	Ungulate tetraparvovirus 1	1511914	None	NC_028136,NC_038898,NC_038898,NC_028136	12
+Parvoviridae	Tetraparvovirus	Ungulate tetraparvovirus 1	1511914	None	NC_038898,NC_028136,NC_028136,NC_038898	12
 Parvoviridae	Tetraparvovirus	Ungulate tetraparvovirus 2	1511915	None	NC_038546	21
 Parvoviridae	Tetraparvovirus	Ungulate tetraparvovirus 3	1511916	None	NC_038883,NC_035180,NC_035180,NC_038883	4
 Parvoviridae	Tetraparvovirus	Ungulate tetraparvovirus 4	1511917	None	NC_038547	9
-Peribunyaviridae	Herbevirus	Herbert herbevirus	1980534	S	NC_038714,NC_038713,NC_038712	1
-Peribunyaviridae	Orthobunyavirus	Aino orthobunyavirus	2560289	M	NC_018465,NC_018460,NC_018459	20
-Peribunyaviridae	Orthobunyavirus	Akabane orthobunyavirus	1933178	M	NC_009896,NC_009895,NC_009894	127
-Peribunyaviridae	Orthobunyavirus	Alajuela orthobunyavirus	1933181	M	NC_038716,NC_038715,NC_038717	1
-Peribunyaviridae	Orthobunyavirus	Anopheles A orthobunyavirus	1933180	S	NC_038719,NC_038718,NC_038720	2
+Peribunyaviridae	Herbevirus	Herbert herbevirus	1980534	S	NC_038712	1
+Peribunyaviridae	Herbevirus	Herbert herbevirus	1980534	M	NC_038713	1
+Peribunyaviridae	Herbevirus	Herbert herbevirus	1980534	L	NC_038714	1
+Peribunyaviridae	Orthobunyavirus	Aino orthobunyavirus	2560289	M	NC_018459	20
+Peribunyaviridae	Orthobunyavirus	Aino orthobunyavirus	2560289	S	NC_018460	17
+Peribunyaviridae	Orthobunyavirus	Aino orthobunyavirus	2560289	L	NC_018465	10
+Peribunyaviridae	Orthobunyavirus	Akabane orthobunyavirus	1933178	L	NC_009894	54
+Peribunyaviridae	Orthobunyavirus	Akabane orthobunyavirus	1933178	M	NC_009895	127
+Peribunyaviridae	Orthobunyavirus	Akabane orthobunyavirus	1933178	S	NC_009896	122
+Peribunyaviridae	Orthobunyavirus	Alajuela orthobunyavirus	1933181	M	NC_038715	1
+Peribunyaviridae	Orthobunyavirus	Alajuela orthobunyavirus	1933181	S	NC_038716	1
+Peribunyaviridae	Orthobunyavirus	Alajuela orthobunyavirus	1933181	L	NC_038717	1
+Peribunyaviridae	Orthobunyavirus	Anopheles A orthobunyavirus	1933180	M	NC_038718	1
+Peribunyaviridae	Orthobunyavirus	Anopheles A orthobunyavirus	1933180	S	NC_038719	2
+Peribunyaviridae	Orthobunyavirus	Anopheles A orthobunyavirus	1933180	L	NC_038720	2
 Peribunyaviridae	Orthobunyavirus	Anopheles B orthobunyavirus	1933176	S	NC_038721	1
 Peribunyaviridae	Orthobunyavirus	Batama orthobunyavirus	1933177	S	NC_038722	1
-Peribunyaviridae	Orthobunyavirus	Bimiti orthobunyavirus	1933263	M	NC_038725,NC_038724,NC_038723	1
-Peribunyaviridae	Orthobunyavirus	Brazoran virus	1368616	S	NC_022038,NC_022037,NC_022039	1
-Peribunyaviridae	Orthobunyavirus	Bunyamwera orthobunyavirus	1933179	L	NC_001927,NC_001925,NC_001926	79
-Peribunyaviridae	Orthobunyavirus	Buttonwillow orthobunyavirus	2560361	L	NC_043597,NC_043598,NC_043599	1
-Peribunyaviridae	Orthobunyavirus	Bwamba orthobunyavirus	35310	L	NC_034480,NC_034479,NC_034490	2
+Peribunyaviridae	Orthobunyavirus	Bimiti orthobunyavirus	1933263	M	NC_038723	1
+Peribunyaviridae	Orthobunyavirus	Bimiti orthobunyavirus	1933263	L	NC_038724	1
+Peribunyaviridae	Orthobunyavirus	Bimiti orthobunyavirus	1933263	S	NC_038725	1
+Peribunyaviridae	Orthobunyavirus	Brazoran virus	1368616	S	NC_022037	1
+Peribunyaviridae	Orthobunyavirus	Brazoran virus	1368616	M	NC_022038	1
+Peribunyaviridae	Orthobunyavirus	Brazoran virus	1368616	L	NC_022039	1
+Peribunyaviridae	Orthobunyavirus	Bunyamwera orthobunyavirus	1933179	L	NC_001925	79
+Peribunyaviridae	Orthobunyavirus	Bunyamwera orthobunyavirus	1933179	M	NC_001926	45
+Peribunyaviridae	Orthobunyavirus	Bunyamwera orthobunyavirus	1933179	S	NC_001927	76
+Peribunyaviridae	Orthobunyavirus	Buttonwillow orthobunyavirus	2560361	L	NC_043597	1
+Peribunyaviridae	Orthobunyavirus	Buttonwillow orthobunyavirus	2560361	S	NC_043598	1
+Peribunyaviridae	Orthobunyavirus	Buttonwillow orthobunyavirus	2560361	M	NC_043599	1
+Peribunyaviridae	Orthobunyavirus	Bwamba orthobunyavirus	35310	L	NC_034479	2
+Peribunyaviridae	Orthobunyavirus	Bwamba orthobunyavirus	35310	S	NC_034480	2
+Peribunyaviridae	Orthobunyavirus	Bwamba orthobunyavirus	35310	M	NC_034490	2
 Peribunyaviridae	Orthobunyavirus	Cache Valley orthobunyavirus	2560364	M	NC_043619	8
-Peribunyaviridae	Orthobunyavirus	California encephalitis orthobunyavirus	1933264	S	NC_004110,NC_004109,NC_004108	80
-Peribunyaviridae	Orthobunyavirus	Capim orthobunyavirus	1933265	L	NC_034482,NC_034493,NC_034483	2
-Peribunyaviridae	Orthobunyavirus	Caraparu orthobunyavirus	1933290	L	NC_034489,NC_034477,NC_034478	6
-Peribunyaviridae	Orthobunyavirus	Catu orthobunyavirus	1933269	S	NC_038728,NC_038726,NC_038727	1
+Peribunyaviridae	Orthobunyavirus	California encephalitis orthobunyavirus	1933264	L	NC_004108	64
+Peribunyaviridae	Orthobunyavirus	California encephalitis orthobunyavirus	1933264	M	NC_004109	78
+Peribunyaviridae	Orthobunyavirus	California encephalitis orthobunyavirus	1933264	S	NC_004110	80
+Peribunyaviridae	Orthobunyavirus	Capim orthobunyavirus	1933265	L	NC_034482	2
+Peribunyaviridae	Orthobunyavirus	Capim orthobunyavirus	1933265	S	NC_034483	2
+Peribunyaviridae	Orthobunyavirus	Capim orthobunyavirus	1933265	M	NC_034493	2
+Peribunyaviridae	Orthobunyavirus	Caraparu orthobunyavirus	1933290	M	NC_034477	5
+Peribunyaviridae	Orthobunyavirus	Caraparu orthobunyavirus	1933290	S	NC_034478	3
+Peribunyaviridae	Orthobunyavirus	Caraparu orthobunyavirus	1933290	L	NC_034489	6
+Peribunyaviridae	Orthobunyavirus	Catu orthobunyavirus	1933269	S	NC_038726	1
+Peribunyaviridae	Orthobunyavirus	Catu orthobunyavirus	1933269	M	NC_038727	1
+Peribunyaviridae	Orthobunyavirus	Catu orthobunyavirus	1933269	L	NC_038728	1
 Peribunyaviridae	Orthobunyavirus	Fort Sherman orthobunyavirus	2560477	M	NC_043615	1
-Peribunyaviridae	Orthobunyavirus	Gamboa orthobunyavirus	1933270	L	NC_038730,NC_038729,NC_038731	4
-Peribunyaviridae	Orthobunyavirus	Guajara orthobunyavirus	1933272	S	NC_038732,NC_038733,NC_038734	1
-Peribunyaviridae	Orthobunyavirus	Guama orthobunyavirus	1933273	L	NC_038737,NC_038735,NC_038736	4
-Peribunyaviridae	Orthobunyavirus	Guaroa orthobunyavirus	1933274	S	NC_034486,NC_034506,NC_034487	13
-Peribunyaviridae	Orthobunyavirus	Ingwavuma orthobunyavirus	2560529	L	NC_043590,NC_043589,NC_043588	1
-Peribunyaviridae	Orthobunyavirus	Jatobal orthobunyavirus	2560533	S	NC_043576,NC_043577,NC_043578	1
-Peribunyaviridae	Orthobunyavirus	Kaeng Khoi orthobunyavirus	1933275	L	NC_034501,NC_034500,NC_034499	3
-Peribunyaviridae	Orthobunyavirus	Kairi orthobunyavirus	1933276	S	NC_038739,NC_038738,NC_038740	5
+Peribunyaviridae	Orthobunyavirus	Gamboa orthobunyavirus	1933270	L	NC_038729	4
+Peribunyaviridae	Orthobunyavirus	Gamboa orthobunyavirus	1933270	M	NC_038730	4
+Peribunyaviridae	Orthobunyavirus	Gamboa orthobunyavirus	1933270	S	NC_038731	4
+Peribunyaviridae	Orthobunyavirus	Guajara orthobunyavirus	1933272	S	NC_038732	1
+Peribunyaviridae	Orthobunyavirus	Guajara orthobunyavirus	1933272	M	NC_038733	1
+Peribunyaviridae	Orthobunyavirus	Guajara orthobunyavirus	1933272	L	NC_038734	1
+Peribunyaviridae	Orthobunyavirus	Guama orthobunyavirus	1933273	M	NC_038735	3
+Peribunyaviridae	Orthobunyavirus	Guama orthobunyavirus	1933273	L	NC_038736	4
+Peribunyaviridae	Orthobunyavirus	Guama orthobunyavirus	1933273	S	NC_038737	3
+Peribunyaviridae	Orthobunyavirus	Guaroa orthobunyavirus	1933274	S	NC_034486	13
+Peribunyaviridae	Orthobunyavirus	Guaroa orthobunyavirus	1933274	L	NC_034487	13
+Peribunyaviridae	Orthobunyavirus	Guaroa orthobunyavirus	1933274	M	NC_034506	13
+Peribunyaviridae	Orthobunyavirus	Ingwavuma orthobunyavirus	2560529	L	NC_043588	1
+Peribunyaviridae	Orthobunyavirus	Ingwavuma orthobunyavirus	2560529	M	NC_043589	1
+Peribunyaviridae	Orthobunyavirus	Ingwavuma orthobunyavirus	2560529	S	NC_043590	1
+Peribunyaviridae	Orthobunyavirus	Jatobal orthobunyavirus	2560533	S	NC_043576	1
+Peribunyaviridae	Orthobunyavirus	Jatobal orthobunyavirus	2560533	M	NC_043577	1
+Peribunyaviridae	Orthobunyavirus	Jatobal orthobunyavirus	2560533	L	NC_043578	1
+Peribunyaviridae	Orthobunyavirus	Kaeng Khoi orthobunyavirus	1933275	L	NC_034499	3
+Peribunyaviridae	Orthobunyavirus	Kaeng Khoi orthobunyavirus	1933275	M	NC_034500	3
+Peribunyaviridae	Orthobunyavirus	Kaeng Khoi orthobunyavirus	1933275	S	NC_034501	3
+Peribunyaviridae	Orthobunyavirus	Kairi orthobunyavirus	1933276	L	NC_038738	3
+Peribunyaviridae	Orthobunyavirus	Kairi orthobunyavirus	1933276	M	NC_038739	4
+Peribunyaviridae	Orthobunyavirus	Kairi orthobunyavirus	1933276	S	NC_038740	5
 Peribunyaviridae	Orthobunyavirus	Keystone orthobunyavirus	2560538	M	NC_043627	1
-Peribunyaviridae	Orthobunyavirus	Koongol orthobunyavirus	1933288	L	NC_038741,NC_038743,NC_038742	1
-Peribunyaviridae	Orthobunyavirus	La Crosse orthobunyavirus	2560547	M	NC_004110,NC_004109,NC_004108	36
-Peribunyaviridae	Orthobunyavirus	Madrid orthobunyavirus	1933291	L	NC_034498,NC_034505,NC_034497	2
-Peribunyaviridae	Orthobunyavirus	Main Drain orthobunyavirus	1933303	M	NC_038942,NC_038943,NC_038941	4
-Peribunyaviridae	Orthobunyavirus	Manzanilla orthobunyavirus	1933304	L	NC_024076,NC_024074,NC_024075	5
-Peribunyaviridae	Orthobunyavirus	Marituba orthobunyavirus	1933307	L	NC_034504,NC_034496,NC_034495	7
-Peribunyaviridae	Orthobunyavirus	Mermet orthobunyavirus	2560587	L	NC_043591,NC_043592,NC_043593	1
-Peribunyaviridae	Orthobunyavirus	Nyando orthobunyavirus	1933306	S	NC_034481,NC_034491,NC_034492	1
-Peribunyaviridae	Orthobunyavirus	Oriboca orthobunyavirus	1934100	L	NC_034488,NC_034476,NC_034475	3
-Peribunyaviridae	Orthobunyavirus	Oropouche orthobunyavirus	1933309	S	NC_005777,NC_005775,NC_005776	31
-Peribunyaviridae	Orthobunyavirus	Patois orthobunyavirus	1934101	L	NC_043689,NC_043690,NC_043691	4
-Peribunyaviridae	Orthobunyavirus	Peaton orthobunyavirus	2560627	S	NC_043549,NC_043551,NC_043550	10
-Peribunyaviridae	Orthobunyavirus	Sathuperi orthobunyavirus	159141	M	NC_018461,NC_018466,NC_018462	91
-Peribunyaviridae	Orthobunyavirus	Schmallenberg orthobunyavirus	2560743	M	NC_043584,NC_043583	3
-Peribunyaviridae	Orthobunyavirus	Shamonda orthobunyavirus	159150	M	NC_018463,NC_018467,NC_018464	9
-Peribunyaviridae	Orthobunyavirus	Shuni orthobunyavirus	159148	S	NC_018465,NC_018460,NC_018459,NC_043698	9
-Peribunyaviridae	Orthobunyavirus	Simbu orthobunyavirus	35306	S	NC_018477,NC_018478,NC_018476	2
-Peribunyaviridae	Orthobunyavirus	Tacaiuma orthobunyavirus	611707	L	NC_043692,NC_043694,UNKNOWN,NC_043693	2
-Peribunyaviridae	Orthobunyavirus	Tataguine orthobunyavirus	2560799	None	NC_043608,NC_043607,NC_043606	3
-Peribunyaviridae	Orthobunyavirus	Tete orthobunyavirus	35319	S	NC_039183,NC_039184,NC_039185	4
+Peribunyaviridae	Orthobunyavirus	Koongol orthobunyavirus	1933288	L	NC_038741	1
+Peribunyaviridae	Orthobunyavirus	Koongol orthobunyavirus	1933288	M	NC_038742	1
+Peribunyaviridae	Orthobunyavirus	Koongol orthobunyavirus	1933288	S	NC_038743	1
+Peribunyaviridae	Orthobunyavirus	La Crosse orthobunyavirus	2560547	L	NC_004108	27
+Peribunyaviridae	Orthobunyavirus	La Crosse orthobunyavirus	2560547	M	NC_004109	36
+Peribunyaviridae	Orthobunyavirus	La Crosse orthobunyavirus	2560547	S	NC_004110	27
+Peribunyaviridae	Orthobunyavirus	Madrid orthobunyavirus	1933291	L	NC_034497	2
+Peribunyaviridae	Orthobunyavirus	Madrid orthobunyavirus	1933291	S	NC_034498	1
+Peribunyaviridae	Orthobunyavirus	Madrid orthobunyavirus	1933291	M	NC_034505	2
+Peribunyaviridae	Orthobunyavirus	Main Drain orthobunyavirus	1933303	S	NC_038941	3
+Peribunyaviridae	Orthobunyavirus	Main Drain orthobunyavirus	1933303	M	NC_038942	4
+Peribunyaviridae	Orthobunyavirus	Main Drain orthobunyavirus	1933303	L	NC_038943	3
+Peribunyaviridae	Orthobunyavirus	Manzanilla orthobunyavirus	1933304	M	NC_024074	4
+Peribunyaviridae	Orthobunyavirus	Manzanilla orthobunyavirus	1933304	S	NC_024075	3
+Peribunyaviridae	Orthobunyavirus	Manzanilla orthobunyavirus	1933304	L	NC_024076	5
+Peribunyaviridae	Orthobunyavirus	Marituba orthobunyavirus	1933307	L	NC_034495	7
+Peribunyaviridae	Orthobunyavirus	Marituba orthobunyavirus	1933307	S	NC_034496	4
+Peribunyaviridae	Orthobunyavirus	Marituba orthobunyavirus	1933307	M	NC_034504	4
+Peribunyaviridae	Orthobunyavirus	Mermet orthobunyavirus	2560587	L	NC_043591	1
+Peribunyaviridae	Orthobunyavirus	Mermet orthobunyavirus	2560587	M	NC_043592	1
+Peribunyaviridae	Orthobunyavirus	Mermet orthobunyavirus	2560587	S	NC_043593	1
+Peribunyaviridae	Orthobunyavirus	Nyando orthobunyavirus	1933306	S	NC_034481	1
+Peribunyaviridae	Orthobunyavirus	Nyando orthobunyavirus	1933306	M	NC_034491	1
+Peribunyaviridae	Orthobunyavirus	Nyando orthobunyavirus	1933306	L	NC_034492	1
+Peribunyaviridae	Orthobunyavirus	Oriboca orthobunyavirus	1934100	L	NC_034475	3
+Peribunyaviridae	Orthobunyavirus	Oriboca orthobunyavirus	1934100	S	NC_034476	2
+Peribunyaviridae	Orthobunyavirus	Oriboca orthobunyavirus	1934100	M	NC_034488	3
+Peribunyaviridae	Orthobunyavirus	Oropouche orthobunyavirus	1933309	M	NC_005775	20
+Peribunyaviridae	Orthobunyavirus	Oropouche orthobunyavirus	1933309	L	NC_005776	23
+Peribunyaviridae	Orthobunyavirus	Oropouche orthobunyavirus	1933309	S	NC_005777	31
+Peribunyaviridae	Orthobunyavirus	Patois orthobunyavirus	1934101	S	NC_043689	2
+Peribunyaviridae	Orthobunyavirus	Patois orthobunyavirus	1934101	L	NC_043690	4
+Peribunyaviridae	Orthobunyavirus	Patois orthobunyavirus	1934101	M	NC_043691	3
+Peribunyaviridae	Orthobunyavirus	Peaton orthobunyavirus	2560627	S	NC_043549	10
+Peribunyaviridae	Orthobunyavirus	Peaton orthobunyavirus	2560627	L	NC_043550	3
+Peribunyaviridae	Orthobunyavirus	Peaton orthobunyavirus	2560627	M	NC_043551	3
+Peribunyaviridae	Orthobunyavirus	Sathuperi orthobunyavirus	159141	L	NC_018461	34
+Peribunyaviridae	Orthobunyavirus	Sathuperi orthobunyavirus	159141	S	NC_018462	76
+Peribunyaviridae	Orthobunyavirus	Sathuperi orthobunyavirus	159141	M	NC_018466	91
+Peribunyaviridae	Orthobunyavirus	Schmallenberg orthobunyavirus	2560743	L	NC_043583	2
+Peribunyaviridae	Orthobunyavirus	Schmallenberg orthobunyavirus	2560743	M	NC_043584	3
+Peribunyaviridae	Orthobunyavirus	Shamonda orthobunyavirus	159150	L	NC_018463	4
+Peribunyaviridae	Orthobunyavirus	Shamonda orthobunyavirus	159150	S	NC_018464	8
+Peribunyaviridae	Orthobunyavirus	Shamonda orthobunyavirus	159150	M	NC_018467	9
+Peribunyaviridae	Orthobunyavirus	Shuni orthobunyavirus	159148	M	NC_018459	7
+Peribunyaviridae	Orthobunyavirus	Shuni orthobunyavirus	159148	S	NC_018460,NC_043698	9
+Peribunyaviridae	Orthobunyavirus	Shuni orthobunyavirus	159148	L	NC_018465	7
+Peribunyaviridae	Orthobunyavirus	Simbu orthobunyavirus	35306	L	NC_018476	1
+Peribunyaviridae	Orthobunyavirus	Simbu orthobunyavirus	35306	S	NC_018477	2
+Peribunyaviridae	Orthobunyavirus	Simbu orthobunyavirus	35306	M	NC_018478	1
+Peribunyaviridae	Orthobunyavirus	Tacaiuma orthobunyavirus	611707	L	UNKNOWN,NC_043692	2
+Peribunyaviridae	Orthobunyavirus	Tacaiuma orthobunyavirus	611707	S	UNKNOWN,NC_043693	2
+Peribunyaviridae	Orthobunyavirus	Tacaiuma orthobunyavirus	611707	M	UNKNOWN,NC_043694	2
+Peribunyaviridae	Orthobunyavirus	Tataguine orthobunyavirus	2560799	None	NC_043606,NC_043607,NC_043608	3
+Peribunyaviridae	Orthobunyavirus	Tete orthobunyavirus	35319	M	NC_039183	3
+Peribunyaviridae	Orthobunyavirus	Tete orthobunyavirus	35319	L	NC_039184	3
+Peribunyaviridae	Orthobunyavirus	Tete orthobunyavirus	35319	S	NC_039185	4
 Peribunyaviridae	Orthobunyavirus	Thimiri orthobunyavirus	1819305	None	NC_043034	1
 Peribunyaviridae	Orthobunyavirus	Utinga orthobunyavirus	2560828	M	NC_043595	1
-Peribunyaviridae	Orthobunyavirus	Wyeomyia orthobunyavirus	273350	L	NC_039187,NC_039186,NC_039188	6
-Peribunyaviridae	Orthobunyavirus	Zegla orthobunyavirus	2170060	S	NC_043686,NC_043687,NC_043688	1
-Peribunyaviridae	Pacuvirus	Pacui pacuvirus	2560617	L	NC_043602,NC_043600,NC_043601	1
-Phenuiviridae	Banyangvirus	Heartland banyangvirus	2560519	M	NC_024495,NC_024494,NC_024496	3
-Phenuiviridae	Phlebovirus	Aguacate virus	1006583	M	NC_015452,NC_015450,NC_015451	5
-Phenuiviridae	Phlebovirus	Ambe virus	1926500	M	NC_033835,NC_033844,NC_033845	1
-Phenuiviridae	Phlebovirus	Anhanga virus	904722	L	NC_033846,NC_033836,NC_033837	1
-Phenuiviridae	Phlebovirus	Arrabida virus	1457322	L	NC_037616,NC_029082,NC_037617	1
-Phenuiviridae	Phlebovirus	Arumowot virus	904698	M	NC_023633,NC_023634,NC_023635	3
-Phenuiviridae	Phlebovirus	Bhanja virus	1213620	L	NC_027140,NC_027141,NC_027142	5
-Phenuiviridae	Phlebovirus	Bujaru phlebovirus	1933183	L	NC_033830,NC_033847,NC_033831	3
-Phenuiviridae	Phlebovirus	Candiru phlebovirus	1933182	M	NC_015373,NC_015374,NC_015375	13
-Phenuiviridae	Phlebovirus	Punta Toro phlebovirus	1933186	S	NC_039193,NC_039191,NC_039192	21
-Phenuiviridae	Phlebovirus	Razdan virus	1405807	L	NC_022630,NC_022632,NC_022631	1
-Phenuiviridae	Phlebovirus	Rift Valley fever phlebovirus	1933187	S	NC_014395,NC_014396,NC_014397	180
-Phenuiviridae	Phlebovirus	SFTS phlebovirus	1933190	S	NC_018138,NC_018137,NC_018136	553
-Phenuiviridae	Phlebovirus	Salehabad phlebovirus	1933188	L	NC_029129,NC_029127,NC_029128	4
-Phenuiviridae	Phlebovirus	Sandfly fever Naples phlebovirus	1933189	S	NC_006318,NC_006319,NC_006320	59
-Phenuiviridae	Phlebovirus	Sandfly fever Sicilian virus	28292	S	NC_015412,NC_015411,NC_015413	10
-Phenuiviridae	Phlebovirus	Tapara virus	1926501	M	NC_033838,NC_033839,NC_033848	1
-Phenuiviridae	Phlebovirus	Toros virus	1764085	L	NC_029903,NC_037614,NC_037615	2
-Phenuiviridae	Phlebovirus	Uriurana virus	1055750	M	NC_033849,NC_033850,NC_033840	2
-Phenuiviridae	Phlebovirus	Urucuri virus	1926502	L	NC_033842,NC_033841,NC_033843	1
-Phenuiviridae	Phlebovirus	Uukuniemi phlebovirus	1933191	M	NC_005214,NC_005221,NC_005220	18
-Phenuiviridae	Phlebovirus	Zerdali virus	1764086	L	NC_037612,NC_029901,NC_037613	1
-Picobirnaviridae	Picobirnavirus	Chicken picobirnavirus	1930304	RNA 1	NC_040439,NC_040438	1
-Picobirnaviridae	Picobirnavirus	Human picobirnavirus	145856	1	NC_007027,NC_007026	1
-Picobirnaviridae	Picobirnavirus	Otarine picobirnavirus	1187973	2	NC_034161,NC_034160	13
+Peribunyaviridae	Orthobunyavirus	Wyeomyia orthobunyavirus	273350	L	NC_039186	6
+Peribunyaviridae	Orthobunyavirus	Wyeomyia orthobunyavirus	273350	M	NC_039187	6
+Peribunyaviridae	Orthobunyavirus	Wyeomyia orthobunyavirus	273350	S	NC_039188	5
+Peribunyaviridae	Orthobunyavirus	Zegla orthobunyavirus	2170060	S	NC_043686	1
+Peribunyaviridae	Orthobunyavirus	Zegla orthobunyavirus	2170060	L	NC_043687	1
+Peribunyaviridae	Orthobunyavirus	Zegla orthobunyavirus	2170060	M	NC_043688	1
+Peribunyaviridae	Pacuvirus	Pacui pacuvirus	2560617	L	NC_043600	1
+Peribunyaviridae	Pacuvirus	Pacui pacuvirus	2560617	S	NC_043601	1
+Peribunyaviridae	Pacuvirus	Pacui pacuvirus	2560617	M	NC_043602	1
+Phenuiviridae	Banyangvirus	Heartland banyangvirus	2560519	M	NC_024494	3
+Phenuiviridae	Banyangvirus	Heartland banyangvirus	2560519	L	NC_024495	3
+Phenuiviridae	Banyangvirus	Heartland banyangvirus	2560519	S	NC_024496	3
+Phenuiviridae	Phlebovirus	Aguacate virus	1006583	M	NC_015450	5
+Phenuiviridae	Phlebovirus	Aguacate virus	1006583	L	NC_015451	5
+Phenuiviridae	Phlebovirus	Aguacate virus	1006583	S	NC_015452	5
+Phenuiviridae	Phlebovirus	Ambe virus	1926500	M	NC_033835	1
+Phenuiviridae	Phlebovirus	Ambe virus	1926500	L	NC_033844	1
+Phenuiviridae	Phlebovirus	Ambe virus	1926500	S	NC_033845	1
+Phenuiviridae	Phlebovirus	Anhanga virus	904722	L	NC_033836	1
+Phenuiviridae	Phlebovirus	Anhanga virus	904722	S	NC_033837	1
+Phenuiviridae	Phlebovirus	Anhanga virus	904722	M	NC_033846	1
+Phenuiviridae	Phlebovirus	Arrabida virus	1457322	L	NC_029082	1
+Phenuiviridae	Phlebovirus	Arrabida virus	1457322	M	NC_037616	1
+Phenuiviridae	Phlebovirus	Arrabida virus	1457322	S	NC_037617	1
+Phenuiviridae	Phlebovirus	Arumowot virus	904698	M	NC_023633	3
+Phenuiviridae	Phlebovirus	Arumowot virus	904698	S	NC_023634	3
+Phenuiviridae	Phlebovirus	Arumowot virus	904698	L	NC_023635	3
+Phenuiviridae	Phlebovirus	Bhanja virus	1213620	L	NC_027140	5
+Phenuiviridae	Phlebovirus	Bhanja virus	1213620	M	NC_027141	5
+Phenuiviridae	Phlebovirus	Bhanja virus	1213620	S	NC_027142	5
+Phenuiviridae	Phlebovirus	Bujaru phlebovirus	1933183	L	NC_033830	3
+Phenuiviridae	Phlebovirus	Bujaru phlebovirus	1933183	S	NC_033831	3
+Phenuiviridae	Phlebovirus	Bujaru phlebovirus	1933183	M	NC_033847	2
+Phenuiviridae	Phlebovirus	Candiru phlebovirus	1933182	M	NC_015373	13
+Phenuiviridae	Phlebovirus	Candiru phlebovirus	1933182	L	NC_015374	13
+Phenuiviridae	Phlebovirus	Candiru phlebovirus	1933182	S	NC_015375	13
+Phenuiviridae	Phlebovirus	Punta Toro phlebovirus	1933186	M	NC_039191	17
+Phenuiviridae	Phlebovirus	Punta Toro phlebovirus	1933186	L	NC_039192	16
+Phenuiviridae	Phlebovirus	Punta Toro phlebovirus	1933186	S	NC_039193	21
+Phenuiviridae	Phlebovirus	Razdan virus	1405807	L	NC_022630	1
+Phenuiviridae	Phlebovirus	Razdan virus	1405807	M	NC_022631	1
+Phenuiviridae	Phlebovirus	Razdan virus	1405807	S	NC_022632	1
+Phenuiviridae	Phlebovirus	Rift Valley fever phlebovirus	1933187	S	NC_014395	180
+Phenuiviridae	Phlebovirus	Rift Valley fever phlebovirus	1933187	M	NC_014396	123
+Phenuiviridae	Phlebovirus	Rift Valley fever phlebovirus	1933187	L	NC_014397	116
+Phenuiviridae	Phlebovirus	SFTS phlebovirus	1933190	L	NC_018136	320
+Phenuiviridae	Phlebovirus	SFTS phlebovirus	1933190	S	NC_018137	553
+Phenuiviridae	Phlebovirus	SFTS phlebovirus	1933190	M	NC_018138	341
+Phenuiviridae	Phlebovirus	Salehabad phlebovirus	1933188	L	NC_029127	4
+Phenuiviridae	Phlebovirus	Salehabad phlebovirus	1933188	M	NC_029128	4
+Phenuiviridae	Phlebovirus	Salehabad phlebovirus	1933188	S	NC_029129	2
+Phenuiviridae	Phlebovirus	Sandfly fever Naples phlebovirus	1933189	S	NC_006318	59
+Phenuiviridae	Phlebovirus	Sandfly fever Naples phlebovirus	1933189	L	NC_006319	28
+Phenuiviridae	Phlebovirus	Sandfly fever Naples phlebovirus	1933189	M	NC_006320	34
+Phenuiviridae	Phlebovirus	Sandfly fever Sicilian virus	28292	M	NC_015411	2
+Phenuiviridae	Phlebovirus	Sandfly fever Sicilian virus	28292	L	NC_015412	1
+Phenuiviridae	Phlebovirus	Sandfly fever Sicilian virus	28292	S	NC_015413	10
+Phenuiviridae	Phlebovirus	Tapara virus	1926501	M	NC_033838	1
+Phenuiviridae	Phlebovirus	Tapara virus	1926501	S	NC_033839	1
+Phenuiviridae	Phlebovirus	Tapara virus	1926501	L	NC_033848	1
+Phenuiviridae	Phlebovirus	Toros virus	1764085	L	NC_029903	2
+Phenuiviridae	Phlebovirus	Toros virus	1764085	M	NC_037614	2
+Phenuiviridae	Phlebovirus	Toros virus	1764085	S	NC_037615	2
+Phenuiviridae	Phlebovirus	Uriurana virus	1055750	M	NC_033840	2
+Phenuiviridae	Phlebovirus	Uriurana virus	1055750	L	NC_033849	2
+Phenuiviridae	Phlebovirus	Uriurana virus	1055750	S	NC_033850	2
+Phenuiviridae	Phlebovirus	Urucuri virus	1926502	L	NC_033841	1
+Phenuiviridae	Phlebovirus	Urucuri virus	1926502	M	NC_033842	1
+Phenuiviridae	Phlebovirus	Urucuri virus	1926502	S	NC_033843	1
+Phenuiviridae	Phlebovirus	Uukuniemi phlebovirus	1933191	L	NC_005214	16
+Phenuiviridae	Phlebovirus	Uukuniemi phlebovirus	1933191	M	NC_005220	18
+Phenuiviridae	Phlebovirus	Uukuniemi phlebovirus	1933191	S	NC_005221	12
+Phenuiviridae	Phlebovirus	Zerdali virus	1764086	L	NC_029901	1
+Phenuiviridae	Phlebovirus	Zerdali virus	1764086	M	NC_037612	1
+Phenuiviridae	Phlebovirus	Zerdali virus	1764086	S	NC_037613	1
+Picobirnaviridae	Picobirnavirus	Chicken picobirnavirus	1930304	RNA 1	NC_040438	1
+Picobirnaviridae	Picobirnavirus	Chicken picobirnavirus	1930304	RNA 2	NC_040439	1
+Picobirnaviridae	Picobirnavirus	Human picobirnavirus	145856	1	NC_007026	1
+Picobirnaviridae	Picobirnavirus	Human picobirnavirus	145856	2	NC_007027	1
+Picobirnaviridae	Picobirnavirus	Otarine picobirnavirus	1187973	1	NC_034160	3
+Picobirnaviridae	Picobirnavirus	Otarine picobirnavirus	1187973	2	NC_034161	13
 Picobirnaviridae	Picobirnavirus	Picobirnavirus dog/KNA/2015	1961162	None	NC_035206	1
 Picobirnaviridae	Picobirnavirus	Picobirnavirus green monkey/KNA/2015	1961155	None	NC_034452	1
-Picobirnaviridae	Picobirnavirus	Picobirnavirus sp.	1907787	1	NC_040752,NC_040753	1
-Picobirnaviridae	Picobirnavirus	Porcine picobirnavirus	442302	L	NC_029802,NC_029801	3
+Picobirnaviridae	Picobirnavirus	Picobirnavirus sp.	1907787	1	NC_040752	1
+Picobirnaviridae	Picobirnavirus	Picobirnavirus sp.	1907787	2	NC_040753	1
+Picobirnaviridae	Picobirnavirus	Porcine picobirnavirus	442302	L	NC_029801	3
+Picobirnaviridae	Picobirnavirus	Porcine picobirnavirus	442302	S	NC_029802	1
 Picobirnaviridae	Picobirnavirus	Rabbit picobirnavirus	104395	B	NC_038919	1
 Picornaviridae	unknown	Aimelvirus 2	2016448	None	NC_035198	1
 Picornaviridae	unknown	Bat crohivirus	1958776	None	NC_033819	1
@@ -1387,13 +1730,13 @@ Picornaviridae	Enterovirus	Enterovirus F	1330520	None	NC_021220,NC_008714,NC_021
 Picornaviridae	Enterovirus	Enterovirus G	106966	None	NC_004441	69
 Picornaviridae	Enterovirus	Enterovirus H	310907	None	NC_038309	1
 Picornaviridae	Enterovirus	Enterovirus I	2040663	None	NC_038310	1
-Picornaviridae	Enterovirus	Enterovirus J	1330521	None	NC_013695,NC_010415	6
+Picornaviridae	Enterovirus	Enterovirus J	1330521	None	NC_010415,NC_013695	6
 Picornaviridae	Enterovirus	Enterovirus K	2169884	None	NC_038989	1
 Picornaviridae	Enterovirus	Enterovirus L	2169885	None	NC_029905	1
 Picornaviridae	Enterovirus	Enterovirus goat/JL14	1849328	None	NC_034267	1
 Picornaviridae	Enterovirus	Enterovirus sp.	47681	None	NC_024073	3
 Picornaviridae	Enterovirus	Human enterovirus	1193974	None	NC_030454	2
-Picornaviridae	Enterovirus	Rhinovirus A	147711	None	NC_038311,NC_038311,NC_001617	189
+Picornaviridae	Enterovirus	Rhinovirus A	147711	None	NC_038311,NC_001617,NC_038311	189
 Picornaviridae	Enterovirus	Rhinovirus B	147712	None	NC_038312	68
 Picornaviridae	Enterovirus	Rhinovirus C	463676	None	NC_038878	70
 Picornaviridae	Enterovirus	Sichuan takin enterovirus	2220002	None	NC_037654	1
@@ -1651,55 +1994,503 @@ Poxviridae	Parapoxvirus	Seal parapoxvirus	187984	None	NC_035188	1
 Poxviridae	Suipoxvirus	Swinepox virus	10276	None	NC_003389	1
 Poxviridae	Yatapoxvirus	Tanapox virus	99000	None	NC_002642	3
 Poxviridae	Yatapoxvirus	Yaba monkey tumor virus	38804	None	NC_005179	1
-Reoviridae	Aquareovirus	Aquareovirus A	56094	10	NC_007582,NC_007586,NC_007589,NC_007585,NC_007590,NC_007592,NC_007583,NC_007587,NC_007591,NC_007584,NC_007588	6
-Reoviridae	Aquareovirus	Aquareovirus B	57747	5	NC_038626,NC_038625,NC_038630,NC_038633,NC_038628,NC_038624,NC_038627,NC_038632,NC_038631,NC_038629	1
-Reoviridae	Aquareovirus	Aquareovirus C	185782	10	NC_005173,NC_005172,NC_005171,NC_005168,NC_005167,NC_005169,NC_005174,NC_005175,NC_005166,NC_005176,NC_005170	10
-Reoviridae	Aquareovirus	Aquareovirus E	2083444	L2	NC_038637,NC_038641,NC_038640,NC_038643,NC_038638,NC_038639,NC_038644,NC_038636,NC_038642,NC_038634,NC_038635	1
-Reoviridae	Aquareovirus	Aquareovirus G	519014	5	NC_010593,NC_010591,NC_010589,NC_010590,NC_010587,NC_010588,NC_010585,NC_010592,NC_010584,NC_010594,NC_010586	2
-Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	1	NC_030406,NC_030409,NC_030415,NC_030410,NC_030408,NC_030414,NC_030411,NC_030407,NC_030413,NC_030405,NC_030412	1
-Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	7	NC_034162,NC_034165,NC_034173,NC_034171,NC_034166,NC_034163,NC_034168,NC_034169,NC_034170,NC_034172,NC_034164	1
-Reoviridae	Coltivirus	Colorado tick fever virus	46839	9	NC_004189,NC_004182,NC_004190,NC_004188,NC_004181,NC_004183,NC_004185,NC_004184,NC_004187,NC_004191,NC_004180,NC_004186	1
-Reoviridae	Coltivirus	Eyach virus	62352	1	NC_003700,NC_003706,NC_003696,NC_003707,NC_003698,NC_003704,NC_003697,NC_003703,NC_003702,NC_003699,NC_003705,NC_003701	2
-Reoviridae	Orbivirus	African horse sickness virus	40050	10	NC_005996,NC_006009,NC_006016,NC_006011,NC_006020,NC_006012,NC_006017,NC_006018,NC_006021,NC_006019	415
-Reoviridae	Orbivirus	Bluetongue virus	40051	10	NC_006008,NC_006010,NC_006007,NC_006015,NC_006013,NC_006023,NC_006024,NC_006022,NC_006025,NC_006014	809
-Reoviridae	Orbivirus	Changuinola virus	40052	3	NC_022633,NC_022638,NC_022636,NC_022635,NC_022639,NC_022634,NC_022640,NC_022641,NC_022642,NC_022637	18
-Reoviridae	Orbivirus	Chobar Gorge virus	1679172	1	NC_027559,NC_027562,NC_027561,NC_027555,NC_027558,NC_027556,NC_027560,NC_027553,NC_027554,NC_027557	2
-Reoviridae	Orbivirus	Corriparta virus	40053	2	NC_038565,NC_038571,NC_038564,NC_038567,NC_038566,NC_038568,NC_038570,NC_038569,NC_038572,NC_038573	1
-Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	7	NC_013403,NC_013396,NC_013399,NC_013404,NC_013397,NC_013398,NC_013400,NC_013401,NC_013402,NC_013405	132
-Reoviridae	Orbivirus	Equine encephalosis virus	201490	1	NC_038580,NC_038576,NC_038577,NC_038579,NC_038575,NC_038582,NC_038583,NC_038578,NC_038581,NC_038574	1
-Reoviridae	Orbivirus	Great Island virus	204269	1	NC_014522,NC_014528,NC_014523,NC_014527,NC_014524,NC_014531,NC_014529,NC_014525,NC_014526,NC_014530	20
-Reoviridae	Orbivirus	Guangxi orbivirus	2306813	7	NC_040482,NC_040478,NC_040847,NC_040474,NC_040476,NC_040477,NC_040479,NC_040480,NC_040481,NC_040475	1
-Reoviridae	Orbivirus	Lebombo virus	40057	1	NC_038596,NC_038602,NC_038599,NC_038603,NC_038601,NC_038594,NC_038598,NC_038595,NC_038597,NC_038600	1
-Reoviridae	Orbivirus	Mobuck virus	1408137	4	NC_022624,NC_022628,NC_022627,NC_022623,NC_022626,NC_022620,NC_022625,NC_022622,NC_022629,NC_022621	2
-Reoviridae	Orbivirus	Orungo virus	40058	1	NC_038611,NC_038609,NC_038612,NC_038604,NC_038605,NC_038613,NC_038608,NC_038606,NC_038610,NC_038607	1
-Reoviridae	Orbivirus	Palyam virus	40059	7	NC_005991,NC_005988,NC_005992,NC_005994,NC_005993,NC_005989,NC_005995,NC_005990,NC_005987,NC_005986	27
-Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	9	NC_007749,NC_007750,NC_007757,NC_007752,NC_007756,NC_007754,NC_007753,NC_007751,NC_007755,NC_007748	2
-Reoviridae	Orbivirus	St Croix River virus	104581	1	NC_006001,NC_006003,NC_005998,NC_006000,NC_006004,NC_005997,NC_005999,NC_006005,NC_006006,NC_006002	1
-Reoviridae	Orbivirus	Stretch Lagoon orbivirus	559180	1	NC_012754,NC_012755	1
-Reoviridae	Orbivirus	Umatilla virus	40060	9	NC_024506,NC_024503,NC_024509,NC_024508,NC_024505,NC_024507,NC_024504,NC_024500,NC_024510,NC_024499	3
-Reoviridae	Orbivirus	Warrego virus	40062	1	NC_038619,NC_038621,NC_038614,NC_038616,NC_038615,NC_038620,NC_038618,NC_038622,NC_038623,NC_038617	1
-Reoviridae	Orbivirus	Yunnan orbivirus	306276	9	NC_007665,NC_007660,NC_007658,NC_007657,NC_007661,NC_007664,NC_007656,NC_007659,NC_007663,NC_007662	7
-Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	S4	NC_015127,NC_015133,NC_015129,NC_015126,NC_015135,NC_015128,NC_015131,NC_015132,NC_015134,NC_015130	181
-Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	L1	NC_015882,NC_015883,NC_015880,NC_015878,NC_015885,NC_015879,NC_015884,NC_015877,NC_015886,NC_015881	1
-Reoviridae	Orthoreovirus	Broome virus	667093	L1	NC_014240,NC_014243,NC_014242,NC_014236,NC_014239,NC_014238,NC_014245,NC_014237,NC_014241,NC_014244	1
-Reoviridae	Orthoreovirus	Bush viper reovirus	1462685	S3	NC_023818,NC_023820,NC_023817	1
-Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	S1	NC_013226,NC_013232,NC_013229,NC_013230,NC_013231,NC_013233,NC_013227,NC_013228,NC_013234,NC_013225	82
-Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	S4	NC_038667,NC_038665,NC_038660,NC_038659,NC_038663,NC_038666,NC_038664,NC_038661,NC_038658,NC_038662	3
-Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	S1	NC_036475,NC_036468,NC_036471,NC_036473,NC_036470,NC_036476,NC_036472,NC_036477,NC_036474,NC_036469	82
-Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	S3	NC_020440,NC_020443,NC_020446,NC_020444,NC_025801,NC_020447,NC_025803,NC_025807,NC_025809,NC_020441,NC_020445,NC_025802,NC_020448,NC_025804,NC_020439,NC_025806,NC_025810,NC_025805,NC_020442,NC_025808	16
-Reoviridae	Orthoreovirus	Reptilian orthoreovirus	226613	L1	NC_023816,NC_023819,NC_023813,NC_023822,NC_023814,NC_023815,NC_023821	2
-Reoviridae	Rotavirus	Bat rotavirus	1340801	7	NC_040409,NC_040407,NC_040415,NC_040412,NC_040406,NC_040411,NC_040414,NC_040408,NC_040413,NC_040405,NC_040410	1
-Reoviridae	Rotavirus	Rotavirus A	28875	9	NC_011505,NC_011508,NC_011504,NC_011509,NC_011501,NC_011502,NC_011507,NC_011506,NC_011510,NC_011500,NC_011503	14548
-Reoviridae	Rotavirus	Rotavirus B	28876	9	NC_021548,NC_021551,NC_021549,NC_021545,NC_021542,NC_021547,NC_021550,NC_021546,NC_021544,NC_021541,NC_021543	212
-Reoviridae	Rotavirus	Rotavirus C	36427	8	NC_007569,NC_007574,NC_007570,NC_007573,NC_007544,NC_007543,NC_007546,NC_007545,NC_007547,NC_007571,NC_007572	450
-Reoviridae	Rotavirus	Rotavirus D	335100	9	NC_014515,NC_014518,NC_014519,NC_014511,NC_014516,NC_014513,NC_014520,NC_014512,NC_014514,NC_014521,NC_014517	22
-Reoviridae	Rotavirus	Rotavirus F	183405	2	NC_021625,NC_021628,NC_021632,NC_021627,NC_021633,NC_021626,NC_021635,NC_021631,NC_021634,NC_021629,NC_021630	2
-Reoviridae	Rotavirus	Rotavirus G	183407	8	NC_021588,NC_021582,NC_021584,NC_021580,NC_021590,NC_021583,NC_021587,NC_021585,NC_021589,NC_021581,NC_021586	6
-Reoviridae	Rotavirus	Rotavirus H	1348384	6	NC_007554,NC_007555,NC_007549,NC_007553,NC_007558,NC_007551,NC_007548,NC_007556,NC_007557,NC_007552,NC_007550	38
-Reoviridae	Rotavirus	Rotavirus I	1637496	1	NC_026820,NC_026823,NC_026826,NC_026830,NC_026828,NC_026827,NC_026825,NC_026824,NC_026829,NC_026822,NC_026821	4
-Reoviridae	Seadornavirus	Banna virus	77763	12	NC_004200,NC_004204,NC_004217,NC_004202,NC_004218,NC_004198,NC_004221,NC_004201,NC_004220,NC_004219,NC_004203,NC_004211	37
-Reoviridae	Seadornavirus	Kadipiro virus	104580	12	NC_004212,NC_004206,NC_004213,NC_004214,NC_004216,NC_004209,NC_004210,NC_004205,NC_004215,NC_004208,NC_004199,NC_004207	4
-Reoviridae	Seadornavirus	Liao ning virus	246280	10	NC_007740,NC_007738,NC_007743,NC_007744,NC_007736,NC_007737,NC_007741,NC_007742,NC_007746,NC_007745,NC_007747,NC_007739	6
+Reoviridae	Aquareovirus	Aquareovirus A	56094	1	NC_007582	1
+Reoviridae	Aquareovirus	Aquareovirus A	56094	2	NC_007583	2
+Reoviridae	Aquareovirus	Aquareovirus A	56094	3	NC_007584	1
+Reoviridae	Aquareovirus	Aquareovirus A	56094	4	NC_007585	1
+Reoviridae	Aquareovirus	Aquareovirus A	56094	5	NC_007586	1
+Reoviridae	Aquareovirus	Aquareovirus A	56094	7	NC_007587	2
+Reoviridae	Aquareovirus	Aquareovirus A	56094	8	NC_007588	2
+Reoviridae	Aquareovirus	Aquareovirus A	56094	9	NC_007589	1
+Reoviridae	Aquareovirus	Aquareovirus A	56094	10	NC_007590	6
+Reoviridae	Aquareovirus	Aquareovirus A	56094	11	NC_007591	2
+Reoviridae	Aquareovirus	Aquareovirus A	56094	6	NC_007592	2
+Reoviridae	Aquareovirus	Aquareovirus B	57747	5	NC_038624	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	6	NC_038625	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	8	NC_038626	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	9	NC_038627	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	11	NC_038628	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	3	NC_038629	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	1	NC_038630	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	7	NC_038631	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	10	NC_038632	1
+Reoviridae	Aquareovirus	Aquareovirus B	57747	2	NC_038633	1
+Reoviridae	Aquareovirus	Aquareovirus C	185782	1	NC_005166	5
+Reoviridae	Aquareovirus	Aquareovirus C	185782	2	NC_005167	6
+Reoviridae	Aquareovirus	Aquareovirus C	185782	3	NC_005168	6
+Reoviridae	Aquareovirus	Aquareovirus C	185782	4	NC_005169	6
+Reoviridae	Aquareovirus	Aquareovirus C	185782	5	NC_005170	8
+Reoviridae	Aquareovirus	Aquareovirus C	185782	6	NC_005171	8
+Reoviridae	Aquareovirus	Aquareovirus C	185782	7	NC_005172	8
+Reoviridae	Aquareovirus	Aquareovirus C	185782	8	NC_005173	9
+Reoviridae	Aquareovirus	Aquareovirus C	185782	9	NC_005174	9
+Reoviridae	Aquareovirus	Aquareovirus C	185782	10	NC_005175	10
+Reoviridae	Aquareovirus	Aquareovirus C	185782	11	NC_005176	7
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	L2	NC_038634	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	L3	NC_038635	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	M5	NC_038636	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	M6	NC_038637	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	9	NC_038638	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	8	NC_038639	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	L1	NC_038640	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	M4	NC_038641	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	10	NC_038642	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	7	NC_038643	1
+Reoviridae	Aquareovirus	Aquareovirus E	2083444	11	NC_038644	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	1	NC_010584	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	2	NC_010585	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	3	NC_010586	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	4	NC_010587	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	5	NC_010588	2
+Reoviridae	Aquareovirus	Aquareovirus G	519014	6	NC_010589	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	7	NC_010590	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	8	NC_010591	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	9	NC_010592	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	10	NC_010593	1
+Reoviridae	Aquareovirus	Aquareovirus G	519014	11	NC_010594	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	1	NC_030405	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	6	NC_030406	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	7	NC_030407	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	8	NC_030408	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	9	NC_030409	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	10	NC_030410	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	11	NC_030411	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	2	NC_030412	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	3	NC_030413	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	4	NC_030414	1
+Reoviridae	Aquareovirus	Etheostoma fonticola aquareovirus	1862978	5	NC_030415	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	7	NC_034162	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	8	NC_034163	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	9	NC_034164	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	10	NC_034165	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	11	NC_034166	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	1	NC_034168	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	2	NC_034169	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	3	NC_034170	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	4	NC_034171	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	5	NC_034172	1
+Reoviridae	Aquareovirus	Fall chinook aquareovirus	1963254	6	NC_034173	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	9	NC_004180	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	1	NC_004181	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	2	NC_004182	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	3	NC_004183	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	4	NC_004184	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	5	NC_004185	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	6	NC_004186	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	7	NC_004187	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	8	NC_004188	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	10	NC_004189	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	12	NC_004190	1
+Reoviridae	Coltivirus	Colorado tick fever virus	46839	11	NC_004191	1
+Reoviridae	Coltivirus	Eyach virus	62352	1	NC_003696	2
+Reoviridae	Coltivirus	Eyach virus	62352	2	NC_003697	2
+Reoviridae	Coltivirus	Eyach virus	62352	3	NC_003698	2
+Reoviridae	Coltivirus	Eyach virus	62352	4	NC_003699	2
+Reoviridae	Coltivirus	Eyach virus	62352	5	NC_003700	2
+Reoviridae	Coltivirus	Eyach virus	62352	6	NC_003701	2
+Reoviridae	Coltivirus	Eyach virus	62352	7	NC_003702	2
+Reoviridae	Coltivirus	Eyach virus	62352	8	NC_003703	2
+Reoviridae	Coltivirus	Eyach virus	62352	9	NC_003704	2
+Reoviridae	Coltivirus	Eyach virus	62352	10	NC_003705	2
+Reoviridae	Coltivirus	Eyach virus	62352	11	NC_003706	2
+Reoviridae	Coltivirus	Eyach virus	62352	12	NC_003707	2
+Reoviridae	Orbivirus	African horse sickness virus	40050	2	NC_005996	63
+Reoviridae	Orbivirus	African horse sickness virus	40050	10	NC_006009	415
+Reoviridae	Orbivirus	African horse sickness virus	40050	7	NC_006011	275
+Reoviridae	Orbivirus	African horse sickness virus	40050	4	NC_006012	219
+Reoviridae	Orbivirus	African horse sickness virus	40050	8	NC_006016	257
+Reoviridae	Orbivirus	African horse sickness virus	40050	3	NC_006017	231
+Reoviridae	Orbivirus	African horse sickness virus	40050	6	NC_006018	230
+Reoviridae	Orbivirus	African horse sickness virus	40050	9	NC_006019	221
+Reoviridae	Orbivirus	African horse sickness virus	40050	5	NC_006020	261
+Reoviridae	Orbivirus	African horse sickness virus	40050	1	NC_006021	227
+Reoviridae	Orbivirus	Bluetongue virus	40051	8	NC_006007	593
+Reoviridae	Orbivirus	Bluetongue virus	40051	9	NC_006008	633
+Reoviridae	Orbivirus	Bluetongue virus	40051	6	NC_006010	632
+Reoviridae	Orbivirus	Bluetongue virus	40051	2	NC_006013	254
+Reoviridae	Orbivirus	Bluetongue virus	40051	3	NC_006014	599
+Reoviridae	Orbivirus	Bluetongue virus	40051	10	NC_006015	809
+Reoviridae	Orbivirus	Bluetongue virus	40051	7	NC_006022	635
+Reoviridae	Orbivirus	Bluetongue virus	40051	1	NC_006023	551
+Reoviridae	Orbivirus	Bluetongue virus	40051	4	NC_006024	558
+Reoviridae	Orbivirus	Bluetongue virus	40051	5	NC_006025	618
+Reoviridae	Orbivirus	Changuinola virus	40052	2	NC_022633	1
+Reoviridae	Orbivirus	Changuinola virus	40052	3	NC_022634	18
+Reoviridae	Orbivirus	Changuinola virus	40052	5	NC_022635	6
+Reoviridae	Orbivirus	Changuinola virus	40052	7	NC_022636	18
+Reoviridae	Orbivirus	Changuinola virus	40052	8	NC_022637	18
+Reoviridae	Orbivirus	Changuinola virus	40052	10	NC_022638	18
+Reoviridae	Orbivirus	Changuinola virus	40052	1	NC_022639	18
+Reoviridae	Orbivirus	Changuinola virus	40052	4	NC_022640	18
+Reoviridae	Orbivirus	Changuinola virus	40052	6	NC_022641	18
+Reoviridae	Orbivirus	Changuinola virus	40052	9	NC_022642	18
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	1	NC_027553	2
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	2	NC_027554	2
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	3	NC_027555	1
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	4	NC_027556	1
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	5	NC_027557	2
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	6	NC_027558	2
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	7	NC_027559	2
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	8	NC_027560	2
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	9	NC_027561	2
+Reoviridae	Orbivirus	Chobar Gorge virus	1679172	10	NC_027562	2
+Reoviridae	Orbivirus	Corriparta virus	40053	2	NC_038564	1
+Reoviridae	Orbivirus	Corriparta virus	40053	4	NC_038565	1
+Reoviridae	Orbivirus	Corriparta virus	40053	5	NC_038566	1
+Reoviridae	Orbivirus	Corriparta virus	40053	9	NC_038567	1
+Reoviridae	Orbivirus	Corriparta virus	40053	1	NC_038568	1
+Reoviridae	Orbivirus	Corriparta virus	40053	10	NC_038569	1
+Reoviridae	Orbivirus	Corriparta virus	40053	3	NC_038570	1
+Reoviridae	Orbivirus	Corriparta virus	40053	6	NC_038571	1
+Reoviridae	Orbivirus	Corriparta virus	40053	7	NC_038572	1
+Reoviridae	Orbivirus	Corriparta virus	40053	8	NC_038573	1
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	1	NC_013396	76
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	2	NC_013397	50
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	3	NC_013398	97
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	4	NC_013399	74
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	5	NC_013400	84
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	6	NC_013401	96
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	7	NC_013402	132
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	8	NC_013403	78
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	9	NC_013404	71
+Reoviridae	Orbivirus	Epizootic hemorrhagic disease virus	40054	10	NC_013405	106
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	1	NC_038574	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	3	NC_038575	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	5	NC_038576	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	6	NC_038577	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	7	NC_038578	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	9	NC_038579	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	10	NC_038580	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	4	NC_038581	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	2	NC_038582	1
+Reoviridae	Orbivirus	Equine encephalosis virus	201490	8	NC_038583	1
+Reoviridae	Orbivirus	Great Island virus	204269	1	NC_014522	20
+Reoviridae	Orbivirus	Great Island virus	204269	2	NC_014523	20
+Reoviridae	Orbivirus	Great Island virus	204269	3	NC_014524	14
+Reoviridae	Orbivirus	Great Island virus	204269	4	NC_014525	13
+Reoviridae	Orbivirus	Great Island virus	204269	5	NC_014526	4
+Reoviridae	Orbivirus	Great Island virus	204269	6	NC_014527	18
+Reoviridae	Orbivirus	Great Island virus	204269	7	NC_014528	16
+Reoviridae	Orbivirus	Great Island virus	204269	8	NC_014529	3
+Reoviridae	Orbivirus	Great Island virus	204269	9	NC_014530	10
+Reoviridae	Orbivirus	Great Island virus	204269	10	NC_014531	13
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	7	NC_040474	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	10	NC_040475	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	3	NC_040476	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	8	NC_040477	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	1	NC_040478	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	2	NC_040479	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	6	NC_040480	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	5	NC_040481	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	9	NC_040482	1
+Reoviridae	Orbivirus	Guangxi orbivirus	2306813	4	NC_040847	1
+Reoviridae	Orbivirus	Lebombo virus	40057	1	NC_038594	1
+Reoviridae	Orbivirus	Lebombo virus	40057	3	NC_038595	1
+Reoviridae	Orbivirus	Lebombo virus	40057	4	NC_038596	1
+Reoviridae	Orbivirus	Lebombo virus	40057	6	NC_038597	1
+Reoviridae	Orbivirus	Lebombo virus	40057	8	NC_038598	1
+Reoviridae	Orbivirus	Lebombo virus	40057	7	NC_038599	1
+Reoviridae	Orbivirus	Lebombo virus	40057	2	NC_038600	1
+Reoviridae	Orbivirus	Lebombo virus	40057	5	NC_038601	1
+Reoviridae	Orbivirus	Lebombo virus	40057	10	NC_038602	1
+Reoviridae	Orbivirus	Lebombo virus	40057	9	NC_038603	1
+Reoviridae	Orbivirus	Mobuck virus	1408137	2	NC_022620	1
+Reoviridae	Orbivirus	Mobuck virus	1408137	4	NC_022621	2
+Reoviridae	Orbivirus	Mobuck virus	1408137	6	NC_022622	2
+Reoviridae	Orbivirus	Mobuck virus	1408137	7	NC_022623	2
+Reoviridae	Orbivirus	Mobuck virus	1408137	9	NC_022624	1
+Reoviridae	Orbivirus	Mobuck virus	1408137	10	NC_022625	1
+Reoviridae	Orbivirus	Mobuck virus	1408137	1	NC_022626	2
+Reoviridae	Orbivirus	Mobuck virus	1408137	3	NC_022627	2
+Reoviridae	Orbivirus	Mobuck virus	1408137	5	NC_022628	2
+Reoviridae	Orbivirus	Mobuck virus	1408137	8	NC_022629	1
+Reoviridae	Orbivirus	Orungo virus	40058	1	NC_038604	1
+Reoviridae	Orbivirus	Orungo virus	40058	2	NC_038605	1
+Reoviridae	Orbivirus	Orungo virus	40058	4	NC_038606	1
+Reoviridae	Orbivirus	Orungo virus	40058	7	NC_038607	1
+Reoviridae	Orbivirus	Orungo virus	40058	8	NC_038608	1
+Reoviridae	Orbivirus	Orungo virus	40058	6	NC_038609	1
+Reoviridae	Orbivirus	Orungo virus	40058	3	NC_038610	1
+Reoviridae	Orbivirus	Orungo virus	40058	5	NC_038611	1
+Reoviridae	Orbivirus	Orungo virus	40058	9	NC_038612	1
+Reoviridae	Orbivirus	Orungo virus	40058	10	NC_038613	1
+Reoviridae	Orbivirus	Palyam virus	40059	2	NC_005986	14
+Reoviridae	Orbivirus	Palyam virus	40059	6	NC_005987	25
+Reoviridae	Orbivirus	Palyam virus	40059	7	NC_005988	27
+Reoviridae	Orbivirus	Palyam virus	40059	3	NC_005989	25
+Reoviridae	Orbivirus	Palyam virus	40059	1	NC_005990	24
+Reoviridae	Orbivirus	Palyam virus	40059	4	NC_005991	25
+Reoviridae	Orbivirus	Palyam virus	40059	9	NC_005992	25
+Reoviridae	Orbivirus	Palyam virus	40059	5	NC_005993	25
+Reoviridae	Orbivirus	Palyam virus	40059	8	NC_005994	25
+Reoviridae	Orbivirus	Palyam virus	40059	10	NC_005995	25
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	1	NC_007748	1
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	2	NC_007749	1
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	3	NC_007750	1
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	4	NC_007751	1
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	6	NC_007752	1
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	9	NC_007753	2
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	8	NC_007754	1
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	5	NC_007755	1
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	7	NC_007756	1
+Reoviridae	Orbivirus	Peruvian horse sickness virus	356862	10	NC_007757	2
+Reoviridae	Orbivirus	St Croix River virus	104581	1	NC_005997	1
+Reoviridae	Orbivirus	St Croix River virus	104581	2	NC_005998	1
+Reoviridae	Orbivirus	St Croix River virus	104581	3	NC_005999	1
+Reoviridae	Orbivirus	St Croix River virus	104581	4	NC_006000	1
+Reoviridae	Orbivirus	St Croix River virus	104581	5	NC_006001	1
+Reoviridae	Orbivirus	St Croix River virus	104581	6	NC_006002	1
+Reoviridae	Orbivirus	St Croix River virus	104581	7	NC_006003	1
+Reoviridae	Orbivirus	St Croix River virus	104581	8	NC_006004	1
+Reoviridae	Orbivirus	St Croix River virus	104581	9	NC_006005	1
+Reoviridae	Orbivirus	St Croix River virus	104581	10	NC_006006	1
+Reoviridae	Orbivirus	Stretch Lagoon orbivirus	559180	1	NC_012754	1
+Reoviridae	Orbivirus	Stretch Lagoon orbivirus	559180	2	NC_012755	1
+Reoviridae	Orbivirus	Umatilla virus	40060	9	NC_024499	3
+Reoviridae	Orbivirus	Umatilla virus	40060	10	NC_024500	3
+Reoviridae	Orbivirus	Umatilla virus	40060	1	NC_024503	3
+Reoviridae	Orbivirus	Umatilla virus	40060	2	NC_024504	3
+Reoviridae	Orbivirus	Umatilla virus	40060	3	NC_024505	2
+Reoviridae	Orbivirus	Umatilla virus	40060	4	NC_024506	3
+Reoviridae	Orbivirus	Umatilla virus	40060	5	NC_024507	3
+Reoviridae	Orbivirus	Umatilla virus	40060	6	NC_024508	3
+Reoviridae	Orbivirus	Umatilla virus	40060	7	NC_024509	3
+Reoviridae	Orbivirus	Umatilla virus	40060	8	NC_024510	3
+Reoviridae	Orbivirus	Warrego virus	40062	1	NC_038614	1
+Reoviridae	Orbivirus	Warrego virus	40062	3	NC_038615	1
+Reoviridae	Orbivirus	Warrego virus	40062	4	NC_038616	1
+Reoviridae	Orbivirus	Warrego virus	40062	10	NC_038617	1
+Reoviridae	Orbivirus	Warrego virus	40062	5	NC_038618	1
+Reoviridae	Orbivirus	Warrego virus	40062	9	NC_038619	1
+Reoviridae	Orbivirus	Warrego virus	40062	2	NC_038620	1
+Reoviridae	Orbivirus	Warrego virus	40062	6	NC_038621	1
+Reoviridae	Orbivirus	Warrego virus	40062	8	NC_038622	1
+Reoviridae	Orbivirus	Warrego virus	40062	7	NC_038623	1
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	1	NC_007656	2
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	2	NC_007657	1
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	3	NC_007658	2
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	4	NC_007659	3
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	5	NC_007660	2
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	6	NC_007661	3
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	7	NC_007662	3
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	8	NC_007663	1
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	9	NC_007664	7
+Reoviridae	Orbivirus	Yunnan orbivirus	306276	10	NC_007665	4
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	L1	NC_015126	97
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	L2	NC_015127	86
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	L3	NC_015128	93
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	M1	NC_015129	109
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	M2	NC_015130	114
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	M3	NC_015131	113
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	S1	NC_015132	54
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	S2	NC_015133	119
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	S3	NC_015134	124
+Reoviridae	Orthoreovirus	Avian orthoreovirus	38170	S4	NC_015135	181
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	L1	NC_015877	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	L2	NC_015878	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	L3	NC_015879	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	M1	NC_015880	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	M2	NC_015881	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	M3	NC_015882	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	S1	NC_015883	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	S2	NC_015884	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	S4	NC_015885	1
+Reoviridae	Orthoreovirus	Baboon orthoreovirus	75888	S3	NC_015886	1
+Reoviridae	Orthoreovirus	Broome virus	667093	L1	NC_014236	1
+Reoviridae	Orthoreovirus	Broome virus	667093	L2	NC_014237	1
+Reoviridae	Orthoreovirus	Broome virus	667093	L3	NC_014238	1
+Reoviridae	Orthoreovirus	Broome virus	667093	M1	NC_014239	1
+Reoviridae	Orthoreovirus	Broome virus	667093	M2	NC_014240	1
+Reoviridae	Orthoreovirus	Broome virus	667093	M3	NC_014241	1
+Reoviridae	Orthoreovirus	Broome virus	667093	S1	NC_014242	1
+Reoviridae	Orthoreovirus	Broome virus	667093	S2	NC_014243	1
+Reoviridae	Orthoreovirus	Broome virus	667093	S3	NC_014244	1
+Reoviridae	Orthoreovirus	Broome virus	667093	S4	NC_014245	1
+Reoviridae	Orthoreovirus	Bush viper reovirus	1462685	S3	NC_023817	1
+Reoviridae	Orthoreovirus	Bush viper reovirus	1462685	S4	NC_023818	1
+Reoviridae	Orthoreovirus	Bush viper reovirus	1462685	M3	NC_023820	1
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	L1	NC_013225	57
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	L2	NC_013226	62
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	M1	NC_013227	69
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	M2	NC_013228	61
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	L3	NC_013229	57
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	M3	NC_013230	57
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	S1	NC_013231	82
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	S2	NC_013232	62
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	S3	NC_013233	62
+Reoviridae	Orthoreovirus	Mammalian orthoreovirus	351073	S4	NC_013234	67
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	S4	NC_038658	3
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	S2	NC_038659	3
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	L2	NC_038660	2
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	M1	NC_038661	2
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	L3	NC_038662	2
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	S3	NC_038663	3
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	M2	NC_038664	2
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	L1	NC_038665	2
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	M3	NC_038666	2
+Reoviridae	Orthoreovirus	Nelson Bay orthoreovirus	118027	S1	NC_038667	2
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	L2	NC_036468	25
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	M1	NC_036469	25
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	M2	NC_036470	25
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	M3	NC_036471	26
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	S1	NC_036472	82
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	S2	NC_036473	25
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	S3	NC_036474	26
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	S4	NC_036475	27
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	L1	NC_036476	26
+Reoviridae	Orthoreovirus	Piscine orthoreovirus	1157337	L3	NC_036477	9
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	L1	NC_020439,NC_025801	14
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	L3	NC_025803,NC_020440	14
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	M1	NC_020441,NC_025804	14
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	M2	NC_020442,NC_025808	14
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	M3	NC_025805,NC_020443	14
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	S2	NC_025809,NC_020444	14
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	S3	NC_025807,NC_020445	16
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	S4	NC_020446,NC_025810	14
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	L2	NC_025802,NC_020447	14
+Reoviridae	Orthoreovirus	Pteropine orthoreovirus	1459003	S1	NC_025806,NC_020448	2
+Reoviridae	Orthoreovirus	Reptilian orthoreovirus	226613	L1	NC_023813	2
+Reoviridae	Orthoreovirus	Reptilian orthoreovirus	226613	L2	NC_023814	1
+Reoviridae	Orthoreovirus	Reptilian orthoreovirus	226613	M2	NC_023815	2
+Reoviridae	Orthoreovirus	Reptilian orthoreovirus	226613	M1	NC_023816	1
+Reoviridae	Orthoreovirus	Reptilian orthoreovirus	226613	L3	NC_023819	2
+Reoviridae	Orthoreovirus	Reptilian orthoreovirus	226613	S2	NC_023821	1
+Reoviridae	Orthoreovirus	Reptilian orthoreovirus	226613	S1	NC_023822	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	7	NC_040405	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	8	NC_040406	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	11	NC_040407	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	3	NC_040408	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	4	NC_040409	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	5	NC_040410	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	6	NC_040411	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	9	NC_040412	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	2	NC_040413	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	1	NC_040414	1
+Reoviridae	Rotavirus	Bat rotavirus	1340801	10	NC_040415	1
+Reoviridae	Rotavirus	Rotavirus A	28875	5	NC_011500	3351
+Reoviridae	Rotavirus	Rotavirus A	28875	7	NC_011501	3996
+Reoviridae	Rotavirus	Rotavirus A	28875	8	NC_011502	4117
+Reoviridae	Rotavirus	Rotavirus A	28875	9	NC_011503	14548
+Reoviridae	Rotavirus	Rotavirus A	28875	10	NC_011504	5884
+Reoviridae	Rotavirus	Rotavirus A	28875	11	NC_011505	4217
+Reoviridae	Rotavirus	Rotavirus A	28875	2	NC_011506	3936
+Reoviridae	Rotavirus	Rotavirus A	28875	1	NC_011507	3957
+Reoviridae	Rotavirus	Rotavirus A	28875	3	NC_011508	3882
+Reoviridae	Rotavirus	Rotavirus A	28875	6	NC_011509	5908
+Reoviridae	Rotavirus	Rotavirus A	28875	4	NC_011510	10933
+Reoviridae	Rotavirus	Rotavirus B	28876	1	NC_021541	46
+Reoviridae	Rotavirus	Rotavirus B	28876	9	NC_021542	212
+Reoviridae	Rotavirus	Rotavirus B	28876	4	NC_021543	15
+Reoviridae	Rotavirus	Rotavirus B	28876	6	NC_021544	123
+Reoviridae	Rotavirus	Rotavirus B	28876	2	NC_021545	46
+Reoviridae	Rotavirus	Rotavirus B	28876	5	NC_021546	26
+Reoviridae	Rotavirus	Rotavirus B	28876	7	NC_021547	11
+Reoviridae	Rotavirus	Rotavirus B	28876	8	NC_021548	69
+Reoviridae	Rotavirus	Rotavirus B	28876	11	NC_021549	24
+Reoviridae	Rotavirus	Rotavirus B	28876	10	NC_021550	17
+Reoviridae	Rotavirus	Rotavirus B	28876	3	NC_021551	46
+Reoviridae	Rotavirus	Rotavirus C	36427	6	NC_007543	86
+Reoviridae	Rotavirus	Rotavirus C	36427	7	NC_007544	83
+Reoviridae	Rotavirus	Rotavirus C	36427	9	NC_007545	90
+Reoviridae	Rotavirus	Rotavirus C	36427	2	NC_007546	91
+Reoviridae	Rotavirus	Rotavirus C	36427	1	NC_007547	87
+Reoviridae	Rotavirus	Rotavirus C	36427	10	NC_007569	96
+Reoviridae	Rotavirus	Rotavirus C	36427	5	NC_007570	197
+Reoviridae	Rotavirus	Rotavirus C	36427	8	NC_007571	450
+Reoviridae	Rotavirus	Rotavirus C	36427	3	NC_007572	124
+Reoviridae	Rotavirus	Rotavirus C	36427	11	NC_007573	96
+Reoviridae	Rotavirus	Rotavirus C	36427	4	NC_007574	84
+Reoviridae	Rotavirus	Rotavirus D	335100	1	NC_014511	3
+Reoviridae	Rotavirus	Rotavirus D	335100	2	NC_014512	2
+Reoviridae	Rotavirus	Rotavirus D	335100	3	NC_014513	2
+Reoviridae	Rotavirus	Rotavirus D	335100	4	NC_014514	3
+Reoviridae	Rotavirus	Rotavirus D	335100	5	NC_014515	2
+Reoviridae	Rotavirus	Rotavirus D	335100	6	NC_014516	10
+Reoviridae	Rotavirus	Rotavirus D	335100	7	NC_014517	3
+Reoviridae	Rotavirus	Rotavirus D	335100	8	NC_014518	1
+Reoviridae	Rotavirus	Rotavirus D	335100	9	NC_014519	22
+Reoviridae	Rotavirus	Rotavirus D	335100	10	NC_014520	4
+Reoviridae	Rotavirus	Rotavirus D	335100	11	NC_014521	2
+Reoviridae	Rotavirus	Rotavirus F	183405	1	NC_021625	1
+Reoviridae	Rotavirus	Rotavirus F	183405	2	NC_021626	2
+Reoviridae	Rotavirus	Rotavirus F	183405	9	NC_021627	2
+Reoviridae	Rotavirus	Rotavirus F	183405	8	NC_021628	1
+Reoviridae	Rotavirus	Rotavirus F	183405	10	NC_021629	1
+Reoviridae	Rotavirus	Rotavirus F	183405	4	NC_021630	1
+Reoviridae	Rotavirus	Rotavirus F	183405	3	NC_021631	1
+Reoviridae	Rotavirus	Rotavirus F	183405	5	NC_021632	2
+Reoviridae	Rotavirus	Rotavirus F	183405	7	NC_021633	2
+Reoviridae	Rotavirus	Rotavirus F	183405	11	NC_021634	1
+Reoviridae	Rotavirus	Rotavirus F	183405	6	NC_021635	1
+Reoviridae	Rotavirus	Rotavirus G	183407	2	NC_021580	5
+Reoviridae	Rotavirus	Rotavirus G	183407	3	NC_021581	1
+Reoviridae	Rotavirus	Rotavirus G	183407	9	NC_021582	1
+Reoviridae	Rotavirus	Rotavirus G	183407	5	NC_021583	4
+Reoviridae	Rotavirus	Rotavirus G	183407	8	NC_021584	6
+Reoviridae	Rotavirus	Rotavirus G	183407	7	NC_021585	3
+Reoviridae	Rotavirus	Rotavirus G	183407	10	NC_021586	2
+Reoviridae	Rotavirus	Rotavirus G	183407	11	NC_021587	5
+Reoviridae	Rotavirus	Rotavirus G	183407	6	NC_021588	5
+Reoviridae	Rotavirus	Rotavirus G	183407	4	NC_021589	5
+Reoviridae	Rotavirus	Rotavirus G	183407	1	NC_021590	6
+Reoviridae	Rotavirus	Rotavirus H	1348384	1	NC_007548	5
+Reoviridae	Rotavirus	Rotavirus H	1348384	2	NC_007549	3
+Reoviridae	Rotavirus	Rotavirus H	1348384	4	NC_007550	1
+Reoviridae	Rotavirus	Rotavirus H	1348384	3	NC_007551	4
+Reoviridae	Rotavirus	Rotavirus H	1348384	5	NC_007552	1
+Reoviridae	Rotavirus	Rotavirus H	1348384	6	NC_007553	38
+Reoviridae	Rotavirus	Rotavirus H	1348384	8	NC_007554	7
+Reoviridae	Rotavirus	Rotavirus H	1348384	7	NC_007555	2
+Reoviridae	Rotavirus	Rotavirus H	1348384	9	NC_007556	1
+Reoviridae	Rotavirus	Rotavirus H	1348384	10	NC_007557	1
+Reoviridae	Rotavirus	Rotavirus H	1348384	11	NC_007558	5
+Reoviridae	Rotavirus	Rotavirus I	1637496	5	NC_026820	2
+Reoviridae	Rotavirus	Rotavirus I	1637496	8	NC_026821	3
+Reoviridae	Rotavirus	Rotavirus I	1637496	7	NC_026822	2
+Reoviridae	Rotavirus	Rotavirus I	1637496	10	NC_026823	2
+Reoviridae	Rotavirus	Rotavirus I	1637496	11	NC_026824	3
+Reoviridae	Rotavirus	Rotavirus I	1637496	1	NC_026825	4
+Reoviridae	Rotavirus	Rotavirus I	1637496	2	NC_026826	3
+Reoviridae	Rotavirus	Rotavirus I	1637496	3	NC_026827	2
+Reoviridae	Rotavirus	Rotavirus I	1637496	4	NC_026828	2
+Reoviridae	Rotavirus	Rotavirus I	1637496	6	NC_026829	4
+Reoviridae	Rotavirus	Rotavirus I	1637496	9	NC_026830	2
+Reoviridae	Seadornavirus	Banna virus	77763	12	NC_004198	37
+Reoviridae	Seadornavirus	Banna virus	77763	11	NC_004200	8
+Reoviridae	Seadornavirus	Banna virus	77763	10	NC_004201	8
+Reoviridae	Seadornavirus	Banna virus	77763	9	NC_004202	8
+Reoviridae	Seadornavirus	Banna virus	77763	8	NC_004203	8
+Reoviridae	Seadornavirus	Banna virus	77763	7	NC_004204	8
+Reoviridae	Seadornavirus	Banna virus	77763	1	NC_004211	6
+Reoviridae	Seadornavirus	Banna virus	77763	2	NC_004217	8
+Reoviridae	Seadornavirus	Banna virus	77763	3	NC_004218	6
+Reoviridae	Seadornavirus	Banna virus	77763	4	NC_004219	6
+Reoviridae	Seadornavirus	Banna virus	77763	5	NC_004220	6
+Reoviridae	Seadornavirus	Banna virus	77763	6	NC_004221	9
+Reoviridae	Seadornavirus	Kadipiro virus	104580	12	NC_004199	4
+Reoviridae	Seadornavirus	Kadipiro virus	104580	11	NC_004205	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	10	NC_004206	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	9	NC_004207	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	8	NC_004208	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	7	NC_004209	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	1	NC_004210	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	2	NC_004212	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	3	NC_004213	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	4	NC_004214	2
+Reoviridae	Seadornavirus	Kadipiro virus	104580	5	NC_004215	3
+Reoviridae	Seadornavirus	Kadipiro virus	104580	6	NC_004216	3
+Reoviridae	Seadornavirus	Liao ning virus	246280	1	NC_007736	4
+Reoviridae	Seadornavirus	Liao ning virus	246280	2	NC_007737	4
+Reoviridae	Seadornavirus	Liao ning virus	246280	3	NC_007738	4
+Reoviridae	Seadornavirus	Liao ning virus	246280	4	NC_007739	3
+Reoviridae	Seadornavirus	Liao ning virus	246280	5	NC_007740	5
+Reoviridae	Seadornavirus	Liao ning virus	246280	6	NC_007741	4
+Reoviridae	Seadornavirus	Liao ning virus	246280	7	NC_007742	3
+Reoviridae	Seadornavirus	Liao ning virus	246280	8	NC_007743	3
+Reoviridae	Seadornavirus	Liao ning virus	246280	9	NC_007744	3
+Reoviridae	Seadornavirus	Liao ning virus	246280	10	NC_007745	6
+Reoviridae	Seadornavirus	Liao ning virus	246280	11	NC_007746	6
+Reoviridae	Seadornavirus	Liao ning virus	246280	12	NC_007747	6
 Retroviridae	unknown	Atlantic salmon swim bladder sarcoma virus	348296	None	NC_007654	1
 Retroviridae	unknown	Avian endogenous retrovirus EAV-HP	93465	None	NC_005947	7
 Retroviridae	unknown	Citrus endogenous pararetrovirus	1435008	None	NC_023153	3
@@ -1707,7 +2498,7 @@ Retroviridae	unknown	Human endogenous retrovirus K	45617	None	NC_022518	2
 Retroviridae	unknown	Snakehead retrovirus	40270	None	NC_001724	1
 Retroviridae	unknown	Xenopus laevis endogenous retrovirus Xen1	204873	None	NC_010955	1
 Retroviridae	Alpharetrovirus	Avian carcinoma virus	11958	None	NC_001402	1
-Retroviridae	Alpharetrovirus	Avian leukosis virus	11864	None	NC_015116,NC_001408,NC_015116	130
+Retroviridae	Alpharetrovirus	Avian leukosis virus	11864	None	NC_001408,NC_015116,NC_015116	130
 Retroviridae	Alpharetrovirus	Avian myeloblastosis virus	11866	None	NC_043404	1
 Retroviridae	Alpharetrovirus	Avian myelocytomatosis virus	11867	None	NC_001866	1
 Retroviridae	Alpharetrovirus	Avian sarcoma virus CT10	11878	None	NC_038922	1
@@ -1832,7 +2623,7 @@ Rhabdoviridae	Perhabdovirus	Anguillid perhabdovirus	1300113	None	NC_022581	5
 Rhabdoviridae	Perhabdovirus	Perch perhabdovirus	1256869	None	NC_020803	1
 Rhabdoviridae	Perhabdovirus	Sea trout perhabdovirus	179986	None	NC_038277	1
 Rhabdoviridae	Sprivivirus	Carp sprivivirus	696863	None	NC_002803	16
-Rhabdoviridae	Sprivivirus	Pike fry sprivivirus	219584	None	NC_025371,NC_025356,NC_025376,NC_025356,NC_025371,NC_025376	2
+Rhabdoviridae	Sprivivirus	Pike fry sprivivirus	219584	None	NC_025356,NC_025371,NC_025376,NC_025371,NC_025356,NC_025376	2
 Rhabdoviridae	Sripuvirus	Almpiwar sripuvirus	1985693	None	NC_025391,NC_025399	2
 Rhabdoviridae	Sripuvirus	Chaco sripuvirus	1985694	None	NC_034550	1
 Rhabdoviridae	Sripuvirus	Sena Madureira sripuvirus	1985696	None	NC_034529	1
