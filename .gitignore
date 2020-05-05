@@ -150,3 +150,9 @@ ENV/
 !/misc-designs/ncov/**/out/designs/*.tsv
 !/misc-designs/ncov/**/out-*/designs/*.tsv
 ####################
+
+######################
+## GISAID sequences ##
+######################
+/diversity-growth/outbreak-entropy/**/*.fasta.gz
+######################
