@@ -142,7 +142,7 @@ def mean_entropy_in_window(ref_start, ref_end, ref_pos_map,
         float giving entropy
     """
     entropies = []
-    for pos in range(ref_start, ref_end - k):
+    for pos in range(ref_start, ref_end - k + 1):
         # Find the corresponding range in the alignment
         aln_start, aln_end = ref_pos_map[pos], ref_pos_map[pos + k]
         # Extract site of k-mer
@@ -192,8 +192,8 @@ def main(args):
                     args.sample_size_per_date_interval))
         else:
             # Sample randomly (without replacement)
-            seq_idxs = random.choices(list(seq_idxs),
-                    k=args.sample_size_per_date_interval)
+            seq_idxs = random.sample(list(seq_idxs),
+                    args.sample_size_per_date_interval)
             seq_idxs = set(seq_idxs)
 
         # Iterate over genome windows
