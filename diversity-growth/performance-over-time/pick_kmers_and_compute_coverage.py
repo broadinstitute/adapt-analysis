@@ -56,16 +56,16 @@ def read_sequences(fn):
     """
     seqs = seq_io.read_fasta(fn)
 
-    accvers = list(seqs.keys())
-    collection_dates = fetch_collection_dates(accvers)
+    accs = [h.split(' ')[0] for h in seqs.keys()]
+    collection_dates = fetch_collection_dates(accs)
 
     seq_list = []
     i = 0
     years = {}
     seqs_skipped = 0
     for seq_header, seq in seqs.items():
-        # Header is [accession].[version]
-        acc = seq_header.split('.')[0]
+        # Header may be [accession].[version] [details]
+        acc = seq_header.split(' ')[0].split('.')[0]
 
         year = None
         for date in collection_dates[acc]:
@@ -287,22 +287,35 @@ def main(args):
     # Produce designs
     kmers_for_year = make_designs_from_each_year(aln, years,
             start_year, end_year)
-    print(kmers_for_year)
 
     # Determine fraction of sequences from each year that
-    # are hit by each k-mer
-    for design_year, kmers in kmers_for_year.items():
-        for sample_i, kmer in enumerate(kmers):
-            frac_hit_in_year = compute_fraction_hit(
-                    aln, years, start_year, end_year, kmer,
-                    args.mismatches)
-            print(design_year, kmer, frac_hit_in_year)
+    # are hit by each k-mer, and write this to TSV file
+    with open(args.out_tsv, 'w') as fw:
+        def write_row(row):
+            fw.write('\t'.join(str(x) for x in row) + '\n')
+
+        header = ['design_year', 'sampling', 'kmer', 'test_year',
+                'frac_hit']
+        write_row(header)
+
+        for design_year, kmers in kmers_for_year.items():
+            for sample_i, kmer in enumerate(kmers):
+                frac_hit_in_year = compute_fraction_hit(
+                        aln, years, start_year, end_year, kmer,
+                        args.mismatches)
+                for test_year, frac_hit in frac_hit_in_year.items():
+                    row = [design_year, sample_i, kmer, test_year, frac_hit]
+                    write_row(row)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--in-fasta',
+        required=True,
         help=("Alignment of sequences"))
+    parser.add_argument('--out-tsv',
+        required=True,
+        help=("Path to output TSV"))
     parser.add_argument('--mismatches',
         type=int,
         default=1,
