@@ -151,8 +151,9 @@ ENV/
 !/misc-designs/ncov/**/out-*/designs/*.tsv
 ####################
 
-######################
-## GISAID sequences ##
-######################
+########################
+## /diversity-growth/ ##
+########################
 /diversity-growth/outbreak-entropy/**/*.fasta.gz
-######################
+/diversity-growth/performance-over-time/*/by-year/*
+########################
