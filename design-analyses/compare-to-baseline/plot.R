@@ -5,7 +5,8 @@
 # This uses the results of analyses that were already performed.
 #
 # Args:
-#  1: path to output PDF
+#  1: name of taxonomy (must be directory)
+#  2: path to output PDF
 #
 # By Hayden Metsky <hayden@mit.edu>
 
@@ -15,12 +16,12 @@ library(reshape2)
 library(grid)
 library(tidyr)
 library(viridis)
+library(ggpubr)
 
-
-taxonomies <- list.files(path=".", pattern="^tax-*")
 
 args <- commandArgs(trailingOnly=TRUE)
-out.pdf <- args[1]
+in.taxonomy <- args[1]
+out.pdf <- args[2]
 
 ## A helper function from:
 ##   http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/#Helper%20functions
@@ -72,53 +73,67 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
 }
 
 
-plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
-                                      naive.design.filename, title) {
+plot.results.for.taxonomy <- function(taxonomy) {
     # Args:
     #   taxonomy: name of taxonomy being plotted
-    #   real.design.filename: name of file containing distribution (one
-    #       value per design replicate per window), inside a taxonomy directory
-    #       for the "real" designs
-    #   naive.design.filename: same as above, for the naive designs
-    #   title: title of plot
 
     # Fill in data frames with a distribution
-    real.dist <- data.frame(read.table(
-            gzfile(file.path(taxonomy, real.design.filename)), header=TRUE,
+    real.max.dist <- data.frame(read.table(
+            gzfile(file.path(taxonomy, "real-designs.max-activity.tsv.gz")),
+            header=TRUE,
+            sep="\t", na.strings=c("NA", "None")))
+    real.min.dist <- data.frame(read.table(
+            gzfile(file.path(taxonomy, "real-designs.min-guides.tsv.gz")),
+            header=TRUE,
             sep="\t", na.strings=c("NA", "None")))
     naive.dist <- data.frame(read.table(
-            gzfile(file.path(taxonomy, naive.design.filename)), header=TRUE,
+            gzfile(file.path(taxonomy, "naive-designs.tsv.gz")), header=TRUE,
             sep="\t", na.strings=c("NA", "None")))
 
     # If the guide sequence is NA, then interpret the count or coverage as NA too
     # (it may be 0)
-    real.dist$count[which(is.na(real.dist$target.sequences))] <- NA
-    real.dist$total.frac.bound[which(is.na(real.dist$target.sequences))] <- NA
-    real.dist$score[which(is.na(real.dist$target.sequences))] <- NA
+    real.min.dist$count[which(is.na(real.min.dist$target.sequences))] <- NA
+    real.min.dist$total.frac.bound[which(is.na(real.min.dist$target.sequences))] <- NA
+    real.min.dist$score[which(is.na(real.min.dist$target.sequences))] <- NA
+    real.max.dist$count[which(is.na(real.max.dist$target.sequences))] <- NA
+    real.max.dist$total.frac.bound[which(is.na(real.max.dist$target.sequences))] <- NA
     naive.dist$frac.bound.by.consensus[which(is.na(naive.dist$target.sequence.by.consensus))] <- NA
     naive.dist$frac.bound.by.mode[which(is.na(naive.dist$target.sequence.by.mode))] <- NA
 
-    # real.dist may be missing windows -- design.py will not output a window
+    # real.*.dist may be missing windows -- design.py will not output a window
     # if no guides can be constructed for it (e.g., due to missing data) and
-    # the window will not show in real.dist if it is missing across all
+    # the window will not show in real.*.dist if it is missing across all
     # replicates
-    # Fill in the missing windows in real.dist
-    window.size <- unique(real.dist$window.end - real.dist$window.start)[1]
-    real.dist <- complete(real.dist, window.start=full_seq(real.dist$window.start, 1))
-    real.dist <- as.data.frame(real.dist)
-    real.dist$window.end[which(is.na(real.dist$window.end))] <- real.dist$window.start[which(is.na(real.dist$window.end))] + window.size
+    # Fill in the missing windows in real.*.dist
+    window.size <- unique(real.max.dist$window.end - real.max.dist$window.start)[1]
+    real.max.dist <- complete(real.max.dist, window.start=full_seq(real.max.dist$window.start, 1))
+    real.max.dist <- as.data.frame(real.max.dist)
+    real.max.dist$window.end[which(is.na(real.max.dist$window.end))] <- real.max.dist$window.start[which(is.na(real.max.dist$window.end))] + window.size
+    real.min.dist <- complete(real.min.dist, window.start=full_seq(real.min.dist$window.start, 1))
+    real.min.dist <- as.data.frame(real.min.dist)
+    real.min.dist$window.end[which(is.na(real.min.dist$window.end))] <- real.min.dist$window.start[which(is.na(real.min.dist$window.end))] + window.size
 
     # Multiply coverage fractions by 100 to obtain percents
     naive.dist$frac.bound.by.consensus <- naive.dist$frac.bound.by.consensus * 100
     naive.dist$frac.bound.by.mode <- naive.dist$frac.bound.by.mode * 100
+    real.max.dist$frac.bound <- real.max.dist$total.frac.bound * 100
 
-    # For the real designs, summarize the number of guides in each window
+    # For the real.min designs, summarize the number of guides in each window
     # across the replicates -- i.e., for each window, find the mean number
     # of guides (and std dev, etc.) across the replicates
-    real.dist.summary <- summarySE(real.dist, measurevar="count",
+    real.min.dist.summary <- summarySE(real.min.dist, measurevar="count",
                                    groupvars=c("window.start", "window.end"))
-    colnames(real.dist.summary)[colnames(real.dist.summary)=="count"] <- "mean"
-    real.dist.summary$approach <- "real.guide.count"
+    colnames(real.min.dist.summary)[colnames(real.min.dist.summary)=="count"] <- "mean"
+    real.min.dist.summary$approach <- "real.min.guide.count"
+
+    # For the real.max designs, summarize the coverage obtained by the
+    # guides in each window and choice of hard guide constraint (hgc) across
+    # the replicates -- i.e., for each window and hgc,
+    # find the mean coverage (and std dev, etc.) across the replicates
+    real.max.dist.summary <- summarySE(real.max.dist, measurevar="frac.bound",
+                                              groupvars=c("window.start", "window.end", "hgc"))
+    colnames(real.max.dist.summary)[colnames(real.max.dist.summary)=="frac.bound"] <- "mean"
+    real.max.dist.summary$approach <- "real.max.activity.frac.bound"
 
     # For the naive designs, summarize the coverage obtained by the naive
     # guide in each window across the replicates -- i.e., for each window,
@@ -138,17 +153,28 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
                                 naive.dist.mode.summary)
     naive.dist.summary$approach <- factor(naive.dist.summary$approach)
 
+    # For the real design max-activity data, only show where the number of
+    # guides (hgc -- i.e., hard guide constraint) is 1 or 2
+    real.max.dist.summary <- real.max.dist.summary[real.max.dist.summary$hgc %in% c(1,2),]
+
+    # Combine naive.dist.summary with real.max.dist.summary -- both report
+    # coverages (frac.bound)
+    real.max.dist.summary$approach <- paste0(real.max.dist.summary$approach, ".hgc-",
+                                             real.max.dist.summary$hgc)
+    real.max.dist.summary <- subset(real.max.dist.summary, select=-c(hgc))
+    frac.bounds.summary <- rbind(naive.dist.summary, real.max.dist.summary)
+
     # Ignore windows where the number of replicates is small (e.g., due
     # to missing data or too many gaps) by making the mean value be NA
-    naive.dist.summary$mean[which(naive.dist.summary$N < 5)] <- NA
-    real.dist.summary$mean[which(real.dist.summary$N < 5)] <- NA
+    frac.bounds.summary$mean[which(frac.bounds.summary$N < 5)] <- NA
+    real.min.dist.summary$mean[which(real.min.dist.summary$N < 5)] <- NA
 
-    # First produce a plot for the naive designs, showing the fraction
+    # First produce a plot for the naive and real.max-activity designs, showing the fraction
     # of genomes covered at each window
     # Produce plot where x-axis shows the *start* of each window (an
     # alternative would be to compute the middle of each window and use
     # that on the x-axis)
-    p1 <- ggplot(naive.dist.summary, aes(x=window.start))
+    p1 <- ggplot(frac.bounds.summary, aes(x=window.start))
     # Plot mean values as a line
     p1 <- p1 + geom_line(aes(y=mean, color=approach), size=1.5)
     # Can use geom_errorbar(..) to show error bars at each plotted
@@ -165,35 +191,26 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
     # >(Qhi + 1.5*IQR) where IQR=Qhi-Qlo and Qlo=10% pctile and Qhi=90% pctile,
     # and the Qlo/Qhi are computed across the genome based on the mean +/- ci
     # value at each position)
-    p1.y.Qlo <- quantile(naive.dist.summary$mean - naive.dist.summary$ci,
+    p1.y.Qlo <- quantile(frac.bounds.summary$mean - frac.bounds.summary$ci,
                          probs=c(0.1), na.rm=TRUE)[1]
-    p1.y.Qhi <- quantile(naive.dist.summary$mean + naive.dist.summary$ci,
+    p1.y.Qhi <- quantile(frac.bounds.summary$mean + frac.bounds.summary$ci,
                          probs=c(0.9), na.rm=TRUE)[1]
-    p1.y.min <- max(min(naive.dist.summary$mean - naive.dist.summary$ci),
+    p1.y.min <- max(min(frac.bounds.summary$mean - frac.bounds.summary$ci),
                     p1.y.Qlo - 1.5*(p1.y.Qhi - p1.y.Qlo))
-    p1.y.max <- min(max(naive.dist.summary$mean + naive.dist.summary$ci),
+    p1.y.max <- min(max(frac.bounds.summary$mean + frac.bounds.summary$ci),
                     p1.y.Qhi + 1.5*(p1.y.Qhi - p1.y.Qlo))
     p1 <- p1 + scale_y_continuous(limits=c(p1.y.min, p1.y.max))
     # Add title to plot and axis labels
-    p1 <- p1 + ggtitle(title)
-    p1 <- p1 + ylab("Coverage against sequences (%)")
-    # Leave out usual ggplot2 background and grid lines, but keep border
-    # Also leave out the x-axis title/ticks/text
-    p1 <- p1 + theme_bw()
-    p1 <- p1 + theme(strip.background=element_blank(),
-                     panel.grid.minor=element_blank(),
-                     panel.border=element_rect(colour="black"),
-                     plot.title=element_text(size=12),
-                     axis.title.x=element_blank(),
-                     axis.ticks.x=element_blank(),
-                     axis.text.x=element_blank())
+    p1 <- p1 + ggtitle(taxonomy)
+    p1 <- p1 + xlab("Position") + ylab("Coverage against sequences (%)")
+    p1 <- p1 + theme_pubr()
 
-    # Second, produce a plot for the "real" design, showing the
+    # Second, produce a plot for the real.min-guides design, showing the
     # number of guides required in each window
     # Produce plot where x-axis shows the *start* of each window (an
     # alternative would be to compute the middle of each window and use
     # that on the x-axis)
-    p2 <- ggplot(real.dist.summary, aes(x=window.start))
+    p2 <- ggplot(real.min.dist.summary, aes(x=window.start))
     # Plot mean values as points
     p2 <- p2 + geom_line(aes(y=mean, color=approach), size=1.5)
     # Can use geom_errorbar(..) to show error bars at each plotted
@@ -206,30 +223,25 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
                                fill=approach), alpha=0.2)
     # Manually set the y-axis limits to avoid outliers in the confidence
     # intervals (the ribbon); these outliers may not show on the plot
-    p2.y.Qlo <- quantile(real.dist.summary$mean - real.dist.summary$ci,
+    p2.y.Qlo <- quantile(real.min.dist.summary$mean - real.min.dist.summary$ci,
                          probs=c(0.1), na.rm=TRUE)[1]
-    p2.y.Qhi <- quantile(real.dist.summary$mean + real.dist.summary$ci,
+    p2.y.Qhi <- quantile(real.min.dist.summary$mean + real.min.dist.summary$ci,
                          probs=c(0.9), na.rm=TRUE)[1]
-    p2.y.min <- max(min(real.dist.summary$mean - real.dist.summary$ci),
+    p2.y.min <- max(min(real.min.dist.summary$mean - real.min.dist.summary$ci),
                     p2.y.Qlo - 1.5*(p2.y.Qhi - p2.y.Qlo))
-    p2.y.max <- min(max(real.dist.summary$mean + real.dist.summary$ci),
+    p2.y.max <- min(max(real.min.dist.summary$mean + real.min.dist.summary$ci),
                     p2.y.Qhi + 1.5*(p2.y.Qhi - p2.y.Qlo))
     p2.y.min <- min(0, p2.y.min)    # make sure to show y=0 guides
     p2 <- p2 + scale_y_continuous(limits=c(p2.y.min, p2.y.max))
     # Add axis labels
     p2 <- p2 + xlab("Position") + ylab("Number of guides")
-    # Leave out usual ggplot2 background and grid lines, but keep border
-    p2 <- p2 + theme_bw()
-    p2 <- p2 + theme(strip.background=element_blank(),
-                     panel.grid.minor=element_blank(),
-                     panel.border=element_rect(colour="black"),
-                     plot.title=element_blank())
+    p2 <- p2 + theme_pubr()
 
     # Make sure p1 and p2 are on the same x-axis scale (same limit)
-    x.min <- min(min(naive.dist.summary$window.start),
-                 min(real.dist.summary$window.start))
-    x.max <- max(max(naive.dist.summary$window.start),
-                 max(real.dist.summary$window.start))
+    x.min <- min(min(frac.bounds.summary$window.start),
+                 min(real.min.dist.summary$window.start))
+    x.max <- max(max(frac.bounds.summary$window.start),
+                 max(real.min.dist.summary$window.start))
     p1 <- p1 + scale_x_continuous(limits=c(x.min, x.max))
     p2 <- p2 + scale_x_continuous(limits=c(x.min, x.max))
 
@@ -239,17 +251,11 @@ plot.results.for.taxonomy <- function(taxonomy, real.design.filename,
     p2 <- p2 + scale_color_viridis(discrete=TRUE)
     p2 <- p2 + scale_fill_viridis(discrete=TRUE)
 
-    # Place p1 on top of p2, and draw the plot
-    grid.newpage()
-    grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), size="last"))
+    # Place p1 on top of p2
+    g <- grid.arrange(p1, p2, ncol=1)
+    return(g)
 }
 
 
-pdf(out.pdf, width=12, height=8)
-for (taxonomy in taxonomies) {
-    title <- paste0("Comparison against baseline for ", taxonomy)
-    plot.results.for.taxonomy(taxonomy,
-                              "real-designs.tsv.gz",
-                              "naive-designs.tsv.gz",
-                              title)
-}
+g <- plot.results.for.taxonomy(in.taxonomy)
+ggsave(out.pdf, g, width=12, height=8, useDingbats=FALSE)

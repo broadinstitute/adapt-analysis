@@ -5,28 +5,36 @@
 # To make a more clear comparison to naive designs (which design one guide per
 # window), this only uses adapt with the sliding window approach.
 #
+# This decides that a guide hits (detects) a target if it is within 1 mismatch
+# (since ARG_GM is 1). Note that this *does* tolerate G-U pairs -- G-U pairs are
+# not counted as mismatches. If we did not want to count G-U pairs, we would
+# use --do-not-allow-gu-pairs.
+#
 # Author: Hayden Metsky <hayden@mit.edu>
 
 
-# Allow activating conda environments
-source ~/anaconda3/etc/profile.d/conda.sh
+# Load environment, and variables, for ADAPT
+source ~/misc-repos/adapt-designs/scripts/run-adapt/custom-env/load_custom_env.sh
 
 # Set variables for measuring uncertainty
 NUM_DESIGNS=10
 
 # Set variables for design
 NJOBS=4
-PREP_MEMOIZE_DIR="/ebs/dgd-analysis/prep-memoize-dir"
-MAFFT_PATH="/home/hayden/viral-ngs/viral-ngs-etc/conda-env/bin/mafft"
 CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
+ARG_WINDOWSIZE="200"
 ARG_GL="28"
 ARG_GM="1"
+
+# For minimize-guides
 ARG_GP="0.99"
-ARG_WINDOWSIZE="200"
 
+# For maximize-activity; note that this will use --use-simple-binary-activity-prediction
+# We will vary the hard guide constraint; set the penalty strength to 0 to ignore
+# the soft guide constraint
+ARG_MAXIMIZATIONALGORITHM="random-greedy"
+ARG_PENALTYSTRENGTH="0"
 
-# Make tmp directory for memoizing alignments and stats
-mkdir -p $PREP_MEMOIZE_DIR
 
 function run_for_taxid() {
     # Set information on taxonomy, from arguments
@@ -75,13 +83,21 @@ function run_for_taxid() {
     done
 
     # Write commands to a file
-    commands_fn="/tmp/commands-designs-${taxid}_${segment}"
+    commands_fn=$(mktemp)
     echo -n "" > $commands_fn
 
     # Produce a design.py command for each design, using the alignment
-    # produced above
+    # produced above, with the minimize-guides objective
     for i in $(seq 1 $NUM_DESIGNS); do
-        echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP --verbose &> $outdir/designs/design-${i}.real-design.out" >> $commands_fn
+        echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.minimize-guides.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL --obj minimize-guides -gm $ARG_GM -gp $ARG_GP --verbose &> $outdir/designs/design-${i}.real-design.minimize-guides.out" >> $commands_fn
+    done
+
+    # Do the same with the maximize-activity objective and different hard guide
+    # constraints
+    for i in $(seq 1 $NUM_DESIGNS); do
+        for hgc in 1 2 3 4 5; do
+            echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.maximize-activity.hgc-${hgc}.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL --obj maximize-activity -gm $ARG_GM --hard-guide-constraint $hgc --use-simple-binary-activity-prediction --maximization-algorithm $ARG_MAXIMIZATIONALGORITHM --penalty-strength $ARG_PENALTYSTRENGTH --verbose &> $outdir/designs/design-${i}.real-design.maximize-activity.hgc-${hgc}.out" >> $commands_fn
+        done
     done
 
     # Run parallel on the design.py commands
@@ -112,10 +128,19 @@ run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
 run_for_taxid "186538" "None" "NC_002549"
 
 # Run for Nipah virus
-run_for_taxid "121791" "None" "NC_002728"
+#run_for_taxid "121791" "None" "NC_002728"
 
 # Run for HIV-1
 run_for_taxid "11676" "None" "NC_001802"
 
 # Run for HCV
 run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
+
+# Run for IAV segment 2
+run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372"
+
+# Run for human coronavirus 229E
+run_for_taxid "11137" "None" "NC_028752"
+
+# Run for Rhinovirus A
+run_for_taxid "147711" "None" "NC_038311,NC_001617,NC_038311"
