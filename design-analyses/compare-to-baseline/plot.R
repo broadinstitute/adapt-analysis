@@ -4,6 +4,11 @@
 #
 # This uses the results of analyses that were already performed.
 #
+# Note that there may be empty (not plotted) regions of the genome
+# in the minimize-guides plot (bottom plot -- i.e, p2). This represents
+# regions of the genome for which no number of guides could achieve
+# the coverage threshold, for example, due to missing data or gaps.
+#
 # Args:
 #  1: name of taxonomy (must be directory)
 #  2: path to output PDF
@@ -169,12 +174,31 @@ plot.results.for.taxonomy <- function(taxonomy) {
     frac.bounds.summary$mean[which(frac.bounds.summary$N < 5)] <- NA
     real.min.dist.summary$mean[which(real.min.dist.summary$N < 5)] <- NA
 
+    # Remove windows too close to the start or end of the alignment (within
+    # 200 nt) -- because genomes are of different lengths, there are large
+    # drops in coverage at the ends
+    aln.end <- max(frac.bounds.summary$window.end)
+    len.tol <- 200
+    frac.bounds.summary <- frac.bounds.summary[frac.bounds.summary$window.start >= 0 + len.tol,]
+    frac.bounds.summary <- frac.bounds.summary[frac.bounds.summary$window.end < aln.end - len.tol,]
+    real.min.dist.summary <- real.min.dist.summary[real.min.dist.summary$window.start >= 0 + len.tol,]
+    real.min.dist.summary <- real.min.dist.summary[real.min.dist.summary$window.end < aln.end - len.tol,]
+
+    # Use a window midpoint as position
+    frac.bounds.summary$aln.pos <- frac.bounds.summary$window.start + (frac.bounds.summary$window.end - frac.bounds.summary$window.start)/2
+    real.min.dist.summary$aln.pos <- real.min.dist.summary$window.start + (real.min.dist.summary$window.end - real.min.dist.summary$window.start)/2
+
+    # Map the positions from alignment-space to a position in a reference
+    # genome
+    ref.pos.map <- as.data.frame(read.table(file.path(taxonomy, "input-alns/ref-pos-map.tsv"), sep="\t", header=TRUE))
+    frac.bounds.summary <- merge(frac.bounds.summary, ref.pos.map, by="aln.pos")
+    real.min.dist.summary <- merge(real.min.dist.summary, ref.pos.map, by="aln.pos")
+
     # First produce a plot for the naive and real.max-activity designs, showing the fraction
     # of genomes covered at each window
-    # Produce plot where x-axis shows the *start* of each window (an
-    # alternative would be to compute the middle of each window and use
-    # that on the x-axis)
-    p1 <- ggplot(frac.bounds.summary, aes(x=window.start))
+    # Produce plot where x-axis shows the reference position of the middle of
+    # the window
+    p1 <- ggplot(frac.bounds.summary, aes(x=ref.pos))
     # Plot mean values as a line
     p1 <- p1 + geom_line(aes(y=mean, color=approach), size=1.5)
     # Can use geom_errorbar(..) to show error bars at each plotted
@@ -207,10 +231,9 @@ plot.results.for.taxonomy <- function(taxonomy) {
 
     # Second, produce a plot for the real.min-guides design, showing the
     # number of guides required in each window
-    # Produce plot where x-axis shows the *start* of each window (an
-    # alternative would be to compute the middle of each window and use
-    # that on the x-axis)
-    p2 <- ggplot(real.min.dist.summary, aes(x=window.start))
+    # Produce plot where x-axis shows the reference position of the middle of
+    # the window
+    p2 <- ggplot(real.min.dist.summary, aes(x=ref.pos))
     # Plot mean values as points
     p2 <- p2 + geom_line(aes(y=mean, color=approach), size=1.5)
     # Can use geom_errorbar(..) to show error bars at each plotted
@@ -238,8 +261,11 @@ plot.results.for.taxonomy <- function(taxonomy) {
     p2 <- p2 + theme_pubr()
 
     # Make sure p1 and p2 are on the same x-axis scale (same limit)
-    x.min <- min(min(frac.bounds.summary$window.start),
-                 min(real.min.dist.summary$window.start))
+    # Force x.min to 0 even if the first window (after filtering out
+    # windows at the ends) is not at 0
+    #x.min <- min(min(frac.bounds.summary$window.start),
+    #             min(real.min.dist.summary$window.start))
+    x.min <- 0
     x.max <- max(max(frac.bounds.summary$window.start),
                  max(real.min.dist.summary$window.start))
     p1 <- p1 + scale_x_continuous(limits=c(x.min, x.max))
@@ -259,3 +285,6 @@ plot.results.for.taxonomy <- function(taxonomy) {
 
 g <- plot.results.for.taxonomy(in.taxonomy)
 ggsave(out.pdf, g, width=12, height=8, useDingbats=FALSE)
+
+# Remove Rplots.pdf file
+file.remove("Rplots.pdf")

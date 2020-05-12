@@ -63,7 +63,7 @@ def main(args):
     with open(args.out_tsv, 'w') as fw:
         def write_row(row):
             fw.write('\t'.join(str(x) for x in row) + '\n')
-        header = ['ref_pos', 'aln_pos']
+        header = ['ref-pos', 'aln-pos']
         write_row(header)
         for ref_pos in range(len(m)):
             row = [ref_pos, m[ref_pos]]
