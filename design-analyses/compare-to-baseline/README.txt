@@ -34,12 +34,11 @@ Run:
 Compile the above results:
   2) `./compile_designs.sh` to compile the outputs of `./make_designs.sh`
         - This produces files tax-[taxonomy]/naive-designs.tsv.gz and
-          tax-[taxonomy]/real-designs.tsv.gz, which simply concatenate the outputs
+          tax-[taxonomy]/real-designs.*.tsv.gz, which simply concatenate the outputs
           above across the different {i}
 
 Plot the results:
   3) `./make_plots.sh` to produce plots
         - This produces a plot for each taxonomy with two panels (one showing
           coverage achieved for naive designs, and the other showing the
-          number of guides required for the "real" design)
-        - This places each taxonomy on a separate page in the PDF
+          number of guides required for the "real" designs)

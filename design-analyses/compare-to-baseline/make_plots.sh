@@ -8,4 +8,12 @@ source ~/anaconda3/etc/profile.d/conda.sh
 
 conda activate data-analysis
 
-Rscript plot.R plots/compare-to-baseline.all-taxonomies.pdf
+function plot_for_taxid() {
+    taxid="$1"
+    segment="$2"
+
+    Rscript plot.R tax-${taxid}_${segment} plots/tax-${taxid}_${segment}.pdf
+}
+
+plot_for_taxid "64320" "None"
+plot_for_taxid "11620" "S"
