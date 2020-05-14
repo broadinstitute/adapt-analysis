@@ -9,5 +9,5 @@ source ~/anaconda3/etc/profile.d/conda.sh
 conda activate data-analysis
 
 for subtype in H1Nany H3Nany HanyN1 HanyN2; do
-    Rscript plot.R iav-${subtype}/designs.tsv iav-${subtype}/plot.pdf
+    Rscript plot.R iav-${subtype}/designs.tsv plots/iav-${subtype}.pdf
 done
