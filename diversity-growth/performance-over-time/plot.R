@@ -14,6 +14,7 @@ library(gridExtra)
 library(reshape2)
 library(viridis)
 library(ggpubr)
+library(ggforce)
 
 
 args <- commandArgs(trailingOnly=TRUE)
@@ -81,6 +82,10 @@ plot.coverage.per.design.per.year <- function(data.path) {
     # Replace '_' in column names with '.'
     names(dist) <- gsub("_", ".", names(dist))
 
+    # Subset to only keep odd years -- this just makes the data easier
+    # to visualize
+    dist <- subset(dist, design.year %% 2 == 1 & test.year %% 2 == 1)
+
     # Only show test.year when it is >= design.year (i.e., do not show
     # test values against years *before* the design was produced, which is
     # not relevant in practice)
@@ -117,27 +122,29 @@ plot.coverage.per.design.per.year <- function(data.path) {
 
     p <- ggplot(dist.summary)
 
-    # Plot each point with the confidence interval around each
-    p <- p + geom_pointrange(aes(x=test.year.factor,
-                                 y=frac.hit,
-                                 ymin=frac.hit-ci,
-                                 ymax=frac.hit+ci,
-                                 color=factor(design.year)),
-                             size=0.3,
-                             fatten=2,  # multiplicate factor for size of point
-                             position=position_jitterdodge()    # jitter points
-                             )
+    # Plot each box plot for each combination of design.year and test.year,
+    # where the distribution is across the top N k-mers for that combination
+    # Note this is only incorporating the mean for each k-mer across the
+    # bootstrap samples -- it does not show any information about variance
+    # across the bootstrap samples; namely, the distribution is of
+    #  { mean frac.hit across bootstrap samples for the i'th ranked k-mer }
+    p <- p + geom_sina(aes(x=test.year.factor,
+                           y=frac.hit,
+                           color=factor(design.year)),
+                       scale="width",
+                       size=1)
 
     # Use viridis color map and label the color legend
     p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear")
 
     # Make sure the y-axis goes up to 100%; show marks every 10%
-    ci.lower.min <- min(dist.summary$frac.hit - dist.summary$ci)
-    lower.mark <- max(0, round((ci.lower.min - 10)/10.0)*10)
-    p <- p + scale_y_continuous(breaks=seq(lower.mark, 100, 10))
+    #ci.lower.min <- min(dist.summary$frac.hit - dist.summary$ci)
+    #lower.mark <- max(0, round((ci.lower.min - 10)/10.0)*10)
+    #p <- p + scale_y_continuous(breaks=seq(lower.mark, 100, 10))
+    p <- p + scale_y_continuous(breaks=seq(0, 100, 10))
 
     # Add title to plot and axis labels
-    p <- p + xlab("Year X") + ylab("Average fraction of sequences from year X detected by most conserved 30-mers (%)")
+    p <- p + xlab("Testing year") + ylab("Fraction of sequences detected (%)")
 
     # Reformat plot
     p <- p + theme_pubr()
@@ -146,4 +153,4 @@ plot.coverage.per.design.per.year <- function(data.path) {
 }
 
 p <- plot.coverage.per.design.per.year(in.tsv)
-ggsave(out.pdf, p, width=16, height=8, useDingbats=FALSE)
+ggsave(out.pdf, p, width=16, height=4, useDingbats=FALSE)
