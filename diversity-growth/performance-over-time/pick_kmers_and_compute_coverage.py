@@ -310,7 +310,7 @@ def compute_fraction_hit(aln, years, start_year, end_year, kmers, mismatches):
             if a k-mer 'hits' a target sequence
 
     Returns:
-        dict {year: mean fraction hit of sequences in year hit}
+        dict {year: (k-mer, fraction hit of sequences in year hit by k-mer)}
     """
     k = len(kmers[0])
 
@@ -333,11 +333,11 @@ def compute_fraction_hit(aln, years, start_year, end_year, kmers, mismatches):
                 frac = float(len(kmer_bound)) / aln_year.num_sequences
                 fracs_bound[kmer].append(frac)
 
-        frac_bound_over_kmers = []
+        frac_bound_by_kmers = []
         for kmer in kmers:
             frac_bound = max(fracs_bound[kmer])
-            frac_bound_over_kmers += [frac_bound]
-        frac_hit_in_year[year] = statistics.mean(frac_bound_over_kmers)
+            frac_bound_by_kmers += [(kmer, frac_bound)]
+        frac_hit_in_year[year] = frac_bound_by_kmers
 
     return frac_hit_in_year
 
@@ -361,7 +361,7 @@ def main(args):
         def write_row(row):
             fw.write('\t'.join(str(x) for x in row) + '\n')
 
-        header = ['design_year', 'sampling', 'kmers', 'test_year',
+        header = ['design_year', 'sampling', 'kmer', 'test_year',
                 'frac_hit']
         write_row(header)
 
@@ -370,11 +370,11 @@ def main(args):
                 frac_hit_in_year = compute_fraction_hit(
                         aln, years, start_year, end_year, sample_kmers,
                         args.mismatches)
-                sample_kmers_str = ','.join(sample_kmers)
-                for test_year, frac_hit in frac_hit_in_year.items():
-                    row = [design_year, sample_i, sample_kmers_str,
-                            test_year, frac_hit]
-                    write_row(row)
+                for test_year, frac_hit_by_kmers in frac_hit_in_year.items():
+                    for kmer, frac_hit in frac_hit_by_kmers:
+                        row = [design_year, sample_i, kmer,
+                                test_year, frac_hit]
+                        write_row(row)
 
 
 if __name__ == "__main__":
