@@ -86,14 +86,31 @@ plot.coverage.per.design.per.year <- function(data.path) {
     # not relevant in practice)
     dist <- dist[dist$test.year >= dist$design.year,]
 
+    # For each choice of `design.year` and `test.year` and `sampling` (i.e,
+    # bootstrap sample), there are N k-mers (e.g., N=15) with a `frac.hit`
+    # value for each
+    # Add a column, `kmer.rank`, that gives order of `frac.hit` for each of the
+    # N k-mers, within the combination of the 3 variables above -- have the
+    # k-mer with the highest `frac.hit` have kmer.rank=1 and the k-mer with
+    # the lowest `frac.hit` have kmer.rank=N; when computing rank, negate
+    # `frac.hit` to do this
+    library(dplyr)
+    dist <- dist %>% group_by(design.year, test.year, sampling) %>% mutate(kmer.rank=rank(-frac.hit, ties.method="first"))
+    dist <- as.data.frame(dist)
+    detach(package:dplyr)
+
     # Multiply coverage fractions by 100 to obtain percents
     dist$frac.hit <- dist$frac.hit * 100
 
     # Summarize each coverage value across the replicates -- i.e., for
-    # each test.year and design.year pair, find
-    # the mean coverage (and std dev, etc.) across the replicates
+    # each test.year and design.year and kmer.rank, find
+    # the mean coverage (and std dev, etc.) across the samplings (replicates)
+    # Effectively, this matches up k-mers across samplings/replicates -- when
+    # kmer.rank=1, this will give the mean fraction hit for all the 'best'
+    # k-mers from each sampling/replicate and the CI will give a confidence
+    # interval across the samplings of frac.hit for the 'best' k-mer, etc.
     dist.summary <- summarySE(dist, measurevar="frac.hit",
-                              groupvars=c("design.year", "test.year"))
+                              groupvars=c("design.year", "test.year", "kmer.rank"))
 
     # Make test.year (x-axis) be a factor
     dist.summary$test.year.factor <- factor(dist.summary$test.year)
@@ -106,9 +123,10 @@ plot.coverage.per.design.per.year <- function(data.path) {
                                  ymin=frac.hit-ci,
                                  ymax=frac.hit+ci,
                                  color=factor(design.year)),
-                             size=0.5,
-                             fatten=1,
-                             position=position_dodge(width=0.4))
+                             size=0.3,
+                             fatten=2,  # multiplicate factor for size of point
+                             position=position_jitterdodge()    # jitter points
+                             )
 
     # Use viridis color map and label the color legend
     p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear")
@@ -128,4 +146,4 @@ plot.coverage.per.design.per.year <- function(data.path) {
 }
 
 p <- plot.coverage.per.design.per.year(in.tsv)
-ggsave(out.pdf, p, width=16, height=16, useDingbats=FALSE)
+ggsave(out.pdf, p, width=16, height=8, useDingbats=FALSE)
