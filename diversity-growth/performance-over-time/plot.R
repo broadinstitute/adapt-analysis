@@ -117,8 +117,8 @@ plot.coverage.per.design.per.year <- function(data.path) {
     dist.summary <- summarySE(dist, measurevar="frac.hit",
                               groupvars=c("design.year", "test.year", "kmer.rank"))
 
-    # Make test.year (x-axis) be a factor
-    dist.summary$test.year.factor <- factor(dist.summary$test.year)
+    # Make design.year (x-axis) be a factor
+    dist.summary$design.year.factor <- factor(dist.summary$design.year)
 
     p <- ggplot(dist.summary)
 
@@ -133,16 +133,19 @@ plot.coverage.per.design.per.year <- function(data.path) {
     # all values for a design.year/test.year combination are equal (which
     # occurs in one such case, when all values are 0). `scale="count"` also
     # helps the visualization
-    p <- p + geom_sina(aes(x=test.year.factor,
+    p <- p + geom_sina(aes(x=design.year.factor,
                            y=frac.hit,
-                           color=factor(design.year)),
+                           color=factor(test.year)),
                        scale="count",
                        size=0.8,
                        method="counts",
                        maxwidth=1)
 
     # Use viridis color map and label the color legend
-    p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear")
+    # Use `direction=-1` to reverse colors
+    p <- p + scale_color_viridis(discrete=TRUE, name="Test against\nyear",
+                                 #direction=-1
+                                 )
 
     # Make sure the y-axis goes up to 100%; show marks every 10%
     #ci.lower.min <- min(dist.summary$frac.hit - dist.summary$ci)
@@ -151,7 +154,7 @@ plot.coverage.per.design.per.year <- function(data.path) {
     p <- p + scale_y_continuous(breaks=seq(0, 100, 10))
 
     # Add title to plot and axis labels
-    p <- p + xlab("Testing year") + ylab("Fraction of sequences with 30-mer (%)")
+    p <- p + xlab("Design in year") + ylab("Fraction of sequences with 30-mer (%)")
 
     # Reformat plot
     p <- p + theme_pubr()
