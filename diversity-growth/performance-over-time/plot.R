@@ -122,17 +122,24 @@ plot.coverage.per.design.per.year <- function(data.path) {
 
     p <- ggplot(dist.summary)
 
-    # Plot each box plot for each combination of design.year and test.year,
-    # where the distribution is across the top N k-mers for that combination
+    # Plot dots for each combination of design.year and test.year,
+    # where each dot represents one of the k-mers for that combination
     # Note this is only incorporating the mean for each k-mer across the
     # bootstrap samples -- it does not show any information about variance
-    # across the bootstrap samples; namely, the distribution is of
+    # across the bootstrap samples; namely, each point is showing
     #  { mean frac.hit across bootstrap samples for the i'th ranked k-mer }
+    # Use `method="counts"` to fix a bug and also make the visualization
+    # nicer (with `method="density"`, the default), it seems to fail when
+    # all values for a design.year/test.year combination are equal (which
+    # occurs in one such case, when all values are 0). `scale="count"` also
+    # helps the visualization
     p <- p + geom_sina(aes(x=test.year.factor,
                            y=frac.hit,
                            color=factor(design.year)),
-                       scale="width",
-                       size=1)
+                       scale="count",
+                       size=0.8,
+                       method="counts",
+                       maxwidth=1)
 
     # Use viridis color map and label the color legend
     p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear")
@@ -144,7 +151,7 @@ plot.coverage.per.design.per.year <- function(data.path) {
     p <- p + scale_y_continuous(breaks=seq(0, 100, 10))
 
     # Add title to plot and axis labels
-    p <- p + xlab("Testing year") + ylab("Fraction of sequences detected (%)")
+    p <- p + xlab("Testing year") + ylab("Fraction of sequences with 30-mer (%)")
 
     # Reformat plot
     p <- p + theme_pubr()
