@@ -120,7 +120,10 @@ plot.coverage.per.design.per.year <- function(data.path) {
     # Make test.year (facets) be a factor
     dist.summary$test.year.factor <- factor(dist.summary$test.year)
 
-    p <- ggplot(dist.summary)
+    p <- ggplot(dist.summary,
+                aes(color=factor(design.year),
+                    x=factor(design.year),
+                    y=frac.hit))
 
     # Plot dots for each combination of design.year and test.year,
     # where each dot represents one of the k-mers for that combination
@@ -133,13 +136,20 @@ plot.coverage.per.design.per.year <- function(data.path) {
     # all values for a design.year/test.year combination are equal (which
     # occurs in one such case, when all values are 0). `scale="count"` also
     # helps the visualization
-    p <- p + geom_sina(aes(x=factor(design.year),
-                           y=frac.hit,
-                           color=factor(design.year)),
-                       scale="count",
+    p <- p + geom_sina(scale="count",
                        size=1,
                        method="counts",
                        maxwidth=1)
+
+    # Add a horizontal line showing the mean value across k-mers for each
+    # combination of design.year and test.year
+    p <- p + stat_summary(fun="mean",
+                          fun.min="mean",
+                          fun.max="mean",
+                          size=0.3,   # line thickness
+                          geom="crossbar",
+                          width=0.8,    # line width
+                          show.legend=FALSE)    # do not put crossbar in legend
 
     # Use viridis color map and label the color legend
     # Use `direction=-1` to reverse colors
