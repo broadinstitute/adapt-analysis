@@ -117,8 +117,8 @@ plot.coverage.per.design.per.year <- function(data.path) {
     dist.summary <- summarySE(dist, measurevar="frac.hit",
                               groupvars=c("design.year", "test.year", "kmer.rank"))
 
-    # Make design.year (x-axis) be a factor
-    dist.summary$design.year.factor <- factor(dist.summary$design.year)
+    # Make test.year (facets) be a factor
+    dist.summary$test.year.factor <- factor(dist.summary$test.year)
 
     p <- ggplot(dist.summary)
 
@@ -133,19 +133,29 @@ plot.coverage.per.design.per.year <- function(data.path) {
     # all values for a design.year/test.year combination are equal (which
     # occurs in one such case, when all values are 0). `scale="count"` also
     # helps the visualization
-    p <- p + geom_sina(aes(x=design.year.factor,
+    p <- p + geom_sina(aes(x=factor(design.year),
                            y=frac.hit,
-                           color=factor(test.year)),
+                           color=factor(design.year)),
                        scale="count",
-                       size=0.8,
+                       size=1,
                        method="counts",
                        maxwidth=1)
 
     # Use viridis color map and label the color legend
     # Use `direction=-1` to reverse colors
-    p <- p + scale_color_viridis(discrete=TRUE, name="Test against\nyear",
+    p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear",
                                  #direction=-1
                                  )
+
+    # Facet by test.year
+    # Allow different scales/space because any test.year may have
+    # different number of years in design.year (otherwise, we wind up with
+    # lots of empty space in the facets with few different design.year years)
+    # Use `switch='x"` to move facet labels to the bottom
+    p <- p + facet_grid(. ~ test.year.factor,
+                        scales="free_x",
+                        space="free_x",
+                        switch="x")
 
     # Make sure the y-axis goes up to 100%; show marks every 10%
     #ci.lower.min <- min(dist.summary$frac.hit - dist.summary$ci)
@@ -153,11 +163,22 @@ plot.coverage.per.design.per.year <- function(data.path) {
     #p <- p + scale_y_continuous(breaks=seq(lower.mark, 100, 10))
     p <- p + scale_y_continuous(breaks=seq(0, 100, 10))
 
-    # Add title to plot and axis labels
-    p <- p + xlab("Design in year") + ylab("Fraction of sequences with 30-mer (%)")
+    # Add axis labels
+    # Note xlab() here is actually for the facets, not the x-value in each
+    # facet
+    p <- p + xlab("Test against year") + ylab("Fraction of sequences with 30-mer (%)")
 
     # Reformat plot
     p <- p + theme_pubr()
+
+    # Remove x-axis ticks/labels/text (giving design.year) because points
+    # are already colored by design.year
+    # Also remove the strip background from the facet label
+    p <- p + theme(axis.text.x=element_blank(),
+                   axis.ticks.x=element_blank(),
+                   strip.background=element_blank(),
+                   strip.placement="outside",
+                   strip.text.x=element_text(size=12))
 
     return(p)
 }
