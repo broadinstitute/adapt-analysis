@@ -126,8 +126,24 @@ def entropy_of_kmers(kmers, base=2.0):
     return np.sum(-1.0 * frequencies * np.log(frequencies)/np.log(base))
 
 
+def is_unambig(kmer):
+    """Determine is k-mer is entirely unambiguous.
+
+    Args:
+        kmer: string
+
+    Returns:
+        True iff the k-mer contains only 'A', 'C', 'G', 'T'
+    """
+    allowed = ['A', 'C', 'G', 'T']
+    for c in kmer:
+        if c.upper() not in allowed:
+            return False
+    return True
+
+
 def mean_entropy_in_window(ref_start, ref_end, ref_pos_map,
-        aln, seq_idxs, k=28):
+        aln, seq_idxs, k=30):
     """Find mean entropy across sites in a window.
 
     Args:
@@ -151,6 +167,9 @@ def mean_entropy_in_window(ref_start, ref_end, ref_pos_map,
         # Get all sequences at this site
         kmers = extract.make_list_of_seqs(seqs_to_consider=seq_idxs,
                 remove_gaps=True)
+
+        # Only keep unambiguous k-mers
+        kmers = [kmer for kmer in kmers if is_unambig(kmer)]
 
         # Compute entropy
         entropy = entropy_of_kmers(kmers)
@@ -184,7 +203,10 @@ def main(args):
         # Find sequences in this date range
         seq_idxs = seqs_idx_in_date_range(dates, date_range_start,
                 date_range_end)
-        if args.sample_size_per_date_interval > len(seq_idxs):
+        if args.sample_size_per_date_interval <= 0:
+            # Do not subsample; use all
+            seq_idxs = set(seq_idxs)
+        elif args.sample_size_per_date_interval > len(seq_idxs):
             # Too few sequences to sample; warn and move on
             print(("Number of sequences in date range [%s, %s) is "
                 "%d, which is fewer than the sample size (%d); not sampling") %
@@ -204,7 +226,7 @@ def main(args):
 
             # Get the mean entropy in this window
             entropy = mean_entropy_in_window(window_start, window_end,
-                    ref_pos_map, aln, seq_idxs)
+                    ref_pos_map, aln, seq_idxs, k=args.k)
 
             # Record the entropy
             rows += [(date_range_start_str, date_range_end_str, window_start,
@@ -258,12 +280,17 @@ if __name__ == "__main__":
     parser.add_argument('--window-stride',
         default=500,
         type=int,
-        help=("Amoutn by which to stride window, in nucleotides"))
+        help=("Amount by which to stride window, in nucleotides"))
+    parser.add_argument('-k',
+        default=30,
+        type=int,
+        help=("k-mer length"))
     parser.add_argument('--sample-size-per-date-interval',
         default=100,
         type=int,
         help=("Number of sequences to sample randomly from each "
-              "date interval, to remove temporal sampling biases"))
+              "date interval, to remove temporal sampling biases; if <= 0, "
+              "do not subsample and use all sequences"))
 
     args = parser.parse_args()
     main(args)
