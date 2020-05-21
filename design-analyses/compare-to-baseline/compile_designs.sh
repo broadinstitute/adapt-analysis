@@ -53,10 +53,21 @@ function compile_for_taxid() {
     done
 
     # gzip the files
-    gzip $tax_dir/real-designs.max-activity.tsv
-    gzip $tax_dir/real-designs.min-guides.tsv
-    gzip $tax_dir/naive-designs.tsv
+    gzip -f $tax_dir/real-designs.max-activity.tsv
+    gzip -f $tax_dir/real-designs.min-guides.tsv
+    gzip -f $tax_dir/naive-designs.tsv
 }
 
 compile_for_taxid "64320" "None"
 compile_for_taxid "11620" "S"
+compile_for_taxid "11620" "L"
+compile_for_taxid "11676" "None"
+compile_for_taxid "11103" "None"
+compile_for_taxid "11320" "2"
+compile_for_taxid "147711" "None"
+compile_for_taxid "147712" "None"
+compile_for_taxid "463676" "None"
+compile_for_taxid "138948" "None"
+compile_for_taxid "138949" "None"
+compile_for_taxid "138950" "None"
+compile_for_taxid "138951" "None"

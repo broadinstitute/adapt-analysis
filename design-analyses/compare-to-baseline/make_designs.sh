@@ -17,13 +17,15 @@
 source ~/misc-repos/adapt-designs/scripts/run-adapt/custom-env/load_custom_env.sh
 
 # Set variables for measuring uncertainty
-NUM_DESIGNS=10
+NUM_DESIGNS=5
+
+# Set variables for running
+NJOBS=8
 
 # Set variables for design
-NJOBS=4
-CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
+CLUSTER_THRESHOLD=0.4   # Use high value to make it more likely to obtain only one cluster or a large one
 ARG_WINDOWSIZE="200"
-ARG_GL="28"
+ARG_GL="30"
 ARG_GM="1"
 
 # For minimize-guides
@@ -35,6 +37,9 @@ ARG_GP="0.99"
 ARG_MAXIMIZATIONALGORITHM="random-greedy"
 ARG_PENALTYSTRENGTH="0"
 
+# Write commands to a file
+commands_fn=$(mktemp)
+echo -n "" > $commands_fn
 
 function run_for_taxid() {
     # Set information on taxonomy, from arguments
@@ -42,7 +47,7 @@ function run_for_taxid() {
     segment="$2"
     refaccs="$3"
 
-    echo "Running for taxid $taxid (segment: $segment)" > /dev/tty
+    echo "Creating commands for taxid $taxid (segment: $segment)" > /dev/tty
 
     # Make an output directory
     outdir="tax-${taxid}_${segment}"
@@ -60,16 +65,20 @@ function run_for_taxid() {
     # Run design.py to create an alignment from all the sequences; continue with
     # the sliding-window design approach (using a window size equal to guide size
     # so it's fast), but ignore the output
-    design.py sliding-window auto-from-args $taxid $segment $refaccs /tmp/design-for-aln.tsv --window-size $ARG_GL -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --write-input-aln $outdir/input-alns/all-accessions.fasta --verbose &> $outdir/input-alns/all-accessions.out
-    rm /tmp/design-for-aln.tsv.0
-    # The output alignment will have a `.0` suffix because it corresponds to the
-    # first cluster (there will be only one cluster); rename it to remove the
-    # suffix
-    mv $outdir/input-alns/all-accessions.fasta.0 $outdir/input-alns/all-accessions.fasta
+    # Only do so if an alignment does not already exist
+    if [ ! -f $outdir/input-alns/all-accessions.fasta ]; then
+        design.py sliding-window auto-from-args $taxid $segment $refaccs /tmp/design-for-aln.tsv --window-size $ARG_GL -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --write-input-aln $outdir/input-alns/all-accessions.fasta --verbose &> $outdir/input-alns/all-accessions.out
+        rm /tmp/design-for-aln.tsv.*
+        # An output alignment will have a `.0` suffix because it corresponds to the
+        # first cluster; rename it to remove the suffix and delete all other clusters
+        # (i.e., only use the first, which is the largest)
+        mv $outdir/input-alns/all-accessions.fasta.0 $outdir/input-alns/all-accessions.fasta
+        rm -f $outdir/input-alns/all-accessions.fasta.*
+    fi
 
     # Randomly sample a number of sequences equal to the number
-    # of accessions (bootstrapping over the input)
-    sample_size=$(cat $outdir/accessions.tsv | wc -l)
+    # of sequences in the FASTA (bootstrapping over the input)
+    sample_size=$(cat $outdir/input-alns/all-accessions.fasta | grep '>' | wc -l)
 
     # Randomly sample the alignment to create a fasta file as input for
     # each design; by sampling the same alignment, all designs are
@@ -81,10 +90,6 @@ function run_for_taxid() {
     for i in $(seq 1 $NUM_DESIGNS); do
         python ../scripts/randomly_sample_fasta.py $outdir/input-alns/all-accessions.fasta $sample_size $outdir/input-alns/design-${i}.fasta
     done
-
-    # Write commands to a file
-    commands_fn=$(mktemp)
-    echo -n "" > $commands_fn
 
     # Produce a design.py command for each design, using the alignment
     # produced above, with the minimize-guides objective
@@ -100,21 +105,11 @@ function run_for_taxid() {
         done
     done
 
-    # Run parallel on the design.py commands
-    parallel --jobs $NJOBS --no-notice < $commands_fn
-
-    echo -n "" > $commands_fn
-
     # Produce a design_naively.py command for each design, using the
     # alignment produced above
     for i in $(seq 1 $NUM_DESIGNS); do
         echo "design_naively.py $outdir/input-alns/design-${i}.fasta $outdir/designs/design-${i}.naive-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM --verbose &> $outdir/designs/design-${i}.naive-design.out" >> $commands_fn
     done
-
-    # Run parallel on the design_naively.py commands
-    parallel --jobs $NJOBS --no-notice < $commands_fn
-
-    rm $commands_fn
 }
 
 
@@ -124,8 +119,11 @@ run_for_taxid "64320" "None" "NC_035889,NC_012532"
 # Run for Lassa virus, S segment
 run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
 
+# Run for Lassa virus, L segment
+run_for_taxid "11620" "L" "U73034"
+
 # Run for Ebola virus (Zaire)
-run_for_taxid "186538" "None" "NC_002549"
+#run_for_taxid "186538" "None" "NC_002549"
 
 # Run for Nipah virus
 #run_for_taxid "121791" "None" "NC_002728"
@@ -140,7 +138,20 @@ run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,
 run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372"
 
 # Run for human coronavirus 229E
-run_for_taxid "11137" "None" "NC_028752"
+#run_for_taxid "11137" "None" "NC_028752"
 
-# Run for Rhinovirus A
+# Run for Rhinovirus A, B, C
 run_for_taxid "147711" "None" "NC_038311,NC_001617,NC_038311"
+run_for_taxid "147712" "None" "NC_038312"
+run_for_taxid "463676" "None" "NC_038878"
+
+# Run for Enterovirus A, B, C, D
+run_for_taxid "138948" "None" "NC_038306,NC_001612,NC_038306"
+run_for_taxid "138949" "None" "NC_001472,NC_038307,NC_038307,NC_001472"
+run_for_taxid "138950" "None" "NC_002058"
+run_for_taxid "138951" "None" "NC_038308,NC_001430"
+
+# Run parallel on the commands
+echo "Running all commands.."
+parallel --jobs $NJOBS --no-notice < $commands_fn
+rm $commands_fn
