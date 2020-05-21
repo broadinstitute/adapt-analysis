@@ -175,10 +175,10 @@ plot.results.for.taxonomy <- function(taxonomy) {
     real.min.dist.summary$mean[which(real.min.dist.summary$N < 5)] <- NA
 
     # Remove windows too close to the start or end of the alignment (within
-    # 200 nt) -- because genomes are of different lengths, there are large
+    # 300 nt) -- because genomes are of different lengths, there are large
     # drops in coverage at the ends
     aln.end <- max(frac.bounds.summary$window.end)
-    len.tol <- 200
+    len.tol <- 300
     frac.bounds.summary <- frac.bounds.summary[frac.bounds.summary$window.start >= 0 + len.tol,]
     frac.bounds.summary <- frac.bounds.summary[frac.bounds.summary$window.end < aln.end - len.tol,]
     real.min.dist.summary <- real.min.dist.summary[real.min.dist.summary$window.start >= 0 + len.tol,]
