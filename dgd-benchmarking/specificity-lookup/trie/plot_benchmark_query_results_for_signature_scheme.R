@@ -13,6 +13,7 @@ require(reshape2)
 require(gridExtra)
 require(stringr)
 require(viridis)
+require(ggpubr)
 
 args <- commandArgs(trailingOnly=TRUE)
 subsampled.size <- args[1]
@@ -20,9 +21,8 @@ subsampled.size <- args[1]
 IN.TABLE <- paste0("out/benchmark-queries-signature-subsample-",
                    subsampled.size,
                    ".tsv.gz")
-OUT.PDF <- paste0("out/benchmark-queries-signature-subsample-",
-                  subsampled.size,
-                  ".pdf")
+OUT.PDF.PREFIX <- paste0("out/benchmark-queries-signature-subsample-",
+                         subsampled.size)
 
 
 ## A helper function from:
@@ -171,7 +171,7 @@ plot.benchmark.violin <- function(benchmark.name, title, y.lab, no.shard.only, g
     p <- p + ggtitle(title)
     p <- p + xlab("Mismatches") + ylab(y.lab)
     p <- p + labs(fill="GU pairing / approach type")
-    p <- p + theme_bw()
+    p <- p + theme_pubr()
 
     return(p)
 }
@@ -206,12 +206,20 @@ p.all.runtime <- plot.benchmark.violin("runtime", "Sharding approaches: effect o
                                        "Runtime (sec)",
                                        FALSE, TRUE, TRUE, FALSE, c(1e-06,10), "identity")
 
-ggsave(OUT.PDF, arrangeGrob(p.noshard.has.hit, p.all.has.hit,
-                            p.noshard.num.results, p.all.num.results,
-                            p.noshard.nodes.visited, p.all.nodes.visited,
-                            p.noshard.runtime, p.all.runtime,
-                            ncol=2),
-       width=16, height=16, useDingbats=FALSE)
 
-# Remove the empty Rplots.pdf created above
-file.remove("Rplots.pdf")
+save <- function(p, filename, width, height) {
+    ggsave(file.path(paste0(OUT.PDF.PREFIX, "_", filename, ".pdf")),
+           p,
+           width=width,
+           height=height,
+           useDingbats=FALSE)
+}
+
+save(p.noshard.has.hit, "gu-pairing-frac-hit", 8, 8)
+save(p.noshard.num.results, "gu-pairing-num-results", 8, 8)
+save(p.noshard.nodes.visited, "gu-pairing-num-nodes-visited", 8, 8)
+save(p.noshard.runtime, "gu-pairing-runtime", 8, 8)
+save(p.all.has.hit, "sharding-approach-frac-hit", 8, 8)
+save(p.all.num.results, "sharding-approach-num-results", 8, 8)
+save(p.all.nodes.visited, "sharding-approach-num-nodes-visited", 8, 8)
+save(p.all.runtime, "sharding-approach-runtime", 8, 8)
