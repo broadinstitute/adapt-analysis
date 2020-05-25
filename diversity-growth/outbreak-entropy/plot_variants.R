@@ -75,6 +75,11 @@ added.variants <- added.variants[added.variants$freq.level == added.variants$fin
 # will correspond to the first date for each added variant
 added.variants <- added.variants[!duplicated(added.variants$pos),]
 
+# Print number of variants at the end
+print(paste("Total number of variants in Combined:", nrow(variants.only.last.date)))
+print(paste("Number of low frequency variants in Combined:", sum(variants.only.last.date$final.freq.level == "low")))
+print(paste("Number of high frequency variants in Combined:", sum(variants.only.last.date$final.freq.level == "high")))
+
 # Make a data frame to plot that combines added.variants with
 # variants.only.last.date
 variants.only.last.date$is.combined <- TRUE
@@ -128,7 +133,7 @@ p <- ggplot(plot.df, aes(x=pos, y=y.label)) +
                      size=1.5) +
         scale_y_discrete(limits = levels(plot.df$y.label)) +  # show dates on y-axis
         scale_color_manual(guide=FALSE, # no legend
-                           values=c("low"="#E1DAE3", "high"="#430053")) +   # two colors from viridis scale
+                           values=c("low"="#CCBAD1", "high"="#430053")) +   # two colors from viridis scale
         theme_pubr() +
         xlab("Genome") +
         ylab("Date")

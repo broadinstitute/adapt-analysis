@@ -1,0 +1,11 @@
+Loading required package: ggplot2
+Warning message:
+package ‘ggplot2’ was built under R version 3.6.3 
+Loading required package: viridis
+Loading required package: viridisLite
+Loading required package: ggpubr
+Warning message:
+package ‘ggpubr’ was built under R version 3.6.3 
+[1] "Total number of variants in Combined: 315"
+[1] "Number of low frequency variants in Combined: 271"
+[1] "Number of high frequency variants in Combined: 44"
