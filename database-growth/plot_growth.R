@@ -7,10 +7,11 @@ require(gridExtra)
 require(dplyr)
 require(viridis)
 require(scales)
+require(ggpubr)
 
 IN.TABLE <- "data/counts-cumulative.tsv.gz"
-OUT.GENOMES.PDF <- "plots/cumulative-growth.num-genomes.pdf"
-OUT.KMERS.PDF <- "plots/cumulative-growth.num-kmers.pdf"
+OUT.GENOMES.PDF.PREFIX <- "plots/cumulative-growth.num-genomes"
+OUT.KMERS.PDF.PREFIX <- "plots/cumulative-growth.num-kmers"
 
 
 # Read table and replace '_' in column names with '.'
@@ -19,15 +20,16 @@ counts <- read.table(gzfile(IN.TABLE), header=TRUE, sep="\t",
                      quote="\"")
 names(counts) <- gsub("_", ".", names(counts))
 
-# Only use 2005--2018
-counts <- counts[counts$year >= 2005 & counts$year <= 2018, ]
+# Only use 2005--2019
+counts <- counts[counts$year >= 2005 & counts$year <= 2019, ]
 
-make.plots <- function(cumulative.count.colname, out.pdf) {
+make.plots <- function(cumulative.count.colname, out.pdf.prefix, y.label) {
     # Make plots for number of genomes or number of k-mers.
     #
     # Args:
     #     count.colname: column name in counts giving the value to compute
-    #     out.pdf: path to output pdf
+    #     out.pdf.prefix: path to output pdf (prefix of filename)
+    #     y.label: y-axis label
 
     # Make a 'cumulative.count' column, copying cumulative.count.colname
     counts$cumulative.count <- counts[, cumulative.count.colname]
@@ -48,20 +50,20 @@ make.plots <- function(cumulative.count.colname, out.pdf) {
     p <- ggplot(counts.sum.over.taxa, aes(x=year, y=cumulative.count))
     p <- p + geom_area()
     p <- p + ggtitle("Cumulative counts - all")
-    p <- p + xlab("Year") + ylab("Total number")
-    p <- p + scale_x_continuous(breaks=c(2006,2008,2010,2012,2014,2016,2018))   # use more breaks on x-axis
+    p <- p + xlab("Year") + ylab(y.label)
+    p <- p + scale_x_continuous(breaks=c(2005,2007,2009,2011,2013,2015,2017,2019))   # use more breaks on x-axis
     p <- p + scale_y_continuous(labels=comma)   # don't use scientific notation on y-axis
-    p <- p + theme_bw()
+    p <- p + theme_pubr()
     p.all <- p
 
     # Make the same as above, without Influenza A/B and Rotavirus
     p <- ggplot(counts.sum.over.taxa.no.flu.or.rota, aes(x=year, y=cumulative.count))
     p <- p + geom_area()
     p <- p + ggtitle("Cumulative counts - without Influenza A/B or Rotavirus A")
-    p <- p + xlab("Year") + ylab("Total number")
-    p <- p + scale_x_continuous(breaks=c(2006,2008,2010,2012,2014,2016,2018))   # use more breaks on x-axis
+    p <- p + xlab("Year") + ylab(y.label)
+    p <- p + scale_x_continuous(breaks=c(2005,2007,2009,2011,2013,2015,2017,2019))   # use more breaks on x-axis
     p <- p + scale_y_continuous(labels=comma)   # don't use scientific notation on y-axis
-    p <- p + theme_bw()
+    p <- p + theme_pubr()
     p.no.flu.or.rota <- p
 
     # Plot geom_area of all counts, stacked by taxa
@@ -72,8 +74,8 @@ make.plots <- function(cumulative.count.colname, out.pdf) {
     p <- ggplot(counts.cp, aes(x=year, y=cumulative.count))
     p <- p + geom_area(aes(fill=taxid))
     p <- p + ggtitle("Cumulative counts - all")
-    p <- p + xlab("Year") + ylab("Total number")
-    p <- p + scale_x_continuous(breaks=c(2006,2008,2010,2012,2014,2016,2018))   # use more breaks on x-axis
+    p <- p + xlab("Year") + ylab(y.label)
+    p <- p + scale_x_continuous(breaks=c(2005,2007,2009,2011,2013,2015,2017,2019))   # use more breaks on x-axis
     p <- p + scale_y_continuous(labels=comma)   # don't use scientific notation on y-axis
     # If we use a regular scale, it will use a number of colors equal to the
     # number of taxid and gradually change between these, making it impossible
@@ -82,20 +84,17 @@ make.plots <- function(cumulative.count.colname, out.pdf) {
     colors <- magma(5)  # color scale from viridis package
     p <- p + scale_fill_manual(values=rep_len(colors, length(unique(counts$taxid))))
     p <- p + guides(fill=FALSE) # no legend
-    p <- p + theme_bw()
-    p <- p + theme(panel.grid.minor = element_blank())  # leave out minor grid lines
+    p <- p + theme_pubr()
     p.stacked <- p
 
-    # Save PDF
-    ggsave(out.pdf, arrangeGrob(p.all,
-                                p.no.flu.or.rota,
-                                p.stacked,
-                                ncol=1),
-           width=8, height=24, useDingbats=FALSE)
+    # Save PDFs
+    ggsave(paste0(out.pdf.prefix, ".all.pdf"), p.all, width=8, height=8, useDingbats=FALSE)
+    ggsave(paste0(out.pdf.prefix, ".no-flu-or-rota.pdf"), p.no.flu.or.rota, width=8, height=8, useDingbats=FALSE)
+    ggsave(paste0(out.pdf.prefix, ".stacked.pdf"), p.stacked, width=8, height=8, useDingbats=FALSE)
 
     # Delete the column created at the start
     counts$cumulative.count <- NULL
 }
 
-make.plots("cumulative.num.genomes", OUT.GENOMES.PDF)
-make.plots("cumulative.num.unique.kmers", OUT.KMERS.PDF)
+make.plots("cumulative.num.genomes", OUT.GENOMES.PDF.PREFIX, "Cumulative number of genomes")
+make.plots("cumulative.num.unique.kmers", OUT.KMERS.PDF.PREFIX, "Cumulative number of unique k-mers")
