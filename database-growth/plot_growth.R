@@ -88,9 +88,9 @@ make.plots <- function(cumulative.count.colname, out.pdf.prefix, y.label) {
     p.stacked <- p
 
     # Save PDFs
-    ggsave(paste0(out.pdf.prefix, ".all.pdf"), p.all, width=8, height=8, useDingbats=FALSE)
-    ggsave(paste0(out.pdf.prefix, ".no-flu-or-rota.pdf"), p.no.flu.or.rota, width=8, height=8, useDingbats=FALSE)
-    ggsave(paste0(out.pdf.prefix, ".stacked.pdf"), p.stacked, width=8, height=8, useDingbats=FALSE)
+    ggsave(paste0(out.pdf.prefix, ".all.pdf"), p.all, width=5, height=5, useDingbats=FALSE)
+    ggsave(paste0(out.pdf.prefix, ".no-flu-or-rota.pdf"), p.no.flu.or.rota, width=5, height=5, useDingbats=FALSE)
+    ggsave(paste0(out.pdf.prefix, ".stacked.pdf"), p.stacked, width=5, height=5, useDingbats=FALSE)
 
     # Delete the column created at the start
     counts$cumulative.count <- NULL
