@@ -15,15 +15,15 @@ class DesignTarget:
     """
 
     def __init__(self, target_start, target_end, guide_seqs,
-            left_primer_seqs, right_primer_seqs, cost):
+            left_primer_seqs, right_primer_seqs, objective_value):
         self.target_start = target_start
         self.target_end = target_end
         self.guide_seqs = tuple(sorted(guide_seqs))
         self.left_primer_seqs = tuple(sorted(left_primer_seqs))
         self.right_primer_seqs = tuple(sorted(right_primer_seqs))
-        self.cost = cost
+        self.objective_value = objective_value
 
-    def has_similar_endpoints(self, other, nearby_nt=20):
+    def has_similar_endpoints(self, other, nearby_nt=40):
         """
         Determine if this target is similar to another based on coordinates.
 
@@ -66,7 +66,7 @@ class Design:
 
     This stores the targets as a set (unordered). As a result, two designs
     can be equal if all their targets are equal, even if they are ordered
-    differently (e.g., different costs for each).
+    differently (e.g., different objective values for each).
     """
 
     def __init__(self, targets):
@@ -137,7 +137,7 @@ class Design:
         Args:
             fn: path to a TSV file giving targets
             num_targets: only construct a Design from the top num_targets
-                targets, as ordered by cost (if None, use all)
+                targets, as ordered by objective value (if None, use all)
 
         Returns:
             Design object
@@ -157,44 +157,44 @@ class Design:
                     cols = {}
                     for j in range(len(ls)):
                         cols[col_names[j]] = ls[j]
-                    rows += [(cols['cost'], cols['target-start'],
-                             cols['target-end'], cols)]
+                    rows += [cols]
 
-        # Sort rows by cost (first in the tuple); in case of ties, sort
-        # by target start and target end positions (second and third in
-        # the tuple)
+        # Assume the rows are already sorted, with the best objective value
+        # on top
+
         # Pull out the best N targets
-        rows = sorted(rows)
         if num_targets != None:
             if len(rows) < num_targets:
-                raise Exception(("The number of rows in a design (%d) is fewer "
-                    "than the number of targets to read (%d)") %
-                    (len(rows), num_targets))
+                # The number of rows in a design is fewer than the number of
+                # targts to read; skip this design
+                return None
             rows = rows[:num_targets]
 
         targets = []
         for row in rows:
-            _, _, _, cols = row
+            cols = row
             targets += [DesignTarget(
                 int(cols['target-start']),
                 int(cols['target-end']),
                 cols['guide-target-sequences'].split(' '),
                 cols['left-primer-target-sequences'].split(' '),
                 cols['right-primer-target-sequences'].split(' '),
-                float(cols['cost'])
+                float(cols['objective-value'])
             )]
 
         return Design(targets)
 
 
-def read_designs(design_tsvs, num_targets=None):
+def read_designs(design_tsvs, num_targets=None, min_num_designs=3):
     """Read a collection of designs.
 
     Args:
         design_tsvs: paths to one or more TSV files containing designs;
             can contain * or ** as wildcards
         num_targets: only construct a Design from the top num_targets
-            targets, as ordered by cost (if None, use all)
+            targets
+        min_num_designs: minimum number of designs to meet. If not met,
+            this raises an exception
 
     Returns:
         collection of Design objects
@@ -205,6 +205,15 @@ def read_designs(design_tsvs, num_targets=None):
         files = glob.glob(design_tsv)
         for fn in files:
             designs += [Design.from_file(fn, num_targets=num_targets)]
+
+    # Remove designs that could not be read (are None) because there
+    # were too few targets, and raise an exception if too few remain
+    designs = [d for d in designs if d is not None]
+
+    if len(designs) < min_num_designs:
+        raise Exception(("Too few designs remain after filtering those "
+            "that have too few targets"))
+
     return designs
 
 
@@ -391,7 +400,7 @@ def run_dispersion(args):
     print("Entropy:", entropy)
     print("Average pairwise Jaccard similarity within collection of designs:",
             statistics.mean(jaccard_similarities))
-    print(("Average pairwise Jaccard similarity between collections of "
+    print(("Average pairwise Jaccard similarity within collections of "
            "designs (loose/coordinate-based):"),
             statistics.mean(jaccard_similarities_loose))
 
@@ -430,7 +439,8 @@ def parse_args():
     common_parser.add_argument('--num-targets',
             type=int,
             default=10,
-            help=("Only read the top NUM_TARGETS targets (according to cost)"))
+            help=("Only read the top NUM_TARGETS targets (according to "
+                  "objective value)"))
 
     subparsers = parser.add_subparsers(
             title='commands',

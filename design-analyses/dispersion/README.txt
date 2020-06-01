@@ -21,3 +21,9 @@ Measuring coverage of resampled designs against all data:
 
 Make plots:
   4) `./make_plots.sh` to produce plots across all taxonomies
+
+
+Note that some taxonomies (e.g., Rhinovirus A -- 147711) do not produce enough targets (>=5)
+for enough designs, and thus they do not contain a summary dispersion file and the plot
+leaves them out. This is probably because they are too diverse and ADAPT requires that all
+targets (design options) are nonoverlapping.

@@ -5,27 +5,30 @@
 # Author: Hayden Metsky <hayden@mit.edu>
 
 
-# Allow activating conda environments
-source ~/anaconda3/etc/profile.d/conda.sh
+# Load environment, and variables, for ADAPT
+source ~/misc-repos/adapt-designs/scripts/run-adapt/custom-env/load_custom_env.sh
 
 # Set variables for measuring dispersion
-NUM_DESIGNS=100
+NUM_DESIGNS=20
+NJOBS=10
 
 # Set variables for design
-NJOBS=18
-PREP_MEMOIZE_DIR="/ebs/dgd-analysis/prep-memoize-dir"
-MAFFT_PATH="/home/hayden/viral-ngs/viral-ngs-etc/conda-env/bin/mafft"
 CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
 ARG_GL="28"
-ARG_GM="1"
-ARG_GP="0.99"
 ARG_PL="30"
 ARG_PM="3"
-ARG_PP="0.99"
+ARG_PP="0.98"
+ARG_PRIMER_GC_LO="0.35"
+ARG_PRIMER_GC_HI="0.65"
+ARG_SOFTGUIDECONSTRAINT="1"
+ARG_HARDGUIDECONSTRAINT="5"
+ARG_PENALTYSTRENGTH="0.25"
+ARG_MAXIMIZATIONALGORITHM="random-greedy"
 ARG_MAXPRIMERSATSITE="10"
-ARG_MAXTARGETLENGTH="1000"
-ARG_COSTFNWEIGHTS="0.6667 0.2222 0.1111"
+ARG_MAXTARGETLENGTH="500"
+ARG_OBJFNWEIGHTS="0.50 0.25"
 ARG_BESTNTARGETS="30"
+ARG_PREDICTIVE_MODELS="${PREDICTIVE_MODELS_PATH}/classify/model-51373185 ${PREDICTIVE_MODELS_PATH}/regress/model-f8b6fd5d"
 
 
 # Make tmp directory for memoizing alignments and stats
@@ -65,12 +68,12 @@ function run_for_taxid() {
         sleep $((RANDOM % 60))
 
         if [ ! -f $outdir/designs/resampled/design-${1}.tsv.0 ]; then
-            design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/resampled/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --sample-seqs $SAMPLE_SIZE --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/resampled/design-${1}.out
+            design.py complete-targets auto-from-args $taxid "$segment" $refaccs $outdir/designs/resampled/design-${1}.tsv --obj maximize-activity --soft-guide-constraint $ARG_SOFTGUIDECONSTRAINT --hard-guide-constraint $ARG_HARDGUIDECONSTRAINT --penalty-strength $ARG_PENALTYSTRENGTH --maximization-algorithm $ARG_MAXIMIZATIONALGORITHM -gl $ARG_GL -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --primer-gc-content-bounds $ARG_PRIMER_GC_LO $ARG_PRIMER_GC_HI --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --obj-fn-weights $ARG_OBJFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --predict-activity-model-path $ARG_PREDICTIVE_MODELS --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --ncbi-api-key $NCBI_API_KEY --sample-seqs $SAMPLE_SIZE --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/resampled/design-${1}.out
         else
             echo "Resampled design for $taxid (segment: $segment), $1 of $NUM_DESIGNS, already exists; skipping" > /dev/tty
         fi
         if [ ! -f $outdir/designs/non-resampled/design-${1}.tsv.0 ]; then
-            design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/non-resampled/design-${1}.tsv -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --cost-fn-weights $ARG_COSTFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/non-resampled/design-${1}.out
+            design.py complete-targets auto-from-args $taxid "$segment" $refaccs $outdir/designs/non-resampled/design-${1}.tsv --obj maximize-activity --soft-guide-constraint $ARG_SOFTGUIDECONSTRAINT --hard-guide-constraint $ARG_HARDGUIDECONSTRAINT --penalty-strength $ARG_PENALTYSTRENGTH --maximization-algorithm $ARG_MAXIMIZATIONALGORITHM -gl $ARG_GL -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --primer-gc-content-bounds $ARG_PRIMER_GC_LO $ARG_PRIMER_GC_HI --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --obj-fn-weights $ARG_OBJFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --predict-activity-model-path $ARG_PREDICTIVE_MODELS --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --ncbi-api-key $NCBI_API_KEY --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --verbose &> $outdir/designs/non-resampled/design-${1}.out
         else
             echo "Non-resampled design for $taxid (segment: $segment), $1 of $NUM_DESIGNS, already exists; skipping" > /dev/tty
         fi
@@ -87,16 +90,22 @@ function run_for_taxid() {
     export MAFFT_PATH
     export SAMPLE_SIZE
     export CLUSTER_THRESHOLD
+    export NCBI_API_KEY
     export ARG_GL
-    export ARG_GM
-    export ARG_GP
     export ARG_PL
     export ARG_PM
     export ARG_PP
+    export ARG_PRIMER_GC_LO
+    export ARG_PRIMER_GC_HI
+    export ARG_SOFTGUIDECONSTRAINT
+    export ARG_HARDGUIDECONSTRAINT
+    export ARG_PENALTYSTRENGTH
+    export ARG_MAXIMIZATIONALGORITHM
     export ARG_MAXPRIMERSATSITE
     export ARG_MAXTARGETLENGTH
-    export ARG_COSTFNWEIGHTS
+    export ARG_OBJFNWEIGHTS
     export ARG_BESTNTARGETS
+    export ARG_PREDICTIVE_MODELS
     export -f design
 
     # Run parallel
@@ -112,17 +121,26 @@ run_for_taxid "64320" "None" "NC_035889,NC_012532"
 # Run for Lassa virus, S segment
 run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
 
+# Run for Lassa virus, L segment
+run_for_taxid "11620" "L" "U73034"
+
 # Run for Ebola virus (Zaire)
-run_for_taxid "186538" "None" "NC_002549"
+#run_for_taxid "186538" "None" "NC_002549"
 
 # Run for Nipah virus
-run_for_taxid "121791" "None" "NC_002728"
+#run_for_taxid "121791" "None" "NC_002728"
 
 # Run for HIV-1
 run_for_taxid "11676" "None" "NC_001802"
 
 # Run for HCV
-# Skip this, which needs more relaxed parameters than the other species
-# to produce a sufficient number of targets to measure dispersion
-# (given the parameters, most samplings will only produce ~5 targets)
 #run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
+
+# Run for IAV segment 2
+run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372"
+
+# Run for Rhinovirus A
+run_for_taxid "147711" "None" "NC_038311,NC_001617,NC_038311"
+
+# Run for Enterovirus A
+run_for_taxid "138948" "None" "NC_038306,NC_001612,NC_038306"

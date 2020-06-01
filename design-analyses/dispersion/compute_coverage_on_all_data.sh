@@ -9,6 +9,11 @@
 # Author: Hayden Metsky <hayden@mit.edu>
 
 
+# This script has not been updated since 2019
+echo "DEPRECATED: I have not used this script in the recent analyses. It would need to be updated -- for example, changing how analyze_coverage.py is called to use a predictive model for determining coverage."
+exit 1
+
+
 # Allow activating conda environments
 source ~/anaconda3/etc/profile.d/conda.sh
 
