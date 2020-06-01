@@ -92,17 +92,20 @@ make.plot <- function(args) {
         facet_grid(hard.guide.constraint ~ soft.guide.constraint,
                    scales="free_y",
                    labeller=labeller(soft.guide.constraint=soft.guide.constraint.labs, hard.guide.constraint=hard.guide.constraint.labs)) +
-        xlab("Algorithm") + ylab("Objective value") +
+        xlab("") + ylab("Objective value") +
         theme_pubr() +
         ggtitle(paste0(t, ", lambda=", ps)) +
         rotate_x_text(angle=45) +
-        scale_color_viridis(discrete=TRUE)
+        scale_color_viridis(discrete=TRUE) +
+        theme(axis.text.x = element_blank(), # remove x-axis labels; not needed because algorithm is already colored
+              axis.ticks.x = element_blank()) +
+        scale_y_continuous(labels=function(x) sprintf("%.2f", x))   # only show 2 decimal replaces
     return(p)
 }
 
-pl <- map(list(c("sars-related-cov", 0.1), c("sars-related-cov", 0.5), c("rhinovirus-a", 0.1), c("rhinovirus-a", 0.5)), make.plot)
-g <- ggarrange(plotlist=pl, nrow=2, ncol=2, common.legend=TRUE)
-ggsave(OUT.PDF, g, device="pdf", width=16, height=16, useDingbats=FALSE)
+pl <- map(list(c("sars-related-cov", 0.1), c("sars-related-cov", 0.5), c("rhinovirus-a", 0.1), c("rhinovirus-a", 0.5), c("lassa-S", 0.1), c("lassa-S", 0.5)), make.plot)
+g <- ggarrange(plotlist=pl, nrow=3, ncol=2, common.legend=TRUE)
+ggsave(OUT.PDF, g, device="pdf", width=12, height=16, useDingbats=FALSE)
 
 # Remove the empty Rplots.pdf created above
 file.remove("Rplots.pdf")
