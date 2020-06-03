@@ -16,10 +16,12 @@ library(ggpubr)
 
 # Manually specify taxonomies
 TAXONOMIES <- c("tax-64320_None",
+                "tax-186538_None",
                 "tax-11320_2",
                 "tax-11620_S",
                 "tax-138948_None")
 TAXONOMY.NAMES <- c("Zika",
+                    "Ebola",
                     "IAV",
                     "Lassa",
                     "Enterovirus A")
@@ -55,11 +57,12 @@ plot.violin <- function(filename, title) {
     p <- p + geom_violin(trim=TRUE,
                          scale="width",
                          adjust=2,
-                         fill="lightgray")
+                         fill="black",
+                         alpha=0.5)
 
     # Add a bar with the mean +/- 1 std deviation (1 because mult=1)
     p <- p + stat_summary(fun.data="mean_sdl", fun.args=list(mult=1),
-                          geom="pointrange", color="darkgray")
+                          geom="pointrange", color="black")
 
     p <- p + xlab("Species") + ylab("Pairwise Jaccard similarity")
 

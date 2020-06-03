@@ -10,7 +10,7 @@ source ~/misc-repos/adapt-designs/scripts/run-adapt/custom-env/load_custom_env.s
 
 # Set variables for measuring dispersion
 NUM_DESIGNS=20
-NJOBS=10
+NJOBS=20
 
 # Set variables for design
 CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
@@ -125,7 +125,7 @@ run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
 run_for_taxid "11620" "L" "U73034"
 
 # Run for Ebola virus (Zaire)
-#run_for_taxid "186538" "None" "NC_002549"
+run_for_taxid "186538" "None" "NC_002549"
 
 # Run for Nipah virus
 #run_for_taxid "121791" "None" "NC_002728"

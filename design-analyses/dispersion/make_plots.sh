@@ -8,5 +8,5 @@ source ~/anaconda3/etc/profile.d/conda.sh
 
 conda activate data-analysis
 
-Rscript plot.R plots/dispersion.all-taxonomies.pdf
-rm Rplots.pdf
+Rscript plot.R plots/
+rm -f Rplots.pdf
