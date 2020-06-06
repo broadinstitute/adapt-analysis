@@ -130,7 +130,7 @@ p <- ggplot(plot.df, aes(x=pos, y=y.label)) +
         geom_segment(aes(xend=pos,
                          y=as.numeric(y.label)-0.35, yend=as.numeric(y.label)+0.35,
                          color=freq.level),
-                     size=1.5) +
+                     size=1.0) +
         scale_y_discrete(limits = levels(plot.df$y.label)) +  # show dates on y-axis
         scale_color_manual(guide=FALSE, # no legend
                            values=c("low"="#CCBAD1", "high"="#430053")) +   # two colors from viridis scale
@@ -138,4 +138,4 @@ p <- ggplot(plot.df, aes(x=pos, y=y.label)) +
         xlab("Genome") +
         ylab("Date")
 
-ggsave(OUT.PDF, p, device="pdf", width=16, height=8, useDingbats=FALSE)
+ggsave(OUT.PDF, p, device="pdf", width=6, height=4, useDingbats=FALSE)
