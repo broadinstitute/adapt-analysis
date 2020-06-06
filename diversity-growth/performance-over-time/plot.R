@@ -194,4 +194,4 @@ plot.coverage.per.design.per.year <- function(data.path) {
 }
 
 p <- plot.coverage.per.design.per.year(in.tsv)
-ggsave(out.pdf, p, width=16, height=4, useDingbats=FALSE)
+ggsave(out.pdf, p, width=11.5, height=4, useDingbats=FALSE)
