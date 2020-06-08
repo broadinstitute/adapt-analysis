@@ -128,7 +128,7 @@ run_for_taxid "11620" "L" "U73034"
 run_for_taxid "186538" "None" "NC_002549"
 
 # Run for Nipah virus
-#run_for_taxid "121791" "None" "NC_002728"
+run_for_taxid "121791" "None" "NC_002728"
 
 # Run for HIV-1
 run_for_taxid "11676" "None" "NC_001802"

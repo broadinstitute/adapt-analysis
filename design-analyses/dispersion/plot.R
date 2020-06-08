@@ -16,11 +16,13 @@ library(ggpubr)
 
 # Manually specify taxonomies
 TAXONOMIES <- c("tax-64320_None",
+                "tax-121791_None",
                 "tax-186538_None",
                 "tax-11320_2",
                 "tax-11620_S",
                 "tax-138948_None")
 TAXONOMY.NAMES <- c("Zika",
+                    "Nipah",
                     "Ebola",
                     "IAV",
                     "Lassa",
