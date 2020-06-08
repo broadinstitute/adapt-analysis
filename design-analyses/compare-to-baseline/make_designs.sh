@@ -13,8 +13,8 @@
 # Author: Hayden Metsky <hayden@mit.edu>
 
 
-# Load environment, and variables, for ADAPT
-source ~/misc-repos/adapt-designs/scripts/run-adapt/custom-env/load_custom_env.sh
+# Allow activating conda environments
+source ~/anaconda3/etc/profile.d/conda.sh
 
 # Set variables for measuring uncertainty
 NUM_DESIGNS=5
@@ -37,6 +37,13 @@ ARG_GP="0.99"
 ARG_MAXIMIZATIONALGORITHM="random-greedy"
 ARG_PENALTYSTRENGTH="0"
 
+# Set tmp directory
+if [ -d "/ebs/tmpfs/tmp" ]; then
+    export TMPDIR="/ebs/tmpfs/tmp"
+else
+    export TMPDIR="/tmp"
+fi
+
 # Write commands to a file
 commands_fn=$(mktemp)
 echo -n "" > $commands_fn
@@ -46,6 +53,7 @@ function run_for_taxid() {
     taxid="$1"
     segment="$2"
     refaccs="$3"
+    alnref="$4"
 
     echo "Creating commands for taxid $taxid (segment: $segment)" > /dev/tty
 
@@ -55,6 +63,7 @@ function run_for_taxid() {
     mkdir -p $outdir/input-alns
     mkdir -p $outdir/designs
 
+    # Load adapt environment
     conda activate adapt
 
     # Fetch accessions and create table of them
@@ -62,18 +71,36 @@ function run_for_taxid() {
         python ../scripts/find_year_for_accessions.py $taxid $segment | awk -v taxid="$taxid" -v segment="$segment" '{print taxid"\t"segment"\t"$1}' | sort | uniq > $outdir/accessions.tsv
     fi
 
-    # Run design.py to create an alignment from all the sequences; continue with
-    # the sliding-window design approach (using a window size equal to guide size
-    # so it's fast), but ignore the output
+    # Create an alignment against a reference using mafft --addfragments --keeplength; this
+    # creates a more clean MSA without many gaps, but does remove sequence from genomes
+    # if they are insertions relative to the reference
     # Only do so if an alignment does not already exist
     if [ ! -f $outdir/input-alns/all-accessions.fasta ]; then
-        design.py sliding-window auto-from-args $taxid $segment $refaccs /tmp/design-for-aln.tsv --window-size $ARG_GL -gl $ARG_GL -gm $ARG_GM -gp $ARG_GP --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/accessions.tsv --write-input-aln $outdir/input-alns/all-accessions.fasta --verbose &> $outdir/input-alns/all-accessions.out
-        rm /tmp/design-for-aln.tsv.*
-        # An output alignment will have a `.0` suffix because it corresponds to the
-        # first cluster; rename it to remove the suffix and delete all other clusters
-        # (i.e., only use the first, which is the largest)
-        mv $outdir/input-alns/all-accessions.fasta.0 $outdir/input-alns/all-accessions.fasta
-        rm -f $outdir/input-alns/all-accessions.fasta.*
+        # Split accessions into file with only $alnref and file without $alnref
+        accessions_alnref=$(mktemp)
+        echo "$alnref" > $accessions_alnref
+        accessions_other=$(mktemp)
+        cat $outdir/accessions.tsv | awk -v alnref="$alnref" '$3 != alnref {print $3}' > $accessions_other
+
+        # Download FASTA for the above accession files
+        fasta_alnref=$(mktemp)
+        fasta_other=$(mktemp)
+        python ../scripts/download_fasta_for_accessions.py $accessions_alnref > $fasta_alnref
+        python ../scripts/download_fasta_for_accessions.py $accessions_other > $fasta_other
+
+        # Load environment with mafft
+        conda activate misc-bioinformatic-tools
+
+        # Align with mafft
+        mafft --preservecase --auto --keeplength --addfragments $fasta_other $fasta_alnref > $outdir/input-alns/all-accessions.fasta 2> $outdir/input-alns/all-accessions.out
+
+        # Reload adapt
+        conda activate adapt
+
+        rm $accessions_alnref
+        rm $accessions_other
+        rm $fasta_alnref
+        rm $fasta_other
     fi
 
     # Randomly sample a number of sequences equal to the number
@@ -94,62 +121,72 @@ function run_for_taxid() {
     # Produce a design.py command for each design, using the alignment
     # produced above, with the minimize-guides objective
     for i in $(seq 1 $NUM_DESIGNS); do
-        echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.minimize-guides.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL --obj minimize-guides -gm $ARG_GM -gp $ARG_GP --verbose &> $outdir/designs/design-${i}.real-design.minimize-guides.out" >> $commands_fn
+        if [ ! -f $outdir/designs/design-${i}.real-design.minimize-guides.tsv ]; then
+            echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.minimize-guides.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL --obj minimize-guides -gm $ARG_GM -gp $ARG_GP --verbose &> $outdir/designs/design-${i}.real-design.minimize-guides.out" >> $commands_fn
+        fi
     done
 
     # Do the same with the maximize-activity objective and different hard guide
     # constraints
     for i in $(seq 1 $NUM_DESIGNS); do
         for hgc in 1 2 3 4 5; do
-            echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.maximize-activity.hgc-${hgc}.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL --obj maximize-activity -gm $ARG_GM --hard-guide-constraint $hgc --use-simple-binary-activity-prediction --maximization-algorithm $ARG_MAXIMIZATIONALGORITHM --penalty-strength $ARG_PENALTYSTRENGTH --verbose &> $outdir/designs/design-${i}.real-design.maximize-activity.hgc-${hgc}.out" >> $commands_fn
+            if [ ! -f $outdir/designs/design-${i}.real-design.maximize-activity.hgc-${hgc}.tsv ]; then
+                echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.maximize-activity.hgc-${hgc}.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL --obj maximize-activity -gm $ARG_GM --hard-guide-constraint $hgc --use-simple-binary-activity-prediction --maximization-algorithm $ARG_MAXIMIZATIONALGORITHM --penalty-strength $ARG_PENALTYSTRENGTH --verbose &> $outdir/designs/design-${i}.real-design.maximize-activity.hgc-${hgc}.out" >> $commands_fn
+            fi
         done
     done
 
     # Produce a design_naively.py command for each design, using the
     # alignment produced above
     for i in $(seq 1 $NUM_DESIGNS); do
-        echo "design_naively.py $outdir/input-alns/design-${i}.fasta $outdir/designs/design-${i}.naive-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM --verbose &> $outdir/designs/design-${i}.naive-design.out" >> $commands_fn
+        if [ ! -f $outdir/designs/design-${i}.naive-design.tsv ]; then
+            echo "design_naively.py $outdir/input-alns/design-${i}.fasta $outdir/designs/design-${i}.naive-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM --verbose &> $outdir/designs/design-${i}.naive-design.out" >> $commands_fn
+        fi
     done
 }
 
 
 # Run for Zika virus
-run_for_taxid "64320" "None" "NC_035889,NC_012532"
+run_for_taxid "64320" "None" "NC_035889,NC_012532" "AY632535"
 
 # Run for Lassa virus, S segment
-run_for_taxid "11620" "S" "KM821998,GU481072,KM821773"
+run_for_taxid "11620" "S" "KM821998,GU481072,KM821773" "KM821998"
 
 # Run for Lassa virus, L segment
-run_for_taxid "11620" "L" "U73034"
+run_for_taxid "11620" "L" "U73034" "U73034"
 
 # Run for Ebola virus (Zaire)
 #run_for_taxid "186538" "None" "NC_002549"
 
 # Run for Nipah virus
-#run_for_taxid "121791" "None" "NC_002728"
+run_for_taxid "121791" "None" "NC_002728" "AF212302"
 
 # Run for HIV-1
-run_for_taxid "11676" "None" "NC_001802"
+run_for_taxid "11676" "None" "NC_001802" "AF033819"
 
 # Run for HCV
-run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
+run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823" "AF011751"
 
 # Run for IAV segment 2
-run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372"
+run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372" "GQ323558"
 
 # Run for human coronavirus 229E
 #run_for_taxid "11137" "None" "NC_028752"
 
 # Run for Rhinovirus A, B, C
-run_for_taxid "147711" "None" "NC_038311,NC_001617,NC_038311"
-run_for_taxid "147712" "None" "NC_038312"
-run_for_taxid "463676" "None" "NC_038878"
+run_for_taxid "147711" "None" "NC_038311,NC_001617,NC_038311" "FJ445111"
+run_for_taxid "147712" "None" "NC_038312" "DQ473485"
+run_for_taxid "463676" "None" "NC_038878" "EF077279"
 
 # Run for Enterovirus A, B, C, D
-run_for_taxid "138948" "None" "NC_038306,NC_001612,NC_038306"
-run_for_taxid "138949" "None" "NC_001472,NC_038307,NC_038307,NC_001472"
-run_for_taxid "138950" "None" "NC_002058"
-run_for_taxid "138951" "None" "NC_038308,NC_001430"
+run_for_taxid "138948" "None" "NC_038306,NC_001612,NC_038306" "AY421760"
+run_for_taxid "138949" "None" "NC_001472,NC_038307,NC_038307,NC_001472" "M88483"
+run_for_taxid "138950" "None" "NC_002058" "V01149"
+run_for_taxid "138951" "None" "NC_038308,NC_001430" "D00820"
+
+
+# Load environment, and variables, for ADAPT
+source ~/misc-repos/adapt-designs/scripts/run-adapt/custom-env/load_custom_env.sh
 
 # Run parallel on the commands
 echo "Running all commands.."

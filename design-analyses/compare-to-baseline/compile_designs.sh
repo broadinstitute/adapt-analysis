@@ -61,6 +61,7 @@ function compile_for_taxid() {
 compile_for_taxid "64320" "None"
 compile_for_taxid "11620" "S"
 compile_for_taxid "11620" "L"
+compile_for_taxid "121791" "None"
 compile_for_taxid "11676" "None"
 compile_for_taxid "11103" "None"
 compile_for_taxid "11320" "2"

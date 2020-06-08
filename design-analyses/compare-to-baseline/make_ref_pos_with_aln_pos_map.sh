@@ -26,6 +26,7 @@ function make_for_taxid() {
 make_for_taxid "64320" "None" "AY632535"
 make_for_taxid "11620" "S" "KM821998"
 make_for_taxid "11620" "L" "U73034"
+make_for_taxid "121791" "None" "AF212302"
 make_for_taxid "11676" "None" "AF033819"
 make_for_taxid "11103" "None" "AF011751"
 make_for_taxid "11320" "2" "GQ323558"
