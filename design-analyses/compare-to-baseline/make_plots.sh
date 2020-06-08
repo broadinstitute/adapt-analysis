@@ -12,12 +12,13 @@ function plot_for_taxid() {
     taxid="$1"
     segment="$2"
 
-    Rscript plot.R tax-${taxid}_${segment} plots/tax-${taxid}_${segment}.pdf
+    Rscript plot.R tax-${taxid}_${segment} plots
 }
 
 plot_for_taxid "64320" "None"
 plot_for_taxid "11620" "S"
 plot_for_taxid "11620" "L"
+plot_for_taxid "121791" "None"
 plot_for_taxid "11676" "None"
 plot_for_taxid "11103" "None"
 plot_for_taxid "11320" "2"

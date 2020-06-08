@@ -11,7 +11,7 @@
 #
 # Args:
 #  1: name of taxonomy (must be directory)
-#  2: path to output PDF
+#  2: path to output directory in which to place PDFs
 #
 # By Hayden Metsky <hayden@mit.edu>
 
@@ -22,11 +22,12 @@ library(grid)
 library(tidyr)
 library(viridis)
 library(ggpubr)
+library(plyr)
 
 
 args <- commandArgs(trailingOnly=TRUE)
 in.taxonomy <- args[1]
-out.pdf <- args[2]
+out.dir <- args[2]
 
 ## A helper function from:
 ##   http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/#Helper%20functions
@@ -159,8 +160,8 @@ plot.results.for.taxonomy <- function(taxonomy) {
     naive.dist.summary$approach <- factor(naive.dist.summary$approach)
 
     # For the real design max-activity data, only show where the number of
-    # guides (hgc -- i.e., hard guide constraint) is 1 or 2
-    real.max.dist.summary <- real.max.dist.summary[real.max.dist.summary$hgc %in% c(1,2),]
+    # guides (hgc -- i.e., hard guide constraint) is 1 or 2 or 3
+    real.max.dist.summary <- real.max.dist.summary[real.max.dist.summary$hgc %in% c(1,2,3),]
 
     # Combine naive.dist.summary with real.max.dist.summary -- both report
     # coverages (frac.bound)
@@ -175,10 +176,10 @@ plot.results.for.taxonomy <- function(taxonomy) {
     real.min.dist.summary$mean[which(real.min.dist.summary$N < 5)] <- NA
 
     # Remove windows too close to the start or end of the alignment (within
-    # 300 nt) -- because genomes are of different lengths, there are large
+    # 50 nt) -- because genomes are of different lengths, there are large
     # drops in coverage at the ends
     aln.end <- max(frac.bounds.summary$window.end)
-    len.tol <- 300
+    len.tol <- 50
     frac.bounds.summary <- frac.bounds.summary[frac.bounds.summary$window.start >= 0 + len.tol,]
     frac.bounds.summary <- frac.bounds.summary[frac.bounds.summary$window.end < aln.end - len.tol,]
     real.min.dist.summary <- real.min.dist.summary[real.min.dist.summary$window.start >= 0 + len.tol,]
@@ -194,13 +195,21 @@ plot.results.for.taxonomy <- function(taxonomy) {
     frac.bounds.summary <- merge(frac.bounds.summary, ref.pos.map, by="aln.pos")
     real.min.dist.summary <- merge(real.min.dist.summary, ref.pos.map, by="aln.pos")
 
+    # Rename approaches to display
+    frac.bounds.summary$approach.display <- mapvalues(frac.bounds.summary$approach,
+        from=c("naive.consensus.frac.bound", "naive.mode.frac.bound", "real.max.activity.frac.bound.hgc-1", "real.max.activity.frac.bound.hgc-2", "real.max.activity.frac.bound.hgc-3"),
+        to=c("Consensus", "Mode", "ADAPT, 1 probe", "ADAPT, 2 probes", "ADAPT, 3 probes"))
+    real.min.dist.summary$approach.display <- mapvalues(real.min.dist.summary$approach,
+        from=c("real.min.guide.count"),
+        to=c("Minimize probes"))
+
     # First produce a plot for the naive and real.max-activity designs, showing the fraction
     # of genomes covered at each window
     # Produce plot where x-axis shows the reference position of the middle of
     # the window
     p1 <- ggplot(frac.bounds.summary, aes(x=ref.pos))
     # Plot mean values as a line
-    p1 <- p1 + geom_line(aes(y=mean, color=approach), size=1.5)
+    p1 <- p1 + geom_line(aes(y=mean, color=approach.display), size=1.0)
     # Can use geom_errorbar(..) to show error bars at each plotted
     # x-value; alternatively, geom_ribbon(..) to show a continuous
     # interval (i.e., confidence band) around each line. Note that
@@ -208,7 +217,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
     # confidence band.
     p1 <- p1 + geom_ribbon(aes(ymin=mean-ci,
                                ymax=mean+ci,
-                               fill=approach), alpha=0.2)
+                               fill=approach.display), alpha=0.2)
     # Manually set the y-axis limits to avoid outliers in the confidence
     # intervals (the ribbon); these outliers may not show on the plot
     # (use the outlier definition of any point <(Qlo - 1.5*IQR) or
@@ -225,8 +234,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
                     p1.y.Qhi + 1.5*(p1.y.Qhi - p1.y.Qlo))
     p1 <- p1 + scale_y_continuous(limits=c(p1.y.min, p1.y.max))
     # Add title to plot and axis labels
-    p1 <- p1 + ggtitle(taxonomy)
-    p1 <- p1 + xlab("Position") + ylab("Coverage against sequences (%)")
+    p1 <- p1 + xlab("Genome position") + ylab("Detected sequences (%)")
     p1 <- p1 + theme_pubr()
 
     # Second, produce a plot for the real.min-guides design, showing the
@@ -235,7 +243,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
     # the window
     p2 <- ggplot(real.min.dist.summary, aes(x=ref.pos))
     # Plot mean values as points
-    p2 <- p2 + geom_line(aes(y=mean, color=approach), size=1.5)
+    p2 <- p2 + geom_line(aes(y=mean, color=approach.display), size=1.0)
     # Can use geom_errorbar(..) to show error bars at each plotted
     # x-value; alternatively, geom_ribbon(..) to show a continuous
     # interval (i.e., confidence band) around each line. Note that
@@ -243,7 +251,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
     # confidence band.
     p2 <- p2 + geom_ribbon(aes(ymin=mean-ci,
                                ymax=mean+ci,
-                               fill=approach), alpha=0.2)
+                               fill=approach.display), alpha=0.3)
     # Manually set the y-axis limits to avoid outliers in the confidence
     # intervals (the ribbon); these outliers may not show on the plot
     p2.y.Qlo <- quantile(real.min.dist.summary$mean - real.min.dist.summary$ci,
@@ -257,7 +265,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
     p2.y.min <- min(0, p2.y.min)    # make sure to show y=0 guides
     p2 <- p2 + scale_y_continuous(limits=c(p2.y.min, p2.y.max))
     # Add axis labels
-    p2 <- p2 + xlab("Position") + ylab("Number of guides")
+    p2 <- p2 + xlab("Genome position") + ylab("Number of guides")
     p2 <- p2 + theme_pubr()
 
     # Make sure p1 and p2 are on the same x-axis scale (same limit)
@@ -271,20 +279,34 @@ plot.results.for.taxonomy <- function(taxonomy) {
     p1 <- p1 + scale_x_continuous(limits=c(x.min, x.max))
     p2 <- p2 + scale_x_continuous(limits=c(x.min, x.max))
 
-    # Use viridis color map for both plots
-    p1 <- p1 + scale_color_viridis(discrete=TRUE)
-    p1 <- p1 + scale_fill_viridis(discrete=TRUE)
-    p2 <- p2 + scale_color_viridis(discrete=TRUE)
-    p2 <- p2 + scale_fill_viridis(discrete=TRUE)
+    # Use name="" to avoid legend title
+    # Use viridis color scheme, but specified manually to draw contrast between
+    # the naive designs and real designs
+    p1.cols <- c("Consensus"="#ECC18E",
+                 "Mode"="#9C3769",
+                 "ADAPT, 1 probe"="#40778B",
+                 "ADAPT, 2 probes"="#8FCD63",
+                 "ADAPT, 3 probes"="#FAE655")
+    p2.cols <- c("Minimize probes"="black")
+    p1 <- p1 + scale_color_manual(name="",
+                                  values=p1.cols)
+    p1 <- p1 + scale_fill_manual(name="",
+                                 values=p1.cols)
+    p2 <- p2 + scale_color_manual(name="",
+                                  values=p2.cols)
+    p2 <- p2 + scale_fill_manual(name="",
+                                 values=p2.cols)
 
-    # Place p1 on top of p2
-    g <- grid.arrange(p1, p2, ncol=1)
-    return(g)
+    # Do not show a legend for p2
+    p2 <- p2 + theme(legend.position="none")
+
+    r <- list(max.frac.bound=p1, min.num.guides=p2)
+    return(r)
 }
 
 
-g <- plot.results.for.taxonomy(in.taxonomy)
-ggsave(out.pdf, g, width=12, height=8, useDingbats=FALSE)
-
-# Remove Rplots.pdf file
-file.remove("Rplots.pdf")
+r <- plot.results.for.taxonomy(in.taxonomy)
+height <- 3
+width <- 2.4 * height
+ggsave(file.path(out.dir, paste0(in.taxonomy, ".max-frac-bound.pdf")), r$max.frac.bound, width=width, height=height, useDingbats=FALSE)
+ggsave(file.path(out.dir, paste0(in.taxonomy, ".min-num-guides.pdf")), r$min.num.guides, width=width, height=height, useDingbats=FALSE)
