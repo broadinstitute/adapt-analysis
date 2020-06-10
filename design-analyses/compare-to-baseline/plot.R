@@ -27,7 +27,8 @@ library(plyr)
 
 args <- commandArgs(trailingOnly=TRUE)
 in.taxonomy <- args[1]
-out.dir <- args[2]
+taxonomy.name <- args[2]
+out.dir <- args[3]
 
 ## A helper function from:
 ##   http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2)/#Helper%20functions
@@ -176,10 +177,10 @@ plot.results.for.taxonomy <- function(taxonomy) {
     real.min.dist.summary$mean[which(real.min.dist.summary$N < 5)] <- NA
 
     # Remove windows too close to the start or end of the alignment (within
-    # 50 nt) -- because genomes are of different lengths, there are large
+    # 10 nt) -- because genomes are of different lengths, there may be large
     # drops in coverage at the ends
     aln.end <- max(frac.bounds.summary$window.end)
-    len.tol <- 50
+    len.tol <- 10
     frac.bounds.summary <- frac.bounds.summary[frac.bounds.summary$window.start >= 0 + len.tol,]
     frac.bounds.summary <- frac.bounds.summary[frac.bounds.summary$window.end < aln.end - len.tol,]
     real.min.dist.summary <- real.min.dist.summary[real.min.dist.summary$window.start >= 0 + len.tol,]
@@ -232,9 +233,16 @@ plot.results.for.taxonomy <- function(taxonomy) {
                     p1.y.Qlo - 1.5*(p1.y.Qhi - p1.y.Qlo))
     p1.y.max <- min(max(frac.bounds.summary$mean + frac.bounds.summary$ci),
                     p1.y.Qhi + 1.5*(p1.y.Qhi - p1.y.Qlo))
-    p1 <- p1 + scale_y_continuous(limits=c(p1.y.min, p1.y.max))
+    if (in.taxonomy %in% c("tax-11620_S", "tax-138948_None")) {
+        # In main text figure; manually make clean axis breaks
+        p1 <- p1 + scale_y_continuous(limits=c(p1.y.min, p1.y.max),
+                                      breaks=c(40, 60, 80, 100))
+    } else {
+        p1 <- p1 + scale_y_continuous(limits=c(p1.y.min, p1.y.max))
+    }
     # Add title to plot and axis labels
     p1 <- p1 + xlab("Genome position") + ylab("Detected sequences (%)")
+    p1 <- p1 + ggtitle(taxonomy.name)
     p1 <- p1 + theme_pubr()
 
     # Second, produce a plot for the real.min-guides design, showing the
@@ -265,7 +273,8 @@ plot.results.for.taxonomy <- function(taxonomy) {
     p2.y.min <- min(0, p2.y.min)    # make sure to show y=0 guides
     p2 <- p2 + scale_y_continuous(limits=c(p2.y.min, p2.y.max))
     # Add axis labels
-    p2 <- p2 + xlab("Genome position") + ylab("Number of guides")
+    p2 <- p2 + xlab("Genome position") + ylab("Number of probes")
+    p2 <- p2 + ggtitle(taxonomy.name)
     p2 <- p2 + theme_pubr()
 
     # Make sure p1 and p2 are on the same x-axis scale (same limit)
@@ -282,10 +291,10 @@ plot.results.for.taxonomy <- function(taxonomy) {
     # Use name="" to avoid legend title
     # Use viridis color scheme, but specified manually to draw contrast between
     # the naive designs and real designs
-    p1.cols <- c("Consensus"="#ECC18E",
-                 "Mode"="#9C3769",
-                 "ADAPT, 1 probe"="#40778B",
-                 "ADAPT, 2 probes"="#8FCD63",
+    p1.cols <- c("Consensus"="#430053",
+                 "Mode"="#3D5683",
+                 "ADAPT, 1 probe"="#46BA79",
+                 "ADAPT, 2 probes"="#90D948",
                  "ADAPT, 3 probes"="#FAE655")
     p2.cols <- c("Minimize probes"="black")
     p1 <- p1 + scale_color_manual(name="",
@@ -306,7 +315,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
 
 
 r <- plot.results.for.taxonomy(in.taxonomy)
-height <- 3
+height <- 3.2
 width <- 2.4 * height
 ggsave(file.path(out.dir, paste0(in.taxonomy, ".max-frac-bound.pdf")), r$max.frac.bound, width=width, height=height, useDingbats=FALSE)
 ggsave(file.path(out.dir, paste0(in.taxonomy, ".min-num-guides.pdf")), r$min.num.guides, width=width, height=height, useDingbats=FALSE)
