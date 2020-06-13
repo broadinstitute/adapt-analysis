@@ -66,6 +66,10 @@ plot.violin <- function(filename, title) {
     p <- p + stat_summary(fun.data="mean_sdl", fun.args=list(mult=1),
                           geom="pointrange", color="black")
 
+    # Show full range of possible values
+    # Go <0 to allow for the bar to show
+    p <- p + ylim(-0.1, 1)
+
     p <- p + xlab("Species") + ylab("Pairwise Jaccard similarity")
 
     p <- p + theme_pubr()
