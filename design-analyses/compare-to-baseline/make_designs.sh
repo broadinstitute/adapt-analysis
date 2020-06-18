@@ -169,7 +169,7 @@ run_for_taxid "11676" "None" "NC_001802" "AF033819"
 run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823" "AF011751"
 
 # Run for IAV segment 2
-run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372" "GQ323558"
+#run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372" "GQ323558"
 
 # Run for human coronavirus 229E
 #run_for_taxid "11137" "None" "NC_028752"

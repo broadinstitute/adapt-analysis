@@ -23,8 +23,7 @@ args <- commandArgs(trailingOnly=TRUE)
 out.pdf <- args[1]
 
 # Make vectors for mapping tax to names
-taxs <- c("tax-11320_2",
-          "tax-11620_L",
+taxs <- c("tax-11620_L",
           "tax-11620_S",
           "tax-11676_None",
           "tax-121791_None",
@@ -32,8 +31,7 @@ taxs <- c("tax-11320_2",
           "tax-147711_None",
           "tax-186538_None",
           "tax-64320_None")
-tax.names <- c("IAV",
-               "LASV L",
+tax.names <- c("LASV L",
                "LASV S",
                "HIV-1",
                "NIPV",

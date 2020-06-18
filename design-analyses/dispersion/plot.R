@@ -15,18 +15,18 @@ library(ggpubr)
 
 
 # Manually specify taxonomies
-TAXONOMIES <- c("tax-64320_None",
-                "tax-121791_None",
-                "tax-186538_None",
-                "tax-11320_2",
+TAXONOMIES <- c("tax-11620_L",
                 "tax-11620_S",
-                "tax-138948_None")
-TAXONOMY.NAMES <- c("Zika",
-                    "Nipah",
-                    "Ebola",
-                    "IAV",
-                    "Lassa",
-                    "Enterovirus A")
+                "tax-121791_None",
+                "tax-138948_None",
+                "tax-186538_None",
+                "tax-64320_None")
+TAXONOMY.NAMES <- c("LASV L",
+                    "LASV S",
+                    "NIPV",
+                    "EVA",
+                    "EBOV",
+                    "ZIKV")
 
 
 args <- commandArgs(trailingOnly=TRUE)
