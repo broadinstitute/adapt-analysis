@@ -58,10 +58,10 @@ plot.violin <- function(filename, title) {
     # Replace '_' in column names with '.'
     names(dist) <- gsub("_", ".", names(dist))
 
-    # Sort by mean active fraction for each taxonomy (in reverse), so that
-    # taxa with the highest active fraction detected come first
-    dist.summarized <- ddply(dist, .(taxonomy), summarize, active=mean(active))
-    dist.summarized <- dist.summarized[order(-dist.summarized$active),] # '-' for descending
+    # Sort by mean highly active fraction for each taxonomy (in reverse), so that
+    # taxa with the highest highly active fraction detected come first
+    dist.summarized <- ddply(dist, .(taxonomy), summarize, highly.active=mean(highly.active))
+    dist.summarized <- dist.summarized[order(-dist.summarized$highly.active),] # '-' for descending
     tax.ordered <- dist.summarized$taxonomy
     dist$taxonomy <- factor(dist$taxonomy, levels=tax.ordered)
 
@@ -81,9 +81,7 @@ plot.violin <- function(filename, title) {
 
     # Specify an amount by which to space the active and highly.active
     # distributions
-    dodge_width <- 0.7
-
-    # TODO try pointrange instead of violin
+    dodge_width <- 0.4
 
     # Show a violin plot
     # Use scale="width" (instead of the default, scale="area") so
@@ -91,7 +89,7 @@ plot.violin <- function(filename, title) {
     p <- p + geom_violin(aes(fill=threshold),
                          #trim=TRUE,
                          scale="width",
-                         width=0.5, # shrink
+                         width=0.4, # shrink
                          adjust=1,
                          color=NA,  # no outline
                          position=position_dodge(width=dodge_width))
@@ -100,7 +98,7 @@ plot.violin <- function(filename, title) {
     p <- p + stat_summary(fun="mean",
                           geom="point",
                           shape=21,
-                          size=2,
+                          size=1,
                           fill="black",
                           show.legend=FALSE,    # do not include in legend
                           position=position_dodge(width=dodge_width))
@@ -131,4 +129,4 @@ p1 <- plot.violin("coverage-against-test.distribution.txt",
                   "Cross-validation")
 
 g <- grid.arrange(p1)
-ggsave(out.pdf, g, width=8, height=8, useDingbats=FALSE)
+ggsave(out.pdf, g, width=4, height=4, useDingbats=FALSE)
