@@ -37,7 +37,9 @@ def fetch_collection_dates(accessions, batch_size=100, reqs_per_sec=2):
 def main(args):
     # Fetch accessions for tax_id
     segment = None if args.segment == 'None' else args.segment
-    accessions = ncbi.fetch_neighbors_acc(args.tax_id, segment)
+    influenza = True if args.tax_id in [11320, 11520] else False
+    accessions = ncbi.fetch_neighbors_acc(args.tax_id, segment,
+            influenza=influenza)
 
     # Fetch collection dates
     collection_dates = fetch_collection_dates(accessions)
