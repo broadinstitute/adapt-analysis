@@ -34,12 +34,14 @@ function compile_for_taxid() {
 
     # Start a file with the distribution of designs for the real designs that minimize guides
     echo -n "" > $tax_dir/real-designs.min-guides.tsv
-    # Add the header to the file
-    head -n 1 $tax_dir/designs/design-1.real-design.minimize-guides.tsv >> $tax_dir/real-designs.min-guides.tsv
+    # Add the header to the file, and add column at end giving guide coverage (gp)
+    head -n 1 $tax_dir/designs/design-1.real-design.minimize-guides.gp-0.9.tsv | awk '{print $0"\tgp"}' >> $tax_dir/real-designs.min-guides.tsv
     # Add to the file the designs (for each window) from each resampling
-    for design_file in $(ls -1 $tax_dir/designs/design-*.real-design.minimize-guides.tsv); do
-        # Leave out the header when reading the file
-        tail -n +2 ${design_file} >> $tax_dir/real-designs.min-guides.tsv
+    for gp in 0.9 0.95 0.99; do
+        for design_file in $(ls -1 $tax_dir/designs/design-*.real-design.minimize-guides.gp-${gp}.tsv); do
+            # Leave out the header when reading the file, and add column with gp
+            tail -n +2 ${design_file} | awk -v gp="$gp" '{print $0"\t"gp}' >> $tax_dir/real-designs.min-guides.tsv
+        done
     done
 
     # Start a file with the distribution of designs for the naive designs

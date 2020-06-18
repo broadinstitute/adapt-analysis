@@ -28,9 +28,6 @@ ARG_WINDOWSIZE="200"
 ARG_GL="30"
 ARG_GM="1"
 
-# For minimize-guides
-ARG_GP="0.99"
-
 # For maximize-activity; note that this will use --use-simple-binary-activity-prediction
 # We will vary the hard guide constraint; set the penalty strength to 0 to ignore
 # the soft guide constraint
@@ -115,15 +112,19 @@ function run_for_taxid() {
     # separate alignment for each design where the coordinates could
     # differ across those alignments)
     for i in $(seq 1 $NUM_DESIGNS); do
-        python ../scripts/randomly_sample_fasta.py $outdir/input-alns/all-accessions.fasta $sample_size $outdir/input-alns/design-${i}.fasta
+        if [ ! -f $outdir/input-alns/design-${i}.fasta ]; then
+            python ../scripts/randomly_sample_fasta.py $outdir/input-alns/all-accessions.fasta $sample_size $outdir/input-alns/design-${i}.fasta
+        fi
     done
 
     # Produce a design.py command for each design, using the alignment
     # produced above, with the minimize-guides objective
     for i in $(seq 1 $NUM_DESIGNS); do
-        if [ ! -f $outdir/designs/design-${i}.real-design.minimize-guides.tsv ]; then
-            echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.minimize-guides.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL --obj minimize-guides -gm $ARG_GM -gp $ARG_GP --verbose &> $outdir/designs/design-${i}.real-design.minimize-guides.out" >> $commands_fn
-        fi
+        for gp in 0.9 0.95 0.99; do
+            if [ ! -f $outdir/designs/design-${i}.real-design.minimize-guides.gp-${gp}.tsv ]; then
+                echo "design.py sliding-window fasta $outdir/input-alns/design-${i}.fasta -o $outdir/designs/design-${i}.real-design.minimize-guides.gp-${gp}.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL --obj minimize-guides -gm $ARG_GM -gp $gp --verbose &> $outdir/designs/design-${i}.real-design.minimize-guides.gp-${gp}.out" >> $commands_fn
+            fi
+        done
     done
 
     # Do the same with the maximize-activity objective and different hard guide
