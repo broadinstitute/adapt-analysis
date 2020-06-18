@@ -113,12 +113,12 @@ plot.results.for.taxonomy <- function(taxonomy) {
     # replicates
     # Fill in the missing windows in real.*.dist
     window.size <- unique(real.max.dist$window.end - real.max.dist$window.start)[1]
-    real.max.dist <- complete(real.max.dist, window.start=full_seq(real.max.dist$window.start, 1))
-    real.max.dist <- as.data.frame(real.max.dist)
-    real.max.dist$window.end[which(is.na(real.max.dist$window.end))] <- real.max.dist$window.start[which(is.na(real.max.dist$window.end))] + window.size
-    real.min.dist <- complete(real.min.dist, window.start=full_seq(real.min.dist$window.start, 1))
-    real.min.dist <- as.data.frame(real.min.dist)
-    real.min.dist$window.end[which(is.na(real.min.dist$window.end))] <- real.min.dist$window.start[which(is.na(real.min.dist$window.end))] + window.size
+    #real.max.dist <- complete(real.max.dist, window.start=full_seq(real.max.dist$window.start, 1))
+    #real.max.dist <- as.data.frame(real.max.dist)
+    #real.max.dist$window.end[which(is.na(real.max.dist$window.end))] <- real.max.dist$window.start[which(is.na(real.max.dist$window.end))] + window.size
+    #real.min.dist <- complete(real.min.dist, window.start=full_seq(real.min.dist$window.start, 1))
+    #real.min.dist <- as.data.frame(real.min.dist)
+    #real.min.dist$window.end[which(is.na(real.min.dist$window.end))] <- real.min.dist$window.start[which(is.na(real.min.dist$window.end))] + window.size
 
     # Multiply coverage fractions by 100 to obtain percents
     naive.dist$frac.bound.by.consensus <- naive.dist$frac.bound.by.consensus * 100
@@ -126,10 +126,11 @@ plot.results.for.taxonomy <- function(taxonomy) {
     real.max.dist$frac.bound <- real.max.dist$total.frac.bound * 100
 
     # For the real.min designs, summarize the number of guides in each window
-    # across the replicates -- i.e., for each window, find the mean number
-    # of guides (and std dev, etc.) across the replicates
+    # and choice of guide coverage (gp) across the replicates -- i.e., for
+    # each window, find the mean number of guides (and std dev, etc.) across
+    # the replicates
     real.min.dist.summary <- summarySE(real.min.dist, measurevar="count",
-                                   groupvars=c("window.start", "window.end"))
+                                   groupvars=c("window.start", "window.end", "gp"))
     colnames(real.min.dist.summary)[colnames(real.min.dist.summary)=="count"] <- "mean"
     real.min.dist.summary$approach <- "real.min.guide.count"
 
@@ -170,6 +171,10 @@ plot.results.for.taxonomy <- function(taxonomy) {
                                              real.max.dist.summary$hgc)
     real.max.dist.summary <- subset(real.max.dist.summary, select=-c(hgc))
     frac.bounds.summary <- rbind(naive.dist.summary, real.max.dist.summary)
+
+    # In real.min.dist.summary, make guide coverage (gp) be a percent and factor
+    real.min.dist.summary$gp.display <- paste0(real.min.dist.summary$gp * 100, "%")
+    real.min.dist.summary$gp.display <- factor(real.min.dist.summary$gp.display)
 
     # Ignore windows where the number of replicates is small (e.g., due
     # to missing data or too many gaps) by making the mean value be NA
@@ -246,12 +251,13 @@ plot.results.for.taxonomy <- function(taxonomy) {
     p1 <- p1 + theme_pubr()
 
     # Second, produce a plot for the real.min-guides design, showing the
-    # number of guides required in each window
+    # number of guides required in each window for each choice of guide
+    # coverage (gp)
     # Produce plot where x-axis shows the reference position of the middle of
     # the window
     p2 <- ggplot(real.min.dist.summary, aes(x=ref.pos))
     # Plot mean values as points
-    p2 <- p2 + geom_line(aes(y=mean, color=approach.display), size=1.0)
+    p2 <- p2 + geom_line(aes(y=mean, color=gp.display), size=1.0)
     # Can use geom_errorbar(..) to show error bars at each plotted
     # x-value; alternatively, geom_ribbon(..) to show a continuous
     # interval (i.e., confidence band) around each line. Note that
@@ -259,7 +265,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
     # confidence band.
     p2 <- p2 + geom_ribbon(aes(ymin=mean-ci,
                                ymax=mean+ci,
-                               fill=approach.display), alpha=0.3)
+                               fill=gp.display), alpha=0.3)
     # Manually set the y-axis limits to avoid outliers in the confidence
     # intervals (the ribbon); these outliers may not show on the plot
     p2.y.Qlo <- quantile(real.min.dist.summary$mean - real.min.dist.summary$ci,
@@ -271,7 +277,13 @@ plot.results.for.taxonomy <- function(taxonomy) {
     p2.y.max <- min(max(real.min.dist.summary$mean + real.min.dist.summary$ci),
                     p2.y.Qhi + 1.5*(p2.y.Qhi - p2.y.Qlo))
     p2.y.min <- min(0, p2.y.min)    # make sure to show y=0 guides
-    p2 <- p2 + scale_y_continuous(limits=c(p2.y.min, p2.y.max))
+    if (in.taxonomy == "tax-11620_S") {
+        # In main text figure; manually make clean axis breaks
+        p2 <- p2 + scale_y_continuous(limits=c(1, p2.y.max),
+                                      breaks=c(1, 4, 7, 10))
+    } else {
+        p2 <- p2 + scale_y_continuous(limits=c(p2.y.min, p2.y.max))
+    }
     # Add axis labels
     p2 <- p2 + xlab("Genome position") + ylab("Number of probes")
     p2 <- p2 + ggtitle(taxonomy.name)
@@ -290,13 +302,15 @@ plot.results.for.taxonomy <- function(taxonomy) {
 
     # Use name="" to avoid legend title
     # Use viridis color scheme, but specified manually to draw contrast between
-    # the naive designs and real designs
-    p1.cols <- c("Consensus"="#430053",
-                 "Mode"="#3D5683",
-                 "ADAPT, 1 probe"="#46BA79",
-                 "ADAPT, 2 probes"="#90D948",
+    # the naive designs and real designs (only important for p1)
+    p1.cols <- c("Consensus"="#AC3876",
+                 "Mode"="#D69856",
+                 "ADAPT, 1 probe"="#3D0C51",
+                 "ADAPT, 2 probes"="#5EB47E",
                  "ADAPT, 3 probes"="#FAE655")
-    p2.cols <- c("Minimize probes"="black")
+    p2.cols <- c("90%"="#3D0C51",
+                 "95%"="#5EB47E",
+                 "99%"="#FAE655")
     p1 <- p1 + scale_color_manual(name="",
                                   values=p1.cols)
     p1 <- p1 + scale_fill_manual(name="",
@@ -305,9 +319,6 @@ plot.results.for.taxonomy <- function(taxonomy) {
                                   values=p2.cols)
     p2 <- p2 + scale_fill_manual(name="",
                                  values=p2.cols)
-
-    # Do not show a legend for p2
-    p2 <- p2 + theme(legend.position="none")
 
     r <- list(max.frac.bound=p1, min.num.guides=p2)
     return(r)
