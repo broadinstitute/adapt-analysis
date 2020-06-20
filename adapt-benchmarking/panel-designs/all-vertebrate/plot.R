@@ -33,10 +33,10 @@ summary$rss.mb <- summary$rss / 1000.0
 summary$taxseg <- paste0(summary$taxid, "_", summary$segment)
 
 # Make factor grouping num.input.seqs logarithmically
-summary$num.input.seqs.group <- ifelse(summary$num.input.seqs < 10, "1-",
-                                       ifelse(summary$num.input.seqs < 100, "10-",
-                                       ifelse(summary$num.input.seqs < 1000, "100-", ">1000")))
-summary$num.input.seqs.group <- factor(summary$num.input.seqs.group, levels=c("1-", "10-", "100-", ">1000"))
+summary$num.input.seqs.group <- ifelse(summary$num.input.seqs < 10, "1-9",
+                                       ifelse(summary$num.input.seqs < 100, "10-99",
+                                       ifelse(summary$num.input.seqs < 1000, "100-999", ">1000")))
+summary$num.input.seqs.group <- factor(summary$num.input.seqs.group, levels=c("1-9", "10-99", "100-999", ">1000"))
 
 # Round mean number of guides, and convert to factor
 summary$mean.cluster.num.guides.rounded <- round(summary$mean.cluster.num.guides)
@@ -117,7 +117,7 @@ ggsave("plots/frac-sequences-kept-vs-num-seqs.pdf", p, width=4, height=4, useDin
 p <- ggplot(summary.specific.maxactivity, aes(x=num.input.seqs, y=mean.cluster.target.len))
 p <- p + geom_point(size=1.5, alpha=0.7, shape=16, stroke=0)    # make it easier to see overlapping points
 p <- p + scale_x_continuous(trans='log10')
-p <- p + xlab("Number of sequences") + ylab("Mean target length")
+p <- p + xlab("Number of sequences") + ylab("Target length")
 p <- p + theme_pubr()
 ggsave("plots/mean-cluster-target-len-vs-num-seqs.specific_max-activity.pdf", p, width=4, height=4, useDingbats=FALSE)
 
@@ -128,7 +128,7 @@ p <- ggplot(summary.specific.maxactivity, aes(x=num.input.seqs, y=mean.cluster.n
 p <- p + geom_point(aes(color=mean.cluster.target.len))
 p <- p + scale_x_continuous(trans='log10')
 p <- p + scale_y_continuous(breaks=seq(1, 20, by=5))
-p <- p + xlab("Number of sequences") + ylab("Mean number of guides")
+p <- p + xlab("Number of sequences") + ylab("Number of guides")
 p <- p + scale_color_viridis(name="Length")  # viridis color scheme
 p <- p + theme_pubr()
 ggsave("plots/mean-cluster-num-guides-vs-num-seqs.specific_max-activity.pdf", p, width=4, height=4, useDingbats=FALSE)
@@ -137,9 +137,10 @@ ggsave("plots/mean-cluster-num-guides-vs-num-seqs.specific_max-activity.pdf", p,
 # Use specific.maxactivity experiment
 p <- ggplot(summary.specific.maxactivity, aes(y=num.input.seqs, x=mean.cluster.num.guides.rounded))
 p <- p + geom_sina(aes(group=mean.cluster.num.guides.rounded,
-                       color=mean.cluster.target.len))
+                       color=mean.cluster.target.len),
+                   size=0.5)
 p <- p + scale_y_continuous(trans='log10')
-p <- p + ylab("Number of sequences") + xlab("Mean number of guides")
+p <- p + ylab("Number of sequences") + xlab("Number of guides")
 p <- p + scale_color_viridis(name="Length")  # viridis color scheme
 p <- p + theme_pubr()
 p <- p + coord_flip()
@@ -149,9 +150,10 @@ ggsave("plots/mean-cluster-num-guides-vs-num-seqs-sina.specific_max-activity.pdf
 # Use specific.minguides experiment
 p <- ggplot(summary.specific.minguides, aes(y=num.input.seqs, x=mean.cluster.num.guides.rounded))
 p <- p + geom_sina(aes(group=mean.cluster.num.guides.rounded,
-                       color=mean.cluster.target.len))
+                       color=mean.cluster.target.len),
+                   size=0.5)
 p <- p + scale_y_continuous(trans='log10')
-p <- p + ylab("Number of sequences") + xlab("Mean number of guides")
+p <- p + ylab("Number of sequences") + xlab("Number of guides")
 p <- p + scale_color_viridis(name="Length")  # viridis color scheme
 p <- p + theme_pubr()
 p <- p + coord_flip()
@@ -213,7 +215,7 @@ labels <- c("mean.cluster.guide.set.median.activity"="Median",
 p <- p + scale_color_manual(name="",
                             values=cols,
                             labels=labels)
-ggsave("plots/mean-cluster-activities-vs-num-seqs-grouped.specific_max-activity.pdf", p, width=4, height=4, useDingbats=FALSE)
+ggsave("plots/guide-set-activities-vs-num-seqs-grouped.specific_max-activity.pdf", p, width=4, height=4, useDingbats=FALSE)
 
 # Plot guide set activity for nonspecific vs. specific
 p <- ggplot(summary.compare.specificity, aes(x=guide.set.expected.activity.nonspecific, y=guide.set.expected.activity.specific))
@@ -248,11 +250,10 @@ ggsave("plots/elapsed-time-vs-num-seqs.specific_max-activity.pdf", p, width=4, h
 p <- ggplot(summary.specific.maxactivity, aes(x=num.input.seqs.group, y=elapsed.time.min))
 p <- p + geom_sina(size=0.5)
 p <- p + scale_y_continuous(trans='log10')
-p <- p + ylab("Number of sequences") + xlab("Elapsed real time (min)")
+p <- p + xlab("Number of sequences") + ylab("Elapsed real time (min)")
 p <- p + theme_pubr()
 ggsave("plots/elapsed-time-vs-num-seqs-grouped.specific_max-activity.pdf", p, width=4, height=4, useDingbats=FALSE)
 
-ggsave("plots/mean-cluster-num-guides-vs-num-seqs-sina.specific_max-activity.pdf", p, width=4, height=4, useDingbats=FALSE)
 # Plot memory usage (RSS) vs. number of input seqs
 # Use specific.maxactivity experiment
 p <- ggplot(summary.specific.maxactivity, aes(x=num.input.seqs, y=rss.mb))
