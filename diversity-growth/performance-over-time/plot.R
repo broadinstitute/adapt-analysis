@@ -117,12 +117,12 @@ plot.coverage.per.design.per.year <- function(data.path) {
     dist.summary <- summarySE(dist, measurevar="frac.hit",
                               groupvars=c("design.year", "test.year", "kmer.rank"))
 
-    # Make test.year (facets) be a factor
-    dist.summary$test.year.factor <- factor(dist.summary$test.year)
+    # Make design.year (facets) be a factor
+    dist.summary$design.year.factor <- factor(dist.summary$design.year)
 
     p <- ggplot(dist.summary,
-                aes(color=factor(design.year),
-                    x=factor(design.year),
+                aes(color=factor(test.year),
+                    x=factor(test.year),
                     y=frac.hit))
 
     # Plot dots for each combination of design.year and test.year,
@@ -153,16 +153,16 @@ plot.coverage.per.design.per.year <- function(data.path) {
 
     # Use viridis color map and label the color legend
     # Use `direction=-1` to reverse colors
-    p <- p + scale_color_viridis(discrete=TRUE, name="Design in\nyear",
+    p <- p + scale_color_viridis(discrete=TRUE, name="Test against\nyear",
                                  #direction=-1
                                  )
 
-    # Facet by test.year
-    # Allow different scales/space because any test.year may have
-    # different number of years in design.year (otherwise, we wind up with
-    # lots of empty space in the facets with few different design.year years)
+    # Facet by design.year
+    # Allow different scales/space because any design.year may have
+    # different number of years in test.year (otherwise, we wind up with
+    # lots of empty space in the facets with few different test.year years)
     # Use `switch='x"` to move facet labels to the bottom
-    p <- p + facet_grid(. ~ test.year.factor,
+    p <- p + facet_grid(. ~ design.year.factor,
                         scales="free_x",
                         space="free_x",
                         switch="x")
@@ -176,7 +176,7 @@ plot.coverage.per.design.per.year <- function(data.path) {
     # Add axis labels
     # Note xlab() here is actually for the facets, not the x-value in each
     # facet
-    p <- p + xlab("Test against year") + ylab("Fraction of sequences with 30-mer (%)")
+    p <- p + xlab("Design in year") + ylab("Fraction of sequences with 30-mer (%)")
 
     # Reformat plot
     p <- p + theme_pubr()
