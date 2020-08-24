@@ -35,8 +35,8 @@ summary$taxseg <- paste0(summary$taxid, "_", summary$segment)
 # Make factor grouping num.input.seqs logarithmically
 summary$num.input.seqs.group <- ifelse(summary$num.input.seqs < 10, "1-9",
                                        ifelse(summary$num.input.seqs < 100, "10-99",
-                                       ifelse(summary$num.input.seqs < 1000, "100-999", ">1000")))
-summary$num.input.seqs.group <- factor(summary$num.input.seqs.group, levels=c("1-9", "10-99", "100-999", ">1000"))
+                                       ifelse(summary$num.input.seqs < 1000, "100-999", ">= 1000")))
+summary$num.input.seqs.group <- factor(summary$num.input.seqs.group, levels=c("1-9", "10-99", "100-999", ">= 1000"))
 
 # Round mean number of guides, and convert to factor
 summary$mean.cluster.num.guides.rounded <- round(summary$mean.cluster.num.guides)
@@ -221,7 +221,7 @@ ggsave("plots/guide-set-activities-vs-num-seqs-grouped.specific_max-activity.pdf
 p <- ggplot(summary.compare.specificity, aes(x=guide.set.expected.activity.nonspecific, y=guide.set.expected.activity.specific))
 p <- p + geom_point(size=1.5, alpha=0.7, shape=16, stroke=0)    # make it easier to see overlapping points
 p <- p + geom_abline(slope=1, intercept=0, linetype="dashed")  # diagonal
-p <- p + xlim(2, 4) + ylim(2, 4)    # force axes to be the same, but cut out a few outliers
+p <- p + xlim(1, 4) + ylim(1, 4)    # force axes to be the same
 p <- p + xlab("Expected activity of guide set, non-specific") + ylab("Expected activity of guide set, specific")
 p <- p + theme_pubr()
 ggsave("plots/guide-set-expected-activity-compare-specificity.pdf", p, width=4, height=4, useDingbats=FALSE)
@@ -230,7 +230,7 @@ ggsave("plots/guide-set-expected-activity-compare-specificity.pdf", p, width=4, 
 p <- ggplot(summary.compare.specificity, aes(x=objective.value.nonspecific, y=objective.value.specific))
 p <- p + geom_point(size=1.5, alpha=0.7, shape=16, stroke=0)    # make it easier to see overlapping points
 p <- p + geom_abline(slope=1, intercept=0, linetype="dashed")  # diagonal
-p <- p + xlim(4, 6) + ylim(4, 6)    # force axes to be the same, but cut out a few outliers
+p <- p + xlim(0, 6) + ylim(0, 6)    # force axes to be the same, but cut out a few outliers (8 species with objective value <0)
 p <- p + xlab("Objective value, non-specific") + ylab("Objective value, specific")
 p <- p + theme_pubr()
 ggsave("plots/objective-value-compare-specificity.pdf", p, width=4, height=4, useDingbats=FALSE)
@@ -259,7 +259,7 @@ ggsave("plots/elapsed-time-vs-num-seqs-grouped.specific_max-activity.pdf", p, wi
 p <- ggplot(summary.specific.maxactivity, aes(x=num.input.seqs, y=rss.mb))
 p <- p + geom_point(size=1.5, alpha=0.7, shape=16, stroke=0)    # make it easier to see overlapping points
 p <- p + scale_x_continuous(trans='log10')
-p <- p + scale_y_continuous(trans='log10', lim=c(100, 100000))
+p <- p + scale_y_continuous(trans='log10', lim=c(100, 1000000))
 p <- p + xlab("Number of sequences") + ylab("Memory usage (MB)")
 p <- p + theme_pubr()
 ggsave("plots/memory-vs-num-seqs.specific_max-activity.pdf", p, width=4, height=4, useDingbats=FALSE)
@@ -278,8 +278,8 @@ ggsave("plots/elapsed-time-compare-specificity.pdf", p, width=4, height=4, useDi
 p <- ggplot(summary.compare.specificity, aes(x=rss.mb.nonspecific, y=rss.mb.specific))
 p <- p + geom_point(size=1.5, alpha=0.7, shape=16, stroke=0)    # make it easier to see overlapping points
 p <- p + geom_abline(slope=1, intercept=0, linetype="dashed")  # diagonal
-p <- p + scale_x_continuous(trans='log10', lim=c(100, 100000))  # force axes to be the same
-p <- p + scale_y_continuous(trans='log10', lim=c(100, 100000))
+p <- p + scale_x_continuous(trans='log10', lim=c(100, 1000000))  # force axes to be the same
+p <- p + scale_y_continuous(trans='log10', lim=c(100, 1000000))
 p <- p + xlab("Memory usage, non-specific (MB)") + ylab("Memory usage, specific (MB)")
 p <- p + theme_pubr()
 ggsave("plots/memory-compare-specificity.pdf", p, width=4, height=4, useDingbats=FALSE)
