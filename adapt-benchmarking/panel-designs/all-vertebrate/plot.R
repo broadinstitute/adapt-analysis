@@ -17,7 +17,7 @@ library(reshape2)
 HIGHLY.ACTIVE.THRES <- 2.7198637
 
 summary.fn <- "data/design-results.tsv"
-summary <- data.frame(read.table(summary.fn, header=TRUE, sep="\t"))
+summary <- data.frame(read.table(summary.fn, header=TRUE, quote="", sep="\t"))
 
 # Replace '_' in column names with '.'
 names(summary) <- gsub("_", ".", names(summary))
@@ -230,7 +230,7 @@ ggsave("plots/guide-set-expected-activity-compare-specificity.pdf", p, width=4, 
 p <- ggplot(summary.compare.specificity, aes(x=objective.value.nonspecific, y=objective.value.specific))
 p <- p + geom_point(size=1.5, alpha=0.7, shape=16, stroke=0)    # make it easier to see overlapping points
 p <- p + geom_abline(slope=1, intercept=0, linetype="dashed")  # diagonal
-p <- p + xlim(0, 6) + ylim(0, 6)    # force axes to be the same, but cut out a few outliers (8 species with objective value <0)
+p <- p + xlim(0, 6) + ylim(0, 6)    # force axes to be the same, but cut out a few outliers (9 species with objective value <0)
 p <- p + xlab("Objective value, non-specific") + ylab("Objective value, specific")
 p <- p + theme_pubr()
 ggsave("plots/objective-value-compare-specificity.pdf", p, width=4, height=4, useDingbats=FALSE)
