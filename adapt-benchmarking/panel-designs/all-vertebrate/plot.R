@@ -76,8 +76,9 @@ summary.compare.specificity$objective.value.specific <- with(summary.specific.ma
                                                              mean.cluster.objective.value[match(shared.taxseg, taxseg)])
 
 # Plot histogram of number of clusters per species
-# This should be the same for all experiments; use nonspecific.maxactivity
-p <- ggplot(summary.nonspecific.maxactivity, aes(num.clusters))
+# This should be the same for all experiments (in theory, but may not be
+# in practice due to randomness in clustering); use specific.maxactivity
+p <- ggplot(summary.specific.maxactivity, aes(num.clusters))
 p <- p + geom_histogram(binwidth=1)
 p <- p + scale_x_continuous(breaks=seq(1, 15, by=2))
 p <- p + xlab("Number of clusters") + ylab("Number of species")
@@ -85,8 +86,9 @@ p <- p + theme_pubr()
 ggsave("plots/num-clusters.pdf", p, width=4, height=4, useDingbats=FALSE)
 
 # Plot number of clusters vs. log(number of input sequences)
-# This should be the same for all experiments; use nonspecific.maxactivity
-p <- ggplot(summary.nonspecific.maxactivity, aes(x=num.input.seqs, y=num.clusters))
+# This should be the same for all experiments (in theory, but may not be
+# in practice due to randomness in clustering); use specific.maxactivity
+p <- ggplot(summary.specific.maxactivity, aes(x=num.input.seqs, y=num.clusters))
 p <- p + geom_point()
 p <- p + scale_x_continuous(trans='log10')
 p <- p + scale_y_continuous(breaks=seq(1, 5, by=1))
@@ -95,16 +97,18 @@ p <- p + theme_pubr()
 ggsave("plots/num-clusters-vs-num-seqs.pdf", p, width=4, height=4, useDingbats=FALSE)
 
 # Plot histogram of the fraction of sequences kept after curation
-# This should be the same for all experiments; use nonspecific.maxactivity
-p <- ggplot(summary.nonspecific.maxactivity, aes(frac.kept))
+# This should be the same for all experiments (in theory, but may not be
+# in practice due to randomness in clustering); use specific.maxactivity
+p <- ggplot(summary.specific.maxactivity, aes(frac.kept))
 p <- p + geom_histogram(binwidth=0.05)
 p <- p + xlab("Fraction of sequences kept") + ylab("Number of species")
 p <- p + theme_pubr()
 ggsave("plots/frac-sequences-kept.pdf", p, width=4, height=4, useDingbats=FALSE)
 
 # Plot fraction of sequences kept vs. number of input sequences
-# This should be the same for all experiments; use nonspecific.maxactivity
-p <- ggplot(summary.nonspecific.maxactivity, aes(x=num.input.seqs, y=frac.kept))
+# This should be the same for all experiments (in theory, but may not be
+# in practice due to randomness in clustering); use specific.maxactivity
+p <- ggplot(summary.specific.maxactivity, aes(x=num.input.seqs, y=frac.kept))
 p <- p + geom_point()
 p <- p + scale_x_continuous(trans='log10')
 p <- p + xlab("Number of sequences") + ylab("Fraction of sequences kept")
