@@ -149,6 +149,8 @@ archived/pan-viral-id/design/input-sequences/**/fasta-files.*.tar.gz
 /misc-designs/ncov/**/out-*/designs/*
 !/misc-designs/ncov/**/out/designs/*.tsv
 !/misc-designs/ncov/**/out-*/designs/*.tsv
+/misc-designs/ncov/**/input/*.fasta
+/misc-designs/ncov/**/input/*.fasta.gz
 ####################
 
 ########################
