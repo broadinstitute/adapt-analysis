@@ -106,18 +106,18 @@ ENV/
 .mypy_cache/
 
 ##########################################################
-## iav-subtype-id/picking-guides-from-independent-runs/ ##
-/iav-subtype-id/picking-guides-from-independent-runs/data/iav-seqs/
-/iav-subtype-id/picking-guides-from-independent-runs/tmp/
+## archived/iav-subtype-id/picking-guides-from-independent-runs/ ##
+/archived/iav-subtype-id/picking-guides-from-independent-runs/data/iav-seqs/
+/archived/iav-subtype-id/picking-guides-from-independent-runs/tmp/
 ##########################################################
 
 ##################################
-## iav-subtype-id/diff-id-runs/ ##
-/iav-subtype-id/diff-id-runs/trial-guide-designs/out/
-/iav-subtype-id/diff-id-runs/verify/N-subtype-id/data/iav-seqs/
-/iav-subtype-id/diff-id-runs/verify/N-subtype-id/tmp/
-/iav-subtype-id/diff-id-runs/verify/H-subtype-id/data/iav-seqs/
-/iav-subtype-id/diff-id-runs/verify/H-subtype-id/tmp/
+## archived/iav-subtype-id/diff-id-runs/ ##
+/archived/iav-subtype-id/diff-id-runs/trial-guide-designs/out/
+/archived/iav-subtype-id/diff-id-runs/verify/N-subtype-id/data/iav-seqs/
+/archived/iav-subtype-id/diff-id-runs/verify/N-subtype-id/tmp/
+/archived/iav-subtype-id/diff-id-runs/verify/H-subtype-id/data/iav-seqs/
+/archived/iav-subtype-id/diff-id-runs/verify/H-subtype-id/tmp/
 ###################################
 
 ###########################################
