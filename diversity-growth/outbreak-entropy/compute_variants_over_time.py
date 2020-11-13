@@ -35,7 +35,8 @@ def find_variants(aln, ref_idx, ref_pos_map):
         indicating whether sequence index has a variant (True) against
         the reference at position i of the reference}
     """
-    ref_seq = aln.make_list_of_seqs(seqs_to_consider={ref_idx})[0]
+    ref_seq = aln.make_list_of_seqs(seqs_to_consider={ref_idx},
+            remove_gaps=True)[0]
 
     variants = []
     for ref_pos, aln_pos in enumerate(ref_pos_map):

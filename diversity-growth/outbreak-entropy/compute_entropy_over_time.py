@@ -38,8 +38,8 @@ def read_sequences(fn, ref_acc):
     seqs_skipped = 0
     ref_idx = None
     for seq_header, seq in seqs.items():
-        # Last field, split by '|', should have date
-        date_str = seq_header.split('|')[-1]
+        # Second to last field, split by '|', should have date
+        date_str = seq_header.split('|')[-2]
         try:
             date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
         except ValueError:

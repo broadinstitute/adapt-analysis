@@ -12,3 +12,8 @@ There are two related analyses here:
 
 SARS-CoV-2 is a good example because there are so many genomes over the course
 of the outbreak, so we can show this as a detailed time-resolution.
+
+Steps for variants:
+  (1) Download or make MSA of genomes for SARS-CoV-2
+  (2) ./make_variants_table.sh
+  (3) ./plot_variants.sh
