@@ -21,4 +21,4 @@ conda activate data-analysis
 # genomes) and to control for increase numbers of genomes by only calling variants that are
 # present in >=1% of genomes (done in plot_variants.R).
 
-Rscript plot_variants.R sars-cov-2/variants.no-subsample.cumulative.tsv sars-cov-2/variants.pdf &> sars-cov-2/variants.plot.out
+Rscript plot_variants.R sars-cov-2/variants.no-subsample.cumulative.tsv.gz sars-cov-2/variants.pdf &> sars-cov-2/variants.plot.out

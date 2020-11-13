@@ -125,12 +125,12 @@ plot.df <- plot.df[order(plot.df$freq.level),]
 p <- ggplot(plot.df, aes(x=pos, y=y.label)) +
         geom_rect(data=genome.bars, inherit.aes=FALSE,   # genome backgrounds
                    aes(xmin=x.start, xmax=x.end,
-                       ymin=as.numeric(y)-0.35, ymax=as.numeric(y)+0.35),
-                   alpha=0.07, fill="black") +
-        geom_segment(aes(xend=pos,
-                         y=as.numeric(y.label)-0.35, yend=as.numeric(y.label)+0.35,
+                       ymin=as.numeric(y)-0.4, ymax=as.numeric(y)+0.4),
+                   alpha=0.05, fill="black") +
+        geom_segment(aes(xend=pos,  # variants
+                         y=as.numeric(y.label)-0.4, yend=as.numeric(y.label)+0.4,
                          color=freq.level),
-                     size=1.0) +
+                     size=0.7) +
         scale_y_discrete(limits = levels(plot.df$y.label)) +  # show dates on y-axis
         scale_color_manual(guide=FALSE, # no legend
                            values=c("low"="#CCBAD1", "high"="#430053")) +   # two colors from viridis scale
@@ -138,4 +138,4 @@ p <- ggplot(plot.df, aes(x=pos, y=y.label)) +
         xlab("Genome") +
         ylab("Date")
 
-ggsave(OUT.PDF, p, device="pdf", width=6, height=4, useDingbats=FALSE)
+ggsave(OUT.PDF, p, device="pdf", width=6, height=3.5, useDingbats=FALSE)
