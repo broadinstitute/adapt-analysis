@@ -6,6 +6,7 @@
 
 ADAPT_PATH="$HOME/adapt"
 GENOMES_PATH="$HOME/tmp/ncov-gisaid/gisaid_hcov-19_2020_06_12_15.aligned.fasta"
+GENOMES_PATH="./data/gisaid_msa_2020-11-12/msa_1112.fasta.gz"
 
 # Determine active fraction
 analyze_coverage.py sars-cov-2.v1-experimentally-tested.tsv $GENOMES_PATH -pm 2 --write-frac-bound frac-bound.active.tsv --verbose --predict-activity-model-path $ADAPT_PATH/models/classify/model-51373185 $ADAPT_PATH/models/regress/model-f8b6fd5d
