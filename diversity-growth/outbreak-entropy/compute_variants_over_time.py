@@ -7,6 +7,7 @@ SARS-CoV-2.
 """
 
 import argparse
+import calendar
 import datetime
 import random
 
@@ -66,13 +67,35 @@ def main(args):
 
     start_date = datetime.datetime.strptime(args.start_date, '%Y-%m-%d')
     end_date = datetime.datetime.strptime(args.end_date, '%Y-%m-%d')
-    date_incr = datetime.timedelta(days=args.interval_days)
+
+    def next_date(curr_date):
+        if args.interval_by_month:
+            num_days_in_month = calendar.monthrange(curr_date.year,
+                    curr_date.month)[1]
+            date_incr_days = num_days_in_month
+        else:
+            date_incr_days = args.interval_days
+        date_incr = datetime.timedelta(days=date_incr_days)
+        return curr_date + date_incr
+    def prev_date(curr_date):
+        if args.interval_by_month:
+            y = curr_date.year
+            m = curr_date.month - 1
+            if m == 0:
+                y -= 1
+                m = 12
+            num_days_in_month = calendar.monthrange(y, m)[1]
+            date_decr_days = num_days_in_month
+        else:
+            date_decr_days = args.interval_days
+        date_decr = datetime.timedelta(days=date_decr_days)
+        return curr_date - date_decr
 
     rows = []
 
     # Iterate over date ranges
     date = start_date
-    while date + date_incr <= end_date:
+    while date <= end_date:
         date_str = date.strftime('%Y-%m-%d')
 
         print("On date: %s" % date_str)
@@ -85,9 +108,9 @@ def main(args):
             # Use everything between the previous date and this one
             if date == start_date:
                 # There is no previous date; skip this interval
-                date += date_incr
+                date = next_date(date)
                 continue
-            date_range_start = date - date_incr
+            date_range_start = prev_date(date)
             date_range_end = date
 
         # Find sequences in this date range
@@ -125,7 +148,7 @@ def main(args):
             rows += [(date_str, pos, num_with_variants, num_counted)]
 
         # Increment start of date range
-        date += date_incr
+        date = next_date(date)
 
     # Write the output
     with open(args.out_tsv, 'w') as fw:
@@ -164,6 +187,9 @@ if __name__ == "__main__":
         type=int,
         help=("Number of days to stride by between --start-date and "
               "--end-date"))
+    parser.add_argument('--interval-by-month',
+        action='store_true',
+        help=("If set, ignore --interval-days and increment by month"))
     parser.add_argument('--cumulative',
         action='store_true',
         help=("If set, use all genomes up to each time point rather than "
