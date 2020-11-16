@@ -113,7 +113,7 @@ p <- ggplot(runtime.summarized, aes(x=window.num, y=time.from.start))
 p <- p + geom_line(aes(color=memoize))
 p <- p + geom_ribbon(aes(ymin=time.from.start.lo, ymax=time.from.start.hi, fill=memoize), alpha=0.3)
 p <- p + scale_y_log10()    # log axis
-p <- p + xlab("Number of amplicons searched") + ylab("Elapsed real time (sec)")
+p <- p + xlab("Number of amplicons searched") + ylab("Elapsed real time (min)")
 p <- p + scale_fill_manual(values=memoize.colors)
 p <- p + scale_color_manual(values=memoize.colors)
 p <- p + labs(color="", fill="")    # no legend title
