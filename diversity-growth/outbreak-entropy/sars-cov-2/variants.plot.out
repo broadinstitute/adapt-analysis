@@ -6,6 +6,6 @@ Loading required package: viridisLite
 Loading required package: ggpubr
 Warning message:
 package ‘ggpubr’ was built under R version 3.6.3 
-[1] "Total number of variants in Combined: 842"
-[1] "Number of low frequency variants in Combined: 753"
-[1] "Number of high frequency variants in Combined: 89"
+[1] "Total number of variants in Combined: 853"
+[1] "Number of low frequency variants in Combined: 761"
+[1] "Number of high frequency variants in Combined: 92"
