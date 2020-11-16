@@ -8,4 +8,6 @@ For the Nov. 12 2020 download from GISAID, it seems GISAID capped the number
 of sequences I could download to 10,000. So, instead, I downloaded the MSA
 that they provided directly. That is in gisaid_msa_2020-11-12/. This has
 180,318 sequences from which the scripts can parse a date (and thus include
-in annalyses); 3,879 sequences did not have a parseable date.
+in annalyses); 3,879 sequences did not have a parseable date. 60 of these
+genomes have a date containing '2020-11-', so that would suggest 180,258
+genomes before November 1.
