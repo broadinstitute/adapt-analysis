@@ -24,7 +24,8 @@ ARG_COSTFNWEIGHTS="0.6667 0.2222 0.1111"
 ARG_BESTNTARGETS="200"
 
 # Set API key
-NCBI_API_KEY="321e5004f2502f604ee2e8858a22b993d608"
+# Set as environment variable
+NCBI_API_KEY=""
 
 # Set a predictive model
 # This is from commit da10963 of my adapt-seq-design repo

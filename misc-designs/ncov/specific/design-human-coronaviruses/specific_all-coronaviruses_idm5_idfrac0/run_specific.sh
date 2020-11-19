@@ -32,7 +32,8 @@ ARG_GM_NCOV="0"
 ARG_PM_NCOV="0"
 
 # Set API key
-NCBI_API_KEY="321e5004f2502f604ee2e8858a22b993d608"
+# Set as environment variable
+NCBI_API_KEY=""
 
 # Set a predictive model
 # This is from commit da10963 of my adapt-seq-design repo
