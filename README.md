@@ -1,5 +1,5 @@
 # adapt-analysis
-Analyses of ADAPT's designs, as well as miscellaneous analyses for the ADAPT paper.
+Analyses of ADAPT's designs and computational benchmarking of its performance, as well as miscellaneous analyses for the ADAPT paper.
 
 **For more information on ADAPT and on how to run it, please see the [ADAPT repository](https://github.com/broadinstitute/adapt) on GitHub.**
 
