@@ -5,7 +5,6 @@
 # ADAPT must be loaded (conda env) before running.
 
 ADAPT_PATH="$HOME/adapt"
-GENOMES_PATH="$HOME/tmp/ncov-gisaid/gisaid_hcov-19_2020_06_12_15.aligned.fasta"
 GENOMES_PATH="./data/gisaid_msa_2020-11-12/msa_1112.fasta.gz"
 
 # Determine active fraction
