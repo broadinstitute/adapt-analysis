@@ -29,3 +29,6 @@ To evaluate detection against what was used to make the design:
 To compile the evaluations into a single file:
   5) ./compile_evaluations.sh -- generates evaluations/evaluations-compiled.tsv, which
      combines the evaluations
+
+To produce plots:
+  6) Rscript plot.R -- generates PDFs in plots/
