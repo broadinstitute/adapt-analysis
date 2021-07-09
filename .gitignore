@@ -133,6 +133,10 @@ ENV/
 /design-analyses/cross-validation/tax-*/designs/*
 /design-analyses/compare-to-baseline/tax-*/designs/*
 /design-analyses/compare-to-baseline/tax-*/input-alns/*
+/design-analyses/background-specificity/data/bowtie-index
+/design-analyses/background-specificity/data/bacterial-pathogens.fasta.gz
+/design-analyses/background-specificity/data/gencode.v38.transcripts.fa.gz
+/design-analyses/background-specificity/data/sars-cov-1-and-2.refseq.fasta.gz
 #######################
 
 ########################

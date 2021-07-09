@@ -1,0 +1,13 @@
+species	taxid	ncbi-reference-accession
+Chlamydia pneumoniae	83558	NC_005043.1
+Haemophilus influenzae	727	NZ_CP009610.1
+Legionella pneumophila	446	NZ_CP013742.1
+Mycobacterium tuberculosis	1773	NC_000962.3
+Streptococcus pneumoniae	1313	NZ_CP046357.1
+Streptococcus pyogenes	1314	NZ_CP010450.1
+Bordetella pertussis	520	NC_018518.1
+Mycoplasma pneumoniae	2104	NZ_CP010546.1
+Pseudomonas aeruginosa	287	NC_002516.2
+Staphylococcus epidermidis	1282	NZ_CP035288.1
+Streptococcus salivarius	1304	NZ_CP066093.1
+
