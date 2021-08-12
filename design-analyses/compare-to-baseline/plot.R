@@ -104,8 +104,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
     real.min.dist$score[which(is.na(real.min.dist$target.sequences))] <- NA
     real.max.dist$count[which(is.na(real.max.dist$target.sequences))] <- NA
     real.max.dist$total.frac.bound[which(is.na(real.max.dist$target.sequences))] <- NA
-    naive.dist$frac.bound.by.consensus[which(is.na(naive.dist$target.sequence.by.consensus))] <- NA
-    naive.dist$frac.bound.by.mode[which(is.na(naive.dist$target.sequence.by.mode))] <- NA
+    naive.dist$frac.bound[which(is.na(naive.dist$target.sequence))] <- NA
 
     # real.*.dist may be missing windows -- design.py will not output a window
     # if no guides can be constructed for it (e.g., due to missing data) and
@@ -121,8 +120,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
     #real.min.dist$window.end[which(is.na(real.min.dist$window.end))] <- real.min.dist$window.start[which(is.na(real.min.dist$window.end))] + window.size
 
     # Multiply coverage fractions by 100 to obtain percents
-    naive.dist$frac.bound.by.consensus <- naive.dist$frac.bound.by.consensus * 100
-    naive.dist$frac.bound.by.mode <- naive.dist$frac.bound.by.mode * 100
+    naive.dist$frac.bound <- naive.dist$frac.bound * 100
     real.max.dist$frac.bound <- real.max.dist$total.frac.bound * 100
 
     # For the real.min designs, summarize the number of guides in each window
@@ -146,19 +144,14 @@ plot.results.for.taxonomy <- function(taxonomy) {
     # For the naive designs, summarize the coverage obtained by the naive
     # guide in each window across the replicates -- i.e., for each window,
     # find the mean coverage (and std dev, etc.) across the replicates
-    # Do this for both the consensus and mode approach
-    naive.dist.consensus.summary <- summarySE(naive.dist, measurevar="frac.bound.by.consensus",
-                                              groupvars=c("window.start", "window.end"))
-    colnames(naive.dist.consensus.summary)[colnames(naive.dist.consensus.summary)=="frac.bound.by.consensus"] <- "mean"
-    naive.dist.consensus.summary$approach <- "naive.consensus.frac.bound"
-    naive.dist.mode.summary <- summarySE(naive.dist, measurevar="frac.bound.by.mode",
-                                         groupvars=c("window.start", "window.end"))
-    colnames(naive.dist.mode.summary)[colnames(naive.dist.mode.summary)=="frac.bound.by.mode"] <- "mean"
-    naive.dist.mode.summary$approach <- "naive.mode.frac.bound"
-
-    # Combine the naive data frames
-    naive.dist.summary <- rbind(naive.dist.consensus.summary,
-                                naive.dist.mode.summary)
+    # Group by window, approach (consensus or mode), and number of probes
+    naive.dist.summary <- summarySE(naive.dist, measurevar="frac.bound",
+                                    groupvars=c("window.start", "window.end", "approach", "num.probes"))
+    colnames(naive.dist.summary)[colnames(naive.dist.summary)=="frac.bound"] <- "mean"
+    naive.dist.summary$approach <- as.character(naive.dist.summary$approach)
+    naive.dist.summary$approach[naive.dist.summary$approach=="consensus"] <- "naive.consensus.frac.bound"
+    naive.dist.summary$approach[naive.dist.summary$approach=="mode"] <- paste0("naive.mode.frac.bound", ".upto-",
+                                                                               naive.dist.summary$num.probes[naive.dist.summary$approach=="mode"])
     naive.dist.summary$approach <- factor(naive.dist.summary$approach)
 
     # For the real design max-activity data, only show where the number of
@@ -170,6 +163,7 @@ plot.results.for.taxonomy <- function(taxonomy) {
     real.max.dist.summary$approach <- paste0(real.max.dist.summary$approach, ".hgc-",
                                              real.max.dist.summary$hgc)
     real.max.dist.summary <- subset(real.max.dist.summary, select=-c(hgc))
+    naive.dist.summary <- subset(naive.dist.summary, select=-c(num.probes))
     frac.bounds.summary <- rbind(naive.dist.summary, real.max.dist.summary)
 
     # In real.min.dist.summary, make guide coverage (gp) be a percent and factor
@@ -203,8 +197,8 @@ plot.results.for.taxonomy <- function(taxonomy) {
 
     # Rename approaches to display
     frac.bounds.summary$approach.display <- mapvalues(frac.bounds.summary$approach,
-        from=c("naive.consensus.frac.bound", "naive.mode.frac.bound", "real.max.activity.frac.bound.hgc-1", "real.max.activity.frac.bound.hgc-2", "real.max.activity.frac.bound.hgc-3"),
-        to=c("Consensus", "Mode", "ADAPT, 1 probe", "ADAPT, 2 probes", "ADAPT, 3 probes"))
+        from=c("naive.consensus.frac.bound", paste0("naive.mode.frac.bound.upto-", c(1:10)), "real.max.activity.frac.bound.hgc-1", "real.max.activity.frac.bound.hgc-2", "real.max.activity.frac.bound.hgc-3"),
+        to=c("Consensus", paste0("Mode (", c(1:10), ")"), "ADAPT, 1 probe", "ADAPT, 2 probes", "ADAPT, 3 probes"))
     real.min.dist.summary$approach.display <- mapvalues(real.min.dist.summary$approach,
         from=c("real.min.guide.count"),
         to=c("Minimize probes"))
@@ -303,8 +297,10 @@ plot.results.for.taxonomy <- function(taxonomy) {
     # Use name="" to avoid legend title
     # Use viridis color scheme, but specified manually to draw contrast between
     # the naive designs and real designs (only important for p1)
+    mode.cols <- rep("#D69856", 10)
+    names(mode.cols) <- paste0("Mode (", c(1:10), ")")
     p1.cols <- c("Consensus"="#AC3876",
-                 "Mode"="#D69856",
+                 mode.cols,
                  "ADAPT, 1 probe"="#3D0C51",
                  "ADAPT, 2 probes"="#5EB47E",
                  "ADAPT, 3 probes"="#FAE655")

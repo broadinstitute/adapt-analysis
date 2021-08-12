@@ -20,13 +20,14 @@ source ~/anaconda3/etc/profile.d/conda.sh
 NUM_DESIGNS=5
 
 # Set variables for running
-NJOBS=8
+NJOBS=1
 
 # Set variables for design
 CLUSTER_THRESHOLD=0.4   # Use high value to make it more likely to obtain only one cluster or a large one
 ARG_WINDOWSIZE="200"
 ARG_GL="30"
 ARG_GM="1"
+NAIVE_MODE_N_HI="10"
 
 # For maximize-activity; note that this will use --use-simple-binary-activity-prediction
 # We will vary the hard guide constraint; set the penalty strength to 0 to ignore
@@ -139,10 +140,18 @@ function run_for_taxid() {
 
     # Produce a design_naively.py command for each design, using the
     # alignment produced above
+    # Do this separately for consensus, and then for each n up to
+    # NAIVE_MODE_N_HI probes representing the n most common subsequences
+    # at a site
     for i in $(seq 1 $NUM_DESIGNS); do
-        if [ ! -f $outdir/designs/design-${i}.naive-design.tsv ]; then
-            echo "design_naively.py $outdir/input-alns/design-${i}.fasta $outdir/designs/design-${i}.naive-design.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM --verbose &> $outdir/designs/design-${i}.naive-design.out" >> $commands_fn
+        if [ ! -f $outdir/designs/design-${i}.naive-design.consensus.tsv ]; then
+            echo "design_naively.py $outdir/input-alns/design-${i}.fasta $outdir/designs/design-${i}.naive-design.consensus.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM --no-mode --verbose &> $outdir/designs/design-${i}.naive-design.consensus.out" >> $commands_fn
         fi
+        for n in $(seq 1 $NAIVE_MODE_N_HI); do
+            if [ ! -f $outdirs/designs/design-${i}.naive-design.mode-upto-${n}.tsv ]; then
+            echo "design_naively.py $outdir/input-alns/design-${i}.fasta $outdir/designs/design-${i}.naive-design.mode-upto-${n}.tsv --window-size $ARG_WINDOWSIZE -gl $ARG_GL -gm $ARG_GM --no-consensus --mode-n $n --verbose &> $outdir/designs/design-${i}.naive-design.mode-upto-${n}.out" >> $commands_fn
+            fi
+        done
     done
 }
 
@@ -186,8 +195,8 @@ run_for_taxid "138950" "None" "NC_002058" "V01149"
 run_for_taxid "138951" "None" "NC_038308,NC_001430" "D00820"
 
 
-# Load environment, and variables, for ADAPT
-source ~/misc-repos/adapt-designs/scripts/run-adapt/custom-env/load_custom_env.sh
+# Load adapt environment
+conda activate adapt
 
 # Run parallel on the commands
 echo "Running all commands.."

@@ -45,13 +45,20 @@ function compile_for_taxid() {
     done
 
     # Start a file with the distribution of designs for the naive designs
-    echo -n "" > $tax_dir/naive-designs.tsv
-    # Add the header to the file
-    head -n 1 $tax_dir/designs/design-1.naive-design.tsv >> $tax_dir/naive-designs.tsv
+    # Give the approach ('consensus' or 'mode') and the number of probes used (only
+    #   relevant for 'mode')
+    echo -e "window-start\twindow-end\trank\ttarget-sequence\tfrac-bound\tapproach\tnum-probes" > $tax_dir/naive-designs.tsv
     # Add to the file the designs (for each window) from each resampling
-    for design_file in $(ls -1 $tax_dir/designs/design-*.naive-design.tsv); do
-        # Leave out the header when reading the file
-        tail -n +2 ${design_file} >> $tax_dir/naive-designs.tsv
+    for design_file in $(ls -1 $tax_dir/designs/design-*.naive-design.consensus.tsv); do
+        # Leave out the header when reading the file, and add columns for approach and num-probes
+        tail -n +2 ${design_file} | awk -F'\t' '{print $0"\tconsensus\t1"}' >> $tax_dir/naive-designs.tsv
+    done
+    for n in $(seq 1 10); do
+        for design_file in $(ls -1 $tax_dir/designs/design-*.naive-design.mode-upto-${n}.tsv); do
+            # Leave out the header when reading the file, and add columns for approach and num-probes
+            # Leave out the column (5) that gives per-probe fraction covered
+            tail -n +2 ${design_file} | awk -F'\t' -v n="$n" '{print $1"\t"$2"\t"$3"\t"$4"\t"$6"\tmode\t"n}' >> $tax_dir/naive-designs.tsv
+        done
     done
 
     # gzip the files
