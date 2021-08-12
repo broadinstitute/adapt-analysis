@@ -5,7 +5,8 @@
 # This uses the results of analyses that were already performed.
 #
 # Args:
-#  1: path to output PDF
+#  1: 'standard' or 'relaxed'; args used for design
+#  2: path to output PDF
 #
 # By Hayden Metsky <hayden@mit.edu>
 
@@ -20,7 +21,8 @@ library(plyr)
 taxonomies <- list.files(path=".", pattern="^tax-*")
 
 args <- commandArgs(trailingOnly=TRUE)
-out.pdf <- args[1]
+constraint.type <- args[1]
+out.pdf <- args[2]
 
 # Make vectors for mapping tax to names
 taxs <- c("tax-11620_L",
@@ -104,7 +106,7 @@ plot.violin <- function(filename, title) {
                           position=position_dodge(width=dodge_width))
 
     # Add axis labels
-    p <- p + xlab("Species") + ylab("Detected sequences (%)")
+    p <- p + xlab("Species") + ylab("Detected genomes (%)")
 
     # Leave out usual ggplot2 background and grid lines, but keep border
     # Use aspect.ratio=1 to make the plot square
@@ -125,7 +127,7 @@ plot.violin <- function(filename, title) {
 }
 
 
-p1 <- plot.violin("coverage-against-test.distribution.txt",
+p1 <- plot.violin(paste0("coverage-against-test.", constraint.type, ".distribution.txt"),
                   "Cross-validation")
 
 g <- grid.arrange(p1)

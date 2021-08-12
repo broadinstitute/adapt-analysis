@@ -8,5 +8,6 @@ source ~/anaconda3/etc/profile.d/conda.sh
 
 conda activate data-analysis
 
-Rscript plot.R plots/cross-validation.all-taxonomies.pdf
+Rscript plot.R standard plots/cross-validation.standard.all-taxonomies.pdf
+Rscript plot.R relaxed plots/cross-validation.relaxed.all-taxonomies.pdf
 rm -f Rplots.pdf

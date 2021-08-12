@@ -16,11 +16,12 @@ NUM_DESIGNS=20
 DESIGN_SET_FRACTION=0.8 # Use 80% of accessions as input for design; test against remaining 20%
 
 # Set variables for design
-NJOBS=10
+NJOBS=20
 CLUSTER_THRESHOLD=1.0   # Use high value to obtain a single cluster
 ARG_GL="28"
 ARG_PL="30"
-ARG_PM="3"
+ARG_PM_DESIGN="3"
+ARG_PM_ANALYZE="3"
 ARG_PP="0.98"
 ARG_PRIMER_GC_LO="0.35"
 ARG_PRIMER_GC_HI="0.65"
@@ -32,8 +33,22 @@ ARG_MAXPRIMERSATSITE="10"
 ARG_MAXTARGETLENGTH="500"
 ARG_OBJFNWEIGHTS="0.50 0.25"
 ARG_BESTNTARGETS="30"
-ARG_PREDICTIVE_MODELS="${PREDICTIVE_MODELS_PATH}/classify/model-51373185 ${PREDICTIVE_MODELS_PATH}/regress/model-f8b6fd5d"
+ARG_PREDICTIVE_MODELS="${PREDICTIVE_MODELS_PATH}/classify/cas13a/v1_0 ${PREDICTIVE_MODELS_PATH}/regress/cas13a/v1_0"
 
+# Set some more relaxed variables (they are relaxed for the guide activity
+# objective - i.e., relaxed constraints to achieve higher activity - but are
+# actually more strict for primers in order to achieve higher coverage)
+ARG_PM_DESIGN_RELAXED="3"   # same as standard
+ARG_PM_ANALYZE_RELAXED="4"
+ARG_PP_RELAXED="0.995"
+ARG_PRIMER_GC_LO_RELAXED="0.20"
+ARG_PRIMER_GC_HI_RELAXED="0.80"
+ARG_SOFTGUIDECONSTRAINT_RELAXED="3"
+ARG_HARDGUIDECONSTRAINT_RELAXED="10"
+ARG_PENALTYSTRENGTH_RELAXED="0.05"
+ARG_MAXPRIMERSATSITE_RELAXED="15"
+ARG_MAXTARGETLENGTH_RELAXED="1000"
+ARG_OBJFNWEIGHTS_RELAXED="0.30 0.05"
 
 # Make tmp directory for memoizing alignments and stats
 mkdir -p $PREP_MEMOIZE_DIR
@@ -47,6 +62,11 @@ fi
 
 
 function run_for_taxid() {
+    run_for_taxid_and_constrainttype $1 $2 $3 "standard"
+    run_for_taxid_and_constrainttype $1 $2 $3 "relaxed"
+}
+
+function run_for_taxid_and_constrainttype() {
     # Set information on taxonomy, from arguments
     taxid="$1"
     segment="$2"
@@ -54,14 +74,52 @@ function run_for_taxid() {
 
     echo "Running for taxid $taxid (segment: $segment)" > /dev/tty
 
+    # ADAPT's --ref-accs wants the reference accessions to be space-separated
+    refaccs=$(echo "$refaccs" | tr ',' ' ')
+
+    # Set the constraint type, from arguments ('standard' or 'relaxed')
+    constrainttype="$4"
+    if [ "$constrainttype" == "standard" ]; then
+        echo "With standard constraints on guides" > /dev/tty
+        sgc="$ARG_SOFTGUIDECONSTRAINT"
+        hgc="$ARG_HARDGUIDECONSTRAINT"
+        ps="$ARG_PENALTYSTRENGTH"
+        pmdesign="$ARG_PM_DESIGN"
+        pmanalyze="$ARG_PM_ANALYZE"
+        pp="$ARG_PP"
+        gclo="$ARG_PRIMER_GC_LO"
+        gchi="$ARG_PRIMER_GC_HI"
+        mps="$ARG_MAXPRIMERSATSITE"
+        mtl="$ARG_MAXTARGETLENGTH"
+        objfnweights="$ARG_OBJFNWEIGHTS"
+        analyzepredictthresargs=""  # use the default for the model
+    elif [ "$constrainttype" == "relaxed" ]; then
+        echo "With relaxed constraints on guides" > /dev/tty
+        sgc="$ARG_SOFTGUIDECONSTRAINT_RELAXED"
+        hgc="$ARG_HARDGUIDECONSTRAINT_RELAXED"
+        ps="$ARG_PENALTYSTRENGTH_RELAXED"
+        pmdesign="$ARG_PM_DESIGN_RELAXED"
+        pmanalyze="$ARG_PM_ANALYZE_RELAXED"
+        pp="$ARG_PP_RELAXED"
+        gclo="$ARG_PRIMER_GC_LO_RELAXED"
+        gchi="$ARG_PRIMER_GC_HI_RELAXED"
+        mps="$ARG_MAXPRIMERSATSITE_RELAXED"
+        mtl="$ARG_MAXTARGETLENGTH_RELAXED"
+        objfnweights="$ARG_OBJFNWEIGHTS_RELAXED"
+        analyzepredictthresargs="--predict-activity-thres 0.3 2.7198637"   # arbitrary for classification (0.3; lower precision but higher sensitivity than default) and default for regression (-1.28 + 4)
+    else
+        echo "Unknown constraint type '$constrainttype'"
+        exit 1
+    fi
+
     # Make an output directory
     outdir="tax-${taxid}_${segment}"
     mkdir -p $outdir
 
     mkdir -p $outdir/designs
     mkdir -p $outdir/designs/accessions
-    mkdir -p $outdir/designs/designs
-    mkdir -p $outdir/designs/coverages
+    mkdir -p $outdir/designs/$constrainttype/designs
+    mkdir -p $outdir/designs/$constrainttype/coverages
 
     conda activate adapt
 
@@ -92,23 +150,23 @@ function run_for_taxid() {
 
         # Produce a design.py and analyze_coverage.py command
 
-        if [ ! -f $outdir/designs/designs/design-${i}.tsv.0 ]; then
+        if [ ! -f $outdir/designs/$constrainttype/designs/design-${i}.tsv.0 ]; then
             # Produce a design command
-            echo -n "design.py complete-targets auto-from-args $taxid $segment $refaccs $outdir/designs/designs/design-${i}.tsv --obj maximize-activity --soft-guide-constraint $ARG_SOFTGUIDECONSTRAINT --hard-guide-constraint $ARG_HARDGUIDECONSTRAINT --penalty-strength $ARG_PENALTYSTRENGTH --maximization-algorithm $ARG_MAXIMIZATIONALGORITHM -gl $ARG_GL -pl $ARG_PL -pm $ARG_PM -pp $ARG_PP --primer-gc-content-bounds $ARG_PRIMER_GC_LO $ARG_PRIMER_GC_HI --max-primers-at-site $ARG_MAXPRIMERSATSITE --max-target-length $ARG_MAXTARGETLENGTH --obj-fn-weights $ARG_OBJFNWEIGHTS --best-n-targets $ARG_BESTNTARGETS --predict-activity-model-path $ARG_PREDICTIVE_MODELS --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --ncbi-api-key $NCBI_API_KEY --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/designs/accessions/design-${i}.design-set.tsv --verbose &> $outdir/designs/designs/design-${i}.out" >> $commands_fn
+            echo -n "design.py complete-targets auto-from-args $taxid $segment $outdir/designs/$constrainttype/designs/design-${i}.tsv --obj maximize-activity --soft-guide-constraint $sgc --hard-guide-constraint $hgc --penalty-strength $ps --maximization-algorithm $ARG_MAXIMIZATIONALGORITHM -gl $ARG_GL -pl $ARG_PL -pm $pmdesign -pp $pp --primer-gc-content-bounds $gclo $gchi --max-primers-at-site $mps --max-target-length $mtl --obj-fn-weights $objfnweights --best-n-targets $ARG_BESTNTARGETS --predict-activity-model-path $ARG_PREDICTIVE_MODELS --mafft-path $MAFFT_PATH --prep-memoize-dir $PREP_MEMOIZE_DIR --ncbi-api-key $NCBI_API_KEY --cluster-threshold $CLUSTER_THRESHOLD --use-accessions $outdir/designs/accessions/design-${i}.design-set.tsv --ref-accs $refaccs --verbose &> $outdir/designs/$constrainttype/designs/design-${i}.out" >> $commands_fn
             echo -n "; " >> $commands_fn
         fi
 
-        if [ ! -f $outdir/designs/coverages/design-${i}.coverage-against-test.active.txt ]; then
+        if [ ! -f $outdir/designs/$constrainttype/coverages/design-${i}.coverage-against-test.active.txt ]; then
             # Produce analyze_coverage command, with decisions made based on whether pairs are active
             cat $outdir/designs/accessions/design-${i}.test-set.tsv | awk '{print $3}' > $outdir/designs/accessions/design-${i}.test-set.acc-only.txt
-            echo -n "analyze_coverage.py $outdir/designs/designs/design-${i}.tsv.0 $outdir/designs/accessions/design-${i}.test-set.acc-only.txt --predict-activity-model-path $ARG_PREDICTIVE_MODELS -pm $ARG_PM --use-accessions --write-frac-bound $outdir/designs/coverages/design-${i}.coverage-against-test.active.txt --verbose &> $outdir/designs/coverages/design-${i}.coverage-against-test.active.out" >> $commands_fn
-            echo "" >> $commands_fn
+            echo -n "analyze_coverage.py $outdir/designs/$constrainttype/designs/design-${i}.tsv.0 $outdir/designs/accessions/design-${i}.test-set.acc-only.txt --predict-activity-model-path $ARG_PREDICTIVE_MODELS $analyzepredictthresargs -pm $pmanalyze --use-accessions --write-frac-bound $outdir/designs/$constrainttype/coverages/design-${i}.coverage-against-test.active.txt --verbose &> $outdir/designs/$constrainttype/coverages/design-${i}.coverage-against-test.active.out" >> $commands_fn
+            echo -n "; " >> $commands_fn
         fi
 
-        if [ ! -f $outdir/designs/coverages/design-${i}.coverage-against-test.highly-active.txt ]; then
+        if [ ! -f $outdir/designs/$constrainttype/coverages/design-${i}.coverage-against-test.highly-active.txt ]; then
             # Produce analyze_coverage command, with decisions made based on whether pairs are *highly* active
             cat $outdir/designs/accessions/design-${i}.test-set.tsv | awk '{print $3}' > $outdir/designs/accessions/design-${i}.test-set.acc-only.txt
-            echo -n "analyze_coverage.py $outdir/designs/designs/design-${i}.tsv.0 $outdir/designs/accessions/design-${i}.test-set.acc-only.txt --predict-activity-model-path $ARG_PREDICTIVE_MODELS --predict-activity-require-highly-active -pm $ARG_PM --use-accessions --write-frac-bound $outdir/designs/coverages/design-${i}.coverage-against-test.highly-active.txt --verbose &> $outdir/designs/coverages/design-${i}.coverage-against-test.highly-active.out" >> $commands_fn
+            echo -n "analyze_coverage.py $outdir/designs/$constrainttype/designs/design-${i}.tsv.0 $outdir/designs/accessions/design-${i}.test-set.acc-only.txt --predict-activity-model-path $ARG_PREDICTIVE_MODELS $analyzepredictthresargs --predict-activity-require-highly-active -pm $pmanalyze --use-accessions --write-frac-bound $outdir/designs/$constrainttype/coverages/design-${i}.coverage-against-test.highly-active.txt --verbose &> $outdir/designs/$constrainttype/coverages/design-${i}.coverage-against-test.highly-active.out" >> $commands_fn
             echo "" >> $commands_fn
         fi
     done
@@ -139,10 +197,10 @@ run_for_taxid "121791" "None" "NC_002728"
 run_for_taxid "11676" "None" "NC_001802"
 
 # Run for HCV
-#run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
+##run_for_taxid "11103" "None" "NC_004102,NC_030791,NC_009827,NC_009826,NC_009825,NC_038882,NC_009824,NC_009823"
 
 # Run for IAV segment 2
-#run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372"
+##run_for_taxid "11320" "2" "NC_026435,NC_002021,NC_007375,NC_026423,NC_007372"
 
 # Run for Rhinovirus A
 run_for_taxid "147711" "None" "NC_038311,NC_001617,NC_038311"
