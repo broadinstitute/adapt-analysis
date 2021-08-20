@@ -195,10 +195,23 @@ plot.results.for.taxonomy <- function(taxonomy) {
     frac.bounds.summary <- merge(frac.bounds.summary, ref.pos.map, by="aln.pos")
     real.min.dist.summary <- merge(real.min.dist.summary, ref.pos.map, by="aln.pos")
 
+    # Split frac.bounds.summary into separate data frames, for different
+    # types of plots:
+    #   1) frac.bounds.summary will have the consensus approach and the mode
+    #      approach with only 1 probe
+    #   2) frac.bounds.summary.all.mode will *not* have the consensus approach
+    #      but will have the mode approach with all numbers of probes
+    # Both will keep the real.max.dist.summary (i.e., ADAPT) rows
+    frac.bounds.summary.all.mode <- frac.bounds.summary[frac.bounds.summary$approach != "naive.consensus.frac.bound",]
+    frac.bounds.summary <- frac.bounds.summary[!(frac.bounds.summary$approach %in% paste0("naive.mode.frac.bound.upto-", c(2:10))),]
+
     # Rename approaches to display
     frac.bounds.summary$approach.display <- mapvalues(frac.bounds.summary$approach,
-        from=c("naive.consensus.frac.bound", paste0("naive.mode.frac.bound.upto-", c(1:10)), "real.max.activity.frac.bound.hgc-1", "real.max.activity.frac.bound.hgc-2", "real.max.activity.frac.bound.hgc-3"),
-        to=c("Consensus", paste0("Mode (", c(1:10), ")"), "ADAPT, 1 probe", "ADAPT, 2 probes", "ADAPT, 3 probes"))
+        from=c("naive.consensus.frac.bound", "naive.mode.frac.bound.upto-1", "real.max.activity.frac.bound.hgc-1", "real.max.activity.frac.bound.hgc-2", "real.max.activity.frac.bound.hgc-3"),
+        to=c("Consensus", "Mode", "ADAPT, 1 probe", "ADAPT, 2 probes", "ADAPT, 3 probes"))
+    frac.bounds.summary.all.mode$approach.display <- mapvalues(frac.bounds.summary.all.mode$approach,
+        from=c(paste0("naive.mode.frac.bound.upto-", c(1:10)), "real.max.activity.frac.bound.hgc-1", "real.max.activity.frac.bound.hgc-2", "real.max.activity.frac.bound.hgc-3"),
+        to=c(paste0("Mode (", c(1:10), ")"), "ADAPT, 1 probe", "ADAPT, 2 probes", "ADAPT, 3 probes"))
     real.min.dist.summary$approach.display <- mapvalues(real.min.dist.summary$approach,
         from=c("real.min.guide.count"),
         to=c("Minimize probes"))
@@ -283,9 +296,58 @@ plot.results.for.taxonomy <- function(taxonomy) {
     p2 <- p2 + ggtitle(taxonomy.name)
     p2 <- p2 + theme_pubr()
 
+    # Third, produce a plot focused on a baseline using the N most
+    # common subsequences from N=1..10 (loosely called 'mode')
+    # This shows the fraction of sequences detected, comparing to ADAPT
+    # with 1, 2, and 3 guides
+    # Because it can be hard to visualize up to N=10, this uses a stacked
+    # area chart for the 'mode' baseline where each group corresponds to
+    # a choice of N
+    frac.bounds.summary.all.mode.adapt <- frac.bounds.summary.all.mode[frac.bounds.summary.all.mode$approach %in% paste0("real.max.activity.frac.bound.hgc-", c(1:3)),]
+    frac.bounds.summary.all.mode.modes <- frac.bounds.summary.all.mode[frac.bounds.summary.all.mode$approach %in% paste0("naive.mode.frac.bound.upto-", c(1:10)),]
+    # Compute how much each additional probe adds to the fraction covered
+    t <- frac.bounds.summary.all.mode.modes
+    t$num.probes <- as.numeric(gsub(".+upto-(\\d+)", "\\1", t$approach))
+    t$delta.frac.bound <- NA
+    t$delta.frac.bound[t$num.probes == 1] <- t$mean[t$num.probes == 1]  # at 1 probe, delta is against 0
+    for(n in 2:10) {
+        t$delta.frac.bound[t$num.probes == n] <- t$mean[t$num.probes == n] - t$mean[t$num.probes == n-1]
+    }
+    t$num.probes.factor <- factor(t$num.probes, levels=rev(unique(t$num.probes)))   # specify order of areas, with N=1 probe on bottom
+    frac.bounds.summary.all.mode.modes <- t
+    p3 <- ggplot(frac.bounds.summary.all.mode, aes(x=ref.pos))
+    # Add a stacked area chart for the 'mode' baselines; show the delta in
+    # fraction bound (N probes versus N-1 probes) so each area represents
+    # the coverage added by adding a probe (the top area is the coverage
+    # using all N=10 probes)
+    # Note that default for geom_area() is stacked
+    # This sets alpha according to num.probes
+    p3 <- p3 + geom_area(data=frac.bounds.summary.all.mode.modes,
+                         aes(x=ref.pos, y=delta.frac.bound, group=num.probes.factor, alpha=num.probes),
+                         fill="black",
+                         color="white", size=0.2) # thin white for outline between areas
+    # Plot mean values as a line (only for ADAPT)
+    p3 <- p3 + geom_line(data=frac.bounds.summary.all.mode.adapt,
+                         aes(y=mean, color=approach.display), size=0.9)
+    # Can use geom_errorbar(..) to show error bars at each plotted
+    # x-value; alternatively, geom_ribbon(..) to show a continuous
+    # interval (i.e., confidence band) around each line. Note that
+    # this is a 95% pointwise confidence band, NOT a simultaneous
+    # confidence band. (And note it is only for ADAPT)
+    # For simplicity on this plot, leave it out
+    #p3 <- p3 + geom_ribbon(data=frac.bounds.summary.all.mode.adapt,
+    #                       aes(ymin=mean-ci,
+    #                           ymax=mean+ci,
+    #                           fill=approach.display), alpha=0.2)
+    # Add title to plot and axis labels
+    p3 <- p3 + xlab("Genome position") + ylab("Detected sequences (%)")
+    p3 <- p3 + ggtitle(taxonomy.name)
+    p3 <- p3 + theme_pubr()
+
     # Make sure p1 and p2 are on the same x-axis scale (same limit)
     # Force x.min to 0 even if the first window (after filtering out
     # windows at the ends) is not at 0
+    # Put p3 on these limits as well
     #x.min <- min(min(frac.bounds.summary$window.start),
     #             min(real.min.dist.summary$window.start))
     x.min <- 0
@@ -293,14 +355,13 @@ plot.results.for.taxonomy <- function(taxonomy) {
                  max(real.min.dist.summary$window.start))
     p1 <- p1 + scale_x_continuous(limits=c(x.min, x.max))
     p2 <- p2 + scale_x_continuous(limits=c(x.min, x.max))
+    p3 <- p3 + scale_x_continuous(limits=c(x.min, x.max))
 
     # Use name="" to avoid legend title
     # Use viridis color scheme, but specified manually to draw contrast between
     # the naive designs and real designs (only important for p1)
-    mode.cols <- rep("#D69856", 10)
-    names(mode.cols) <- paste0("Mode (", c(1:10), ")")
     p1.cols <- c("Consensus"="#AC3876",
-                 mode.cols,
+                 "Mode"="#D69856",
                  "ADAPT, 1 probe"="#3D0C51",
                  "ADAPT, 2 probes"="#5EB47E",
                  "ADAPT, 3 probes"="#FAE655")
@@ -315,8 +376,15 @@ plot.results.for.taxonomy <- function(taxonomy) {
                                   values=p2.cols)
     p2 <- p2 + scale_fill_manual(name="",
                                  values=p2.cols)
+    p3 <- p3 + scale_color_manual(name="",
+                                  values=p1.cols)
+    p3 <- p3 + scale_fill_manual(name="",
+                                 values=p1.cols)
+    p3 <- p3 + scale_alpha_continuous(name="# subsequences",
+                                      breaks=c(1,10),
+                                      range=c(0.1, 0.9))
 
-    r <- list(max.frac.bound=p1, min.num.guides=p2)
+    r <- list(max.frac.bound=p1, min.num.guides=p2, max.frac.bound.modes=p3)
     return(r)
 }
 
@@ -326,3 +394,4 @@ height <- 3.2
 width <- 2.4 * height
 ggsave(file.path(out.dir, paste0(in.taxonomy, ".max-frac-bound.pdf")), r$max.frac.bound, width=width, height=height, useDingbats=FALSE)
 ggsave(file.path(out.dir, paste0(in.taxonomy, ".min-num-guides.pdf")), r$min.num.guides, width=width, height=height, useDingbats=FALSE)
+ggsave(file.path(out.dir, paste0(in.taxonomy, ".max-frac-bound-modes.pdf")), r$max.frac.bound.modes, width=width, height=height, useDingbats=FALSE)
