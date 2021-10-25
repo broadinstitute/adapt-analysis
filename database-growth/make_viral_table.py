@@ -29,7 +29,7 @@ OUTPUT_PER_YEAR = 'data/counts-per-year.tsv'
 OUTPUT_CUMULATIVE = 'data/counts-cumulative.tsv'
 
 START_YEAR = 2000
-END_YEAR = 2019
+END_YEAR = 2020
 
 
 def num_unique_kmers(accessions, k=31):

@@ -20,8 +20,8 @@ counts <- read.table(gzfile(IN.TABLE), header=TRUE, sep="\t",
                      quote="\"")
 names(counts) <- gsub("_", ".", names(counts))
 
-# Only use 2005--2019
-counts <- counts[counts$year >= 2005 & counts$year <= 2019, ]
+# Only use 2005--2020
+counts <- counts[counts$year >= 2005 & counts$year <= 2020, ]
 
 make.plots <- function(cumulative.count.colname, out.pdf.prefix, y.label) {
     # Make plots for number of genomes or number of k-mers.
