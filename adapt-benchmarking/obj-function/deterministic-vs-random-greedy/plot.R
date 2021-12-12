@@ -67,8 +67,9 @@ summarySE <- function(data=NULL, measurevar, groupvars=NULL, na.rm=FALSE,
 designs.summary <- read.table(gzfile(IN.TSV), header=TRUE, sep="\t")
 names(designs.summary) <- gsub("_", ".", names(designs.summary))
 
-# Add a column giving the objective value for the guides (not including
-# the full target primers and length)
+# Add a column giving the objective value for the guides, i.e., the
+# value that the submodular maximization algorithm tries to maximize
+# (i.e., not including the full target primers and length)
 designs.summary$guide.objective.value <- designs.summary$expected.activity - designs.summary$penalty.strength * pmax(0, designs.summary$num.guides - designs.summary$soft.guide.constraint)
 
 # Take the mean across design options for each choice of parameter values
@@ -88,7 +89,7 @@ names(hard.guide.constraint.labs) <- c(1, 2, 3, 4)
 make.plot <- function(args) {
     t <- args[1]
     ps <- args[2]
-    p <- ggboxplot(subset(guide.obj, penalty.strength == ps & taxonomy == t), x="algorithm", y="guide.objective.value", color="algorithm", add="jitter", legend="none") +
+    p <- ggboxplot(subset(guide.obj, penalty.strength == ps & taxonomy == t), x="algorithm", y="guide.objective.value", color="algorithm", add="jitter", outlier.shape=NA, legend="none") +
         facet_grid(hard.guide.constraint ~ soft.guide.constraint,
                    scales="free_y",
                    labeller=labeller(soft.guide.constraint=soft.guide.constraint.labs, hard.guide.constraint=hard.guide.constraint.labs)) +
@@ -99,7 +100,7 @@ make.plot <- function(args) {
         scale_color_viridis(discrete=TRUE) +
         theme(axis.text.x = element_blank(), # remove x-axis labels; not needed because algorithm is already colored
               axis.ticks.x = element_blank()) +
-        scale_y_continuous(labels=function(x) sprintf("%.2f", x))   # only show 2 decimal replaces
+        scale_y_continuous(labels=function(x) sprintf("%.2f", x))   # only show 2 decimal places
     return(p)
 }
 
