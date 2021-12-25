@@ -155,6 +155,8 @@ ENV/
 !/misc-designs/ncov/**/out-*/designs/*.tsv
 /misc-designs/ncov/**/input/*.fasta
 /misc-designs/ncov/**/input/*.fasta.gz
+/misc-designs/ncov/evaluate-original-design/data/gisaid_msa_*/*.fasta.gz
+/misc-designs/ncov/evaluate-original-design/data/gisaid_msa_*/*.sequence-names.txt.gz
 ####################
 
 ########################
