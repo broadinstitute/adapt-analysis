@@ -35,6 +35,20 @@ per.seq.predictions$accession <- gsub("(.+)\\.(.+)", "\\1", per.seq.predictions$
 # Pull out only the requested design assay option
 per.seq.predictions <- per.seq.predictions[per.seq.predictions$design.id == assay.option,]
 
+# Convert the ideal guide sequence for each target into an alphabetic label
+# If there are two guides, the label will be 'A' or 'B' corresponding to
+#   which is the best guide for each target sequence
+# Note this must be done *after* pulling out the requested design assay
+#   option (above), or else there will be more unique guides than we need
+#   to plot (use `factor()` again to remove factors no longer used because they
+#   were from other design options)
+ideal.guide <- per.seq.predictions$guide.ideal.target.sequence
+ideal.guide[ideal.guide == "None"] <- NA
+ideal.guide.numeric <- as.numeric(factor(ideal.guide)) # '1', '2', etc. to label a guide
+ideal.guide.alph <- intToUtf8(utf8ToInt('A') + ideal.guide.numeric - 1, multiple=TRUE) # 'A', 'B', etc. to label a guide
+ideal.guide.alph[is.na(ideal.guide.alph)] <- "Unknown"
+per.seq.predictions$ideal.guide.label <- factor(ideal.guide.alph)
+
 # Remove sub-country information (e.g., 'Nigeria: Ebonyi State') that comes after ':'
 # In other words, pull out what comes before the ':'
 per.seq.metadata$country <- gsub("^([^:]+)(:.*)?$", "\\1", per.seq.metadata$country)
@@ -91,6 +105,21 @@ p2 <- gheatmap(p1, df.guide.activity, width=.4, offset=.3, colnames=TRUE,
 require(ggnewscale)
 p3 <- p2 + new_scale_fill()
 
+# Add heatmap of the particular guide that does best against each
+# sequence (e.g., if there are 2 guides, this heatmap will show either
+# 'A' or 'B' for each guide)
+df.ideal.guide <- per.seq[c("ideal.guide.label")]
+df.ideal.guide <- as.data.frame(df.ideal.guide)
+rownames(df.ideal.guide) <- per.seq$label
+names(df.ideal.guide)[names(df.ideal.guide) == "ideal.guide.label"] <- "Ideal\nguide"
+p3 <- gheatmap(p3, df.ideal.guide, width=.1, offset=1.1, colnames=TRUE,
+        colnames_offset_y=-9) +
+    scale_fill_viridis_d(option="mako", name="Ideal\nguide")
+
+# Start a new color scale, based on: http://yulab-smu.top/treedata-book/chapter7.html#gheatmap-ggnewscale
+require(ggnewscale)
+p4 <- p3 + new_scale_fill()
+
 # Add heatmap of primer mismatches
 df.primer.mismatches <- per.seq[c("left.primer.mismatches", "right.primer.mismatches")]
 df.primer.mismatches <- as.data.frame(df.primer.mismatches)
@@ -101,8 +130,8 @@ df.primer.mismatches$right.primer.mismatches <- as.factor(as.numeric(as.characte
 rownames(df.primer.mismatches) <- per.seq$label
 names(df.primer.mismatches)[names(df.primer.mismatches) == "left.primer.mismatches"] <- "5'"
 names(df.primer.mismatches)[names(df.primer.mismatches) == "right.primer.mismatches"] <- "3'"
-p3 <- gheatmap(p3, df.primer.mismatches, width=.4, offset=1.2, colnames=TRUE,
+p4 <- gheatmap(p4, df.primer.mismatches, width=.4, offset=1.8, colnames=TRUE,
         colnames_offset_y=-5) +
     scale_fill_viridis_d(option="magma", name="Primer\nmismatches")
 
-ggsave(paste0(out.dir, "plot--assay-option-", assay.option, ".pdf"), p3, width=8, height=8, useDingbats=FALSE)
+ggsave(paste0(out.dir, "plot--assay-option-", assay.option, ".pdf"), p4, width=8, height=8, useDingbats=FALSE)
