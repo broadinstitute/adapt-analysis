@@ -1,6 +1,0 @@
-* To make tree, I used iqtree with `-m TEST`
-* Tree rooting
-    * For LASV, following PMC4537774, I rooted the tree on the 1969 _Pinneo_ strain (KM822127). I did this in FigTree and exported the .tree file in Newick format.
-
-* Plotting
-    * Custom conda environment: `conda activate misc-bioinformatic-tools`
