@@ -46,7 +46,7 @@ ideal.guide <- per.seq.predictions$guide.ideal.target.sequence
 ideal.guide[ideal.guide == "None"] <- NA
 ideal.guide.numeric <- as.numeric(factor(ideal.guide)) # '1', '2', etc. to label a guide
 ideal.guide.alph <- intToUtf8(utf8ToInt('A') + ideal.guide.numeric - 1, multiple=TRUE) # 'A', 'B', etc. to label a guide
-ideal.guide.alph[is.na(ideal.guide.alph)] <- "Unknown"
+ideal.guide.alph[is.na(ideal.guide.alph)] <- "N/A"
 per.seq.predictions$ideal.guide.label <- factor(ideal.guide.alph)
 
 # Remove sub-country information (e.g., 'Nigeria: Ebonyi State') that comes after ':'
@@ -92,8 +92,8 @@ p1 <- ggtree(tree) %<+% per.seq +
 # Add heatmap of guide activity
 df.guide.activity <- per.seq[c("guide.activity")]
 df.guide.activity <- as.data.frame(df.guide.activity)
-df.guide.activity$guide.activity[df.guide.activity$guide.activity == "None"] <- "0"
 df.guide.activity$guide.activity <- as.numeric(as.character(df.guide.activity$guide.activity))
+df.guide.activity$guide.activity[is.na(df.guide.activity$guide.activity)] <- 0
 rownames(df.guide.activity) <- per.seq$label
 names(df.guide.activity)[names(df.guide.activity) == "guide.activity"] <- "Guide"
 p2 <- gheatmap(p1, df.guide.activity, width=.4, offset=.3, colnames=TRUE,
