@@ -46,3 +46,6 @@ parse_genbank_xml_for_source_features = ncbi_neighbors.parse_genbank_xml_for_sou
 
 # Expose ncbi_neighbors's fetch_fastas() function
 fetch_fastas = ncbi_neighbors.fetch_fastas
+
+# Expose ncbi_neighbors's fetch_metadata() function
+fetch_metadata = ncbi_neighbors.fetch_metadata
