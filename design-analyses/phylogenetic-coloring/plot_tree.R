@@ -86,8 +86,8 @@ p1 <- ggtree(tree) %<+% per.seq +
                  size=0.8, offset=0.1, hjust=0) +
     geom_tiplab(aes(label=year, color=country), align=TRUE, linetype=NA,
                 size=0.8, offset=0.2, hjust=0) +
-    scale_color_viridis_d(option="turbo", name="Country") +
-    guides(color=guide_legend(override.aes = list(size=5))) # larger legend size
+    scale_color_viridis_d(option="turbo", name="Country",
+                          guide=guide_legend(override.aes=list(size=5)))    # larger legend size
 
 # Add heatmap of guide activity
 df.guide.activity <- per.seq[c("guide.activity")]
@@ -95,12 +95,12 @@ df.guide.activity <- as.data.frame(df.guide.activity)
 df.guide.activity$guide.activity <- as.numeric(as.character(df.guide.activity$guide.activity))
 df.guide.activity$guide.activity[is.na(df.guide.activity$guide.activity)] <- 0
 rownames(df.guide.activity) <- per.seq$label
-names(df.guide.activity)[names(df.guide.activity) == "guide.activity"] <- "Guide"
+names(df.guide.activity)[names(df.guide.activity) == "guide.activity"] <- "Activity"
 p2 <- gheatmap(p1, df.guide.activity, width=.4, offset=.3, colnames=TRUE,
         colnames_offset_y=-5) + #%>% 
       #scale_x_ggtree
-      scale_fill_viridis_c(option="viridis", name="Predicted\nguide activity", breaks=c(0,1,2,3), limits=c(0,3.5))
-
+      scale_fill_viridis_c(option="viridis", name="Predicted\nguide activity",
+                           breaks=c(0,1,2,3), limits=c(0,3.5))
 # Start a new color scale, based on: http://yulab-smu.top/treedata-book/chapter7.html#gheatmap-ggnewscale
 require(ggnewscale)
 p3 <- p2 + new_scale_fill()
