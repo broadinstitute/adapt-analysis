@@ -89,6 +89,9 @@ p1 <- ggtree(tree) %<+% per.seq +
     scale_color_viridis_d(option="turbo", name="Country",
                           guide=guide_legend(override.aes=list(size=5)))    # larger legend size
 
+# Add plot title
+p1 <- p1 + ggtitle(paste0(taxon, " // design #", assay.option))
+
 # Add heatmap of guide activity
 df.guide.activity <- per.seq[c("guide.activity")]
 df.guide.activity <- as.data.frame(df.guide.activity)
