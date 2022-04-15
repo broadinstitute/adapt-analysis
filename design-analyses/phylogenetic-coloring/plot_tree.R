@@ -126,15 +126,20 @@ p4 <- p3 + new_scale_fill()
 # Add heatmap of primer mismatches
 df.primer.mismatches <- per.seq[c("left.primer.mismatches", "right.primer.mismatches")]
 df.primer.mismatches <- as.data.frame(df.primer.mismatches)
-df.primer.mismatches$left.primer.mismatches[df.primer.mismatches$left.primer.mismatches == "None"] <- "0"
-df.primer.mismatches$right.primer.mismatches[df.primer.mismatches$right.primer.mismatches == "None"] <- "0"
-df.primer.mismatches$left.primer.mismatches <- as.factor(as.numeric(as.character(df.primer.mismatches$left.primer.mismatches)))
-df.primer.mismatches$right.primer.mismatches <- as.factor(as.numeric(as.character(df.primer.mismatches$right.primer.mismatches)))
+df.primer.mismatches$left.primer.mismatches[df.primer.mismatches$left.primer.mismatches == "None"] <- NA
+df.primer.mismatches$right.primer.mismatches[df.primer.mismatches$right.primer.mismatches == "None"] <- NA
+df.primer.mismatches$left.primer.mismatches <- as.numeric(as.character(df.primer.mismatches$left.primer.mismatches))
+df.primer.mismatches$left.primer.mismatches[is.na(df.primer.mismatches$left.primer.mismatches)] <- "6+"
+df.primer.mismatches$left.primer.mismatches <- as.factor(df.primer.mismatches$left.primer.mismatches)
+df.primer.mismatches$right.primer.mismatches <- as.numeric(as.character(df.primer.mismatches$right.primer.mismatches))
+df.primer.mismatches$right.primer.mismatches[is.na(df.primer.mismatches$right.primer.mismatches)] <- "6+"
+df.primer.mismatches$right.primer.mismatches <- as.factor(df.primer.mismatches$right.primer.mismatches)
 rownames(df.primer.mismatches) <- per.seq$label
 names(df.primer.mismatches)[names(df.primer.mismatches) == "left.primer.mismatches"] <- "5'"
 names(df.primer.mismatches)[names(df.primer.mismatches) == "right.primer.mismatches"] <- "3'"
 p4 <- gheatmap(p4, df.primer.mismatches, width=.4, offset=1.8, colnames=TRUE,
         colnames_offset_y=-5) +
-    scale_fill_viridis_d(option="magma", name="Primer\nmismatches")
+    scale_fill_viridis_d(option="viridis", name="Primer\nmismatches",
+        direction=-1)   # reverse scale so, like guide activity, purple is bad (here, high values)
 
 ggsave(paste0(out.dir, "plot--assay-option-", assay.option, ".pdf"), p4, width=8, height=8, useDingbats=FALSE)
