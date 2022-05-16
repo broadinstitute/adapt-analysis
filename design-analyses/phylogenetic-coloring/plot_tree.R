@@ -12,17 +12,24 @@ library(ggplot2)
 library(ggtree)
 require(dplyr)
 
+# Color by 'country' or 'species'
+COLOR.BY <- "species"
 
 args <- commandArgs(trailingOnly=TRUE)
 taxon <- args[1]
 assay.option <- args[2]
+
+if (is.na(assay.option)) {
+    print("Must include assay option argument")
+    stop()
+}
 
 data.dir <- paste0("data/", taxon, "/")
 out.dir <- paste0("out/", taxon, "/")
 
 # Read previous analyses
 per.seq.predictions <- data.frame(read.table(file.path(paste0(out.dir, "per-seq-predictions.tsv")), sep="\t", header=TRUE))
-per.seq.metadata <- data.frame(read.table(file.path(paste0(out.dir, "per-seq-metadata.tsv")), sep="\t", header=TRUE))
+per.seq.metadata <- data.frame(read.table(file.path(paste0(out.dir, "per-seq-metadata.tsv")), sep="\t", quote="", header=TRUE)) # quote="" to allow quotation marks in metadata
 
 # Replace '_' in column names with '.'
 names(per.seq.predictions) <- gsub("_", ".", names(per.seq.predictions))
@@ -55,6 +62,8 @@ per.seq.metadata$country <- gsub("^([^:]+)(:.*)?$", "\\1", per.seq.metadata$coun
 per.seq.metadata$country[per.seq.metadata$country == "None"] <- "Unknown"
 per.seq.metadata$country <- factor(per.seq.metadata$country)
 
+per.seq.metadata$species <- factor(per.seq.metadata$species)
+
 # Join on accession
 per.seq <- merge(x=per.seq.predictions, y=per.seq.metadata, by="accession")
 
@@ -80,17 +89,43 @@ tree <- read.tree(nwk)
 # Use `%<+%` operator in ggtree to combine tree with data
 #  (defined at: https://github.com/YuLab-SMU/ggtree/blob/4a86238b3000d266147bda244e5ea30193d4ad15/R/operator.R#L51)
 #  see note above about how these are joined together
-p1 <- ggtree(tree) %<+% per.seq +
-    geom_tippoint(aes(color=country), size=0.5) +
-    geom_tiplab(aes(label=accession, color=country), align=TRUE, linesize=0.1, 
-                 size=0.8, offset=0.1, hjust=0) +
-    geom_tiplab(aes(label=year, color=country), align=TRUE, linetype=NA,
-                size=0.8, offset=0.2, hjust=0) +
-    scale_color_viridis_d(option="turbo", name="Country",
-                          guide=guide_legend(override.aes=list(size=5)))    # larger legend size
+TIP.LABEL.LINE <- FALSE
+if (COLOR.BY == "country") {
+    p1 <- ggtree(tree) %<+% per.seq +
+        geom_tippoint(aes(color=country), size=0.5)
+        if (TIP.LABEL.LINE) {
+            p1 <- p1 + geom_tiplab(aes(label=accession, color=country), align=TRUE, linesize=0.1, 
+                         size=0.8, offset=0.1, hjust=0)
+        } else {
+            p1 <- p1 + geom_tiplab(aes(label=accession, color=country), align=TRUE, linetype=NA,
+                         size=0.8, offset=0.1, hjust=0)
+        }
+        p1 <- p1 + geom_tiplab(aes(label=year, color=country), align=TRUE, linetype=NA,
+                    size=0.8, offset=0.2, hjust=0) +
+        scale_color_viridis_d(option="turbo", name="Country",
+                              guide=guide_legend(override.aes=list(size=5)))    # larger legend size
+} else if (COLOR.BY == "species") {
+    p1 <- ggtree(tree) %<+% per.seq +
+        geom_tippoint(aes(color=species), size=0.5)
+        if (TIP.LABEL.LINE) {
+            p1 <- p1 + geom_tiplab(aes(label=accession, color=species), align=TRUE, linesize=0.1, 
+                         size=0.8, offset=0.1, hjust=0)
+        } else {
+            p1 <- p1 + geom_tiplab(aes(label=accession, color=species), align=TRUE, linetype=NA,
+                         size=0.8, offset=0.1, hjust=0)
+        }
+        p1 <- p1 + geom_tiplab(aes(label=year, color=species), align=TRUE, linetype=NA,
+                    size=0.8, offset=0.2, hjust=0) +
+        scale_color_viridis_d(option="turbo", name="Species",
+                              guide=guide_legend(override.aes=list(size=3)))    # larger legend size
+}
 
 # Add plot title
 p1 <- p1 + ggtitle(paste0(taxon, " // design #", assay.option))
+
+# Heatmap settings
+HEATMAP.WIDTH.SCALE <- 0.3  # gheatmap(width=..) is relative to the width of the tree
+HEATMAP.BORDER.COLOR <- NA  # default is "white" but the border overlaps and makes all colors lighter when there are many heatmap rows (many tree tips)
 
 # Add heatmap of guide activity
 df.guide.activity <- per.seq[c("guide.activity")]
@@ -99,11 +134,11 @@ df.guide.activity$guide.activity <- as.numeric(as.character(df.guide.activity$gu
 df.guide.activity$guide.activity[is.na(df.guide.activity$guide.activity)] <- 0
 rownames(df.guide.activity) <- per.seq$label
 names(df.guide.activity)[names(df.guide.activity) == "guide.activity"] <- "Activity"
-p2 <- gheatmap(p1, df.guide.activity, width=.4, offset=.3, colnames=TRUE,
-        colnames_offset_y=-5) + #%>% 
+p2 <- gheatmap(p1, df.guide.activity, width=.4*HEATMAP.WIDTH.SCALE, offset=.3, colnames=TRUE,
+        colnames_offset_y=-15, color=HEATMAP.BORDER.COLOR) + #%>% 
       #scale_x_ggtree
       scale_fill_viridis_c(option="viridis", name="Predicted\nguide activity",
-                           breaks=c(0,1,2,3), limits=c(0,3.5))
+                           breaks=c(0,1,2,3), limits=c(0,3.5), oob=scales::squish)  # `oob = scales::squish` will squish any values outside the limits (e.g., activity>3.5) to the limits range
 # Start a new color scale, based on: http://yulab-smu.top/treedata-book/chapter7.html#gheatmap-ggnewscale
 require(ggnewscale)
 p3 <- p2 + new_scale_fill()
@@ -115,8 +150,8 @@ df.ideal.guide <- per.seq[c("ideal.guide.label")]
 df.ideal.guide <- as.data.frame(df.ideal.guide)
 rownames(df.ideal.guide) <- per.seq$label
 names(df.ideal.guide)[names(df.ideal.guide) == "ideal.guide.label"] <- "Ideal\nguide"
-p3 <- gheatmap(p3, df.ideal.guide, width=.1, offset=1.1, colnames=TRUE,
-        colnames_offset_y=-9) +
+p3 <- gheatmap(p3, df.ideal.guide, width=.1*HEATMAP.WIDTH.SCALE, offset=1.1, colnames=TRUE,
+        colnames_offset_y=-18, color=HEATMAP.BORDER.COLOR) +
     scale_fill_viridis_d(option="mako", name="Ideal\nguide")
 
 # Start a new color scale, based on: http://yulab-smu.top/treedata-book/chapter7.html#gheatmap-ggnewscale
@@ -137,9 +172,9 @@ df.primer.mismatches$right.primer.mismatches <- as.factor(df.primer.mismatches$r
 rownames(df.primer.mismatches) <- per.seq$label
 names(df.primer.mismatches)[names(df.primer.mismatches) == "left.primer.mismatches"] <- "5'"
 names(df.primer.mismatches)[names(df.primer.mismatches) == "right.primer.mismatches"] <- "3'"
-p4 <- gheatmap(p4, df.primer.mismatches, width=.4, offset=1.8, colnames=TRUE,
-        colnames_offset_y=-5) +
+p4 <- gheatmap(p4, df.primer.mismatches, width=.3*HEATMAP.WIDTH.SCALE, offset=1.8, colnames=TRUE,
+        colnames_offset_y=-15, color=HEATMAP.BORDER.COLOR) +
     scale_fill_viridis_d(option="viridis", name="Primer\nmismatches",
         direction=-1)   # reverse scale so, like guide activity, purple is bad (here, high values)
 
-ggsave(paste0(out.dir, "plot--assay-option-", assay.option, ".pdf"), p4, width=8, height=8, useDingbats=FALSE)
+ggsave(paste0(out.dir, "plot--assay-option-", assay.option, ".pdf"), p4, width=16, height=16, useDingbats=FALSE)
