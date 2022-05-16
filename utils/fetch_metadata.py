@@ -6,10 +6,26 @@ import argparse
 import ncbi
 
 
+def add_species(metadata):
+    accessions = metadata.keys()
+    species = ncbi.get_subtaxa_groups(accessions, 'species')
+
+    # species is {species: [accessions]}; invert to be {accession: species}
+    species_inv = {}
+    for s, al in species.items():
+        for a in al:
+            a = a.split('.')[0] # remove version
+            species_inv[a] = s
+
+    for a in accessions:
+        metadata[a]['species'] = species_inv[a]
+    return metadata
+
+
 def make_table(metadata, out_tsv):
     with open(out_tsv, 'w') as fw:
         header = ['accession', 'country', 'year', 'entry_create_year',
-                'taxid']
+                'taxid', 'species']
         fw.write('\t'.join(header) + '\n')
         for accession in metadata:
             row = [accession] + [str(metadata[accession][c]) for c in header[1:]]
@@ -18,6 +34,7 @@ def make_table(metadata, out_tsv):
 
 def main(args):
     metadata = ncbi.fetch_metadata(args.a)
+    metadata = add_species(metadata)
     make_table(metadata, args.o)
 
 

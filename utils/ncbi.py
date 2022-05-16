@@ -49,3 +49,6 @@ fetch_fastas = ncbi_neighbors.fetch_fastas
 
 # Expose ncbi_neighbors's fetch_metadata() function
 fetch_metadata = ncbi_neighbors.fetch_metadata
+
+# Expose ncbi_neighbor's get_subtaxa_groups() function
+get_subtaxa_groups = ncbi_neighbors.get_subtaxa_groups
