@@ -10,4 +10,4 @@ Implementation notes:
     * For Filoviridae, following ICTV (https://talk.ictvonline.org/ictv-reports/ictv_online_report/negative-sense-rna-viruses/w/filoviridae), I rooted the tree on Huangjiao virus (MG599981). I did this in FigTree and export the .tree file in Newick format.
 * Plotting
     * Custom conda environment: `conda activate misc-bioinformatic-tools`
-
+* For Filoviridae, all designs were made using the --weight-by-log-size-of-subtaxa argument in ADAPT, except `filoviridae--unweighted`, which did not use that argument.
