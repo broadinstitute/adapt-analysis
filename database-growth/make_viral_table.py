@@ -17,6 +17,8 @@ the most number of sequences.
 
 from collections import Counter
 from collections import defaultdict
+from os import environ
+import requests
 
 from adapt.prepare import align
 from adapt.prepare import ncbi_neighbors
@@ -24,12 +26,55 @@ from adapt.prepare import ncbi_neighbors
 __author__ = 'Hayden Metsky <hayden@mit.edu>'
 
 
-TAXONOMIES = 'taxonomies.tsv'
+TAXONOMIES = 'taxonomies.without-sars.tsv'
 OUTPUT_PER_YEAR = 'data/counts-per-year.tsv'
 OUTPUT_CUMULATIVE = 'data/counts-cumulative.tsv'
 
+INCLUDE_KMER_COUNTS = False
+
 START_YEAR = 2000
-END_YEAR = 2020
+END_YEAR = 2022
+
+
+# Set NCBI api key to environment variable NCBI_API_KEY
+ncbi_api_key = environ.get('NCBI_API_KEY')
+if ncbi_api_key is not None:
+    print("Setting NCBI API key from environment variable")
+    ncbi_neighbors.set_ncbi_api_key(ncbi_api_key)
+else:
+    print("NCBI API key is not set in environment variable")
+
+
+def get_accessions_via_ncbi_virus_resource(taxid):
+    """Use a hidden URL on the NCBI virus resource to determine whole genomes.
+
+    This is more inclusive of complete/whole genomes---and more
+    up-to-date---than the NCBI viral accession list.
+
+    Args:
+        taxid: taxonomic ID
+
+    Returns:
+        list of accessions
+    """
+    url = ('https://www.ncbi.nlm.nih.gov/genomes/VirusVariation/vvsearch2/' +
+            '?fq=%7B\u0021tag=SeqType_s%7DSeqType_s:(%22Nucleotide%22)' +
+            '&fq=VirusLineageId_ss:(' + str(taxid) +
+            ')&fq=%7B\u0021tag=Completeness_s%7DCompleteness_s:' +
+            '(%22complete%22)&cmd=download&sort=SourceDB_s%20desc,' +
+            'CreateDate_dt%20desc,id%20asc&dlfmt=fasta&fl=AccVer_s,' +
+            'Definition_s,Nucleotide_seq')
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+    data = 'q=*%3A*&fq='
+    r = requests.post(url, headers=headers, data=data, stream=True)
+    accessions = []
+    for line in r.iter_lines(decode_unicode=True):
+        if line[0] == '>':
+            # Header line; will be '>[accession].[version] [full name, etc.]'
+            #   so take everything before the first '.'
+            acc = line[1:].split('.')[0]
+            accessions += [acc]
+    return accessions
 
 
 def num_unique_kmers(accessions, k=31):
@@ -87,10 +132,21 @@ def main():
     n = 0
     for taxid in taxa.keys():
         taxon = taxa[taxid]
+        lineage = (taxon['family'], taxon['genus'], taxon['species'])
         if taxid == 11320 or taxid == 11520:
             # Influenza A or B
             neighbors = ncbi_neighbors.construct_influenza_genome_neighbors(taxid)
+        elif taxon['segments'] == ['None']:
+            # Unsegmented; use NCBI virus resource
+            accessions = get_accessions_via_ncbi_virus_resource(taxid)
+            neighbors = [ncbi_neighbors.Neighbor(acc, None, None, lineage,
+                taxon['species'], None) for acc in accessions]
+            if len(neighbors) == 0:
+                # Fall back to NCBI viral neighbor resource
+                neighbors = ncbi_neighbors.construct_neighbors(taxid)
         else:
+            # Segments; use NCBI viral neighbor resource to make it easier to
+            # know which sequence is which segment
             neighbors = ncbi_neighbors.construct_neighbors(taxid)
 
         # Determine the segment with the most number of sequences, and
@@ -138,11 +194,12 @@ def main():
         for acc, m in taxon['metadata'].items():
             acc_year = m['entry_create_year']
             acc_for_year[acc_year].add(acc)
-        nuk_for_year = defaultdict(int)
-        for year, accessions in acc_for_year.items():
-            nuk = num_unique_kmers(accessions)
-            nuk_for_year[year] = nuk
-        taxon['num_unique_kmers'] = nuk_for_year
+        if INCLUDE_KMER_COUNTS:
+            nuk_for_year = defaultdict(int)
+            for year, accessions in acc_for_year.items():
+                nuk = num_unique_kmers(accessions)
+                nuk_for_year[year] = nuk
+            taxon['num_unique_kmers'] = nuk_for_year
 
         n += 1
         print("  Counted unique k-mers for {} for {} taxonomies".format(n, len(taxa)))
@@ -154,7 +211,9 @@ def main():
             fw.write('\t'.join(str(x) for x in row) + '\n')
 
         header = ['taxid', 'family', 'genus', 'species', 'segment', 'year',
-                'num_genomes', 'num_unique_kmers']
+                'num_genomes']
+        if INCLUDE_KMER_COUNTS:
+            header += ['num_unique_kmers']
         write_row(header)
 
         for taxid in taxa.keys():
@@ -165,8 +224,9 @@ def main():
             for year in range(START_YEAR, END_YEAR+1):
                 row = [taxid, taxon['family'], taxon['genus'],
                         taxon['species'], taxon['rep_segment'],
-                        year, year_genome_count[year],
-                        taxon['num_unique_kmers'][year]]
+                        year, year_genome_count[year]]
+                if INCLUDE_KMER_COUNTS:
+                    row += [taxon['num_unique_kmers'][year]]
                 write_row(row)
 
     with open(OUTPUT_CUMULATIVE, 'w') as fw:
@@ -174,7 +234,9 @@ def main():
             fw.write('\t'.join(str(x) for x in row) + '\n')
 
         header = ['taxid', 'family', 'genus', 'species', 'segment', 'year',
-                'cumulative_num_genomes', 'cumulative_num_unique_kmers']
+                'cumulative_num_genomes']
+        if INCLUDE_KMER_COUNTS:
+            header += ['cumulative_num_unique_kmers']
         write_row(header)
 
         for taxid in taxa.keys():
@@ -184,13 +246,15 @@ def main():
                 for acc, m in taxon['metadata'].items():
                     if m['entry_create_year'] <= year:
                         year_genome_count += 1
-                year_kmer_count = 0
-                for y, nuk in taxon['num_unique_kmers'].items():
-                    if y <= year:
-                        year_kmer_count += nuk
                 row = [taxid, taxon['family'], taxon['genus'],
                         taxon['species'], taxon['rep_segment'],
-                        year, year_genome_count, year_kmer_count]
+                        year, year_genome_count]
+                if INCLUDE_KMER_COUNTS:
+                    year_kmer_count = 0
+                    for y, nuk in taxon['num_unique_kmers'].items():
+                        if y <= year:
+                            year_kmer_count += nuk
+                    row += [year_kmer_count]
                 write_row(row)
 
 
