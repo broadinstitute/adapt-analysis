@@ -13,7 +13,7 @@ library(ggtree)
 require(dplyr)
 
 # Color by 'country' or 'species'
-COLOR.BY <- "species"
+COLOR.BY <- "country"
 
 args <- commandArgs(trailingOnly=TRUE)
 taxon <- args[1]
